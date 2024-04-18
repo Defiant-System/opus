@@ -1,14 +1,10 @@
 <Data>
 	<Samples>
-		<i path="texts.xml" img="~/img/template-00.jpg"/>
-		<i path="images.xml" img="~/img/template-01.jpg"/>
-		<i path="shapes.xml" img="~/img/template-02.jpg"/>
-		<i path="sheet.xml" img="~/img/template-03.jpg"/>
-		<i path="tables.xml" img="~/img/template-04.jpg"/>
+		<i kind="pptx" name="test-1.pptx"/>
+		<i kind="pptx" name="test-2.pptx"/>
+		<i kind="key" name="test-3.key"/>
+		<i kind="key" name="test-4.key"/>
+		<i kind="key" name="test-5.key"/>
 	</Samples>
-
-	<Recents>
-		<i path="/fs/Desktop/excell files/sheetjs.xlsx" img="~/img/template-00.jpg"/>
-		<i path="/fs/Desktop/excell files/google-2.xlsx" img="~/img/template-00.jpg"/>
-	</Recents>
+	<Recents/>
 </Data>

@@ -21,7 +21,7 @@
 	</div>
 
 	<div class="block-samples" data-click="select-sample">
-		<h3>Templates</h3>
+		<h3>Example</h3>
 		<xsl:call-template name="sample-list" />
 	</div>
 
@@ -37,8 +37,8 @@
 <xsl:template name="sample-list">
 	<xsl:for-each select="./Samples/*">
 		<div class="sample">
-			<!-- <xsl:attribute name="style">background-image: url(<xsl:value-of select="@img"/>);</xsl:attribute> -->
-			<xsl:attribute name="data-url"><xsl:value-of select="@path"/></xsl:attribute>
+			<xsl:attribute name="data-kind"><xsl:value-of select="@kind"/></xsl:attribute>
+			<span><xsl:value-of select="@name"/></span>
 		</div>
 	</xsl:for-each>
 </xsl:template>
@@ -47,30 +47,11 @@
 <xsl:template name="recent-list">
 	<xsl:for-each select="./Recents/*">
 		<div class="recent-file">
-			<xsl:attribute name="data-file"><xsl:value-of select="@path"/></xsl:attribute>
-			<span class="thumbnail">
-				<!-- <xsl:attribute name="style">background-image: url(<xsl:value-of select="@img"/>);</xsl:attribute> -->
-			</span>
-			<span class="name"><xsl:call-template name="get-file-name">
-									<xsl:with-param name="path" select="@path"/>
-								</xsl:call-template></span>
+			<xsl:attribute name="data-kind"><xsl:value-of select="@kind"/></xsl:attribute>
+			<xsl:attribute name="data-path"><xsl:value-of select="@path"/></xsl:attribute>
+			<span><xsl:value-of select="@name"/></span>
 		</div>
 	</xsl:for-each>
-</xsl:template>
-
-
-<xsl:template name="get-file-name">
-	<xsl:param name="path"/>
-	<xsl:choose>
-		<xsl:when test="contains($path, '/')">
-			<xsl:call-template name="get-file-name">
-				<xsl:with-param name="path" select="substring-after($path, '/')"/>
-			</xsl:call-template>
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:value-of select="$path"/>
-		</xsl:otherwise>
-	</xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
