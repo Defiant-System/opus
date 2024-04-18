@@ -19,12 +19,19 @@
 		<rect x="3" y="6" class="st0" width="1" height="1"/>
 	</svg>
 
-	<svg id="icon-formula" viewBox="0 0 13 13">
+	<svg id="icon-play" viewBox="0 0 13 13">
+		<style type="text/css">
+			.st0{fill:#333;}
+		</style>
+		<path class="st0" d="M2,1.7v9.6c0,0.4,0.4,0.6,0.7,0.4l8.4-4.8c0.3-0.2,0.3-0.6,0-0.8L2.7,1.3C2.4,1.1,2,1.4,2,1.7z"/>
+	</svg>
+
+	<svg id="icon-new-slide" viewBox="0 0 13 13">
 		<style type="text/css">
 			.st0{fill:#333;}
 		</style>
 		<polygon class="st0" points="9,6 7,6 7,4 6,4 6,6 4,6 4,7 6,7 6,9 7,9 7,7 9,7 "/>
-		<path class="st0" d="M12,9.1V3V2h-1H2.9C2.7,1.4,2.2,1,1.5,1C0.7,1,0,1.7,0,2.5c0,0.7,0.4,1.2,1,1.4V10v1h1h8.1c0.2,0.6,0.8,1,1.4,1 c0.8,0,1.5-0.7,1.5-1.5C13,9.8,12.6,9.3,12,9.1z M1.5,2C1.8,2,2,2.2,2,2.5S1.8,3,1.5,3S1,2.8,1,2.5S1.2,2,1.5,2z M2,3.9 C2.4,3.8,2.8,3.4,2.9,3H11v6.1c-0.4,0.2-0.8,0.5-0.9,0.9H2V3.9z M11.5,11c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5 S11.8,11,11.5,11z"/>
+		<path class="st0" d="M1,2v9h11V2H1z M2,3h9v7H2V3z"/>
 	</svg>
 
 	<svg id="icon-table" viewBox="0 0 13 13">
