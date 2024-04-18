@@ -39,16 +39,23 @@ sidebar.thumbs {
 			margin-bottom: 11px;
 			counter-increment: slides-counter;
 
-			&.active:before {
-				content: "";
-				background: rgba(#000,.1);
-				border-radius: 9px;
-				position: absolute;
-				top: -5px;
-				bottom: -5px;
-				right: -5px;
-				left: -25px;
-				z-index: -1;
+			&.active {
+				&:before {
+					content: "";
+					background: #489bf7;
+					border-radius: 9px;
+					position: absolute;
+					top: -5px;
+					bottom: -5px;
+					right: -5px;
+					left: -25px;
+					z-index: -1;
+				}
+
+				&:after {
+					color: #fff;
+					text-shadow: 0 1px 0 rgba(#000,.15);
+				}
 			}
 
 			&:after {
