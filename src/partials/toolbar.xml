@@ -1,7 +1,9 @@
 <ToolBar>
-	<Group width="30%">
+	<Group width="21%">
 		<Tool symbol="icon-sidebar" state="disabled"/>
 		<Select name="100%" width="35" menu="view-zoom" state="disabled"></Select>
+	</Group>
+	<Group width="9%">
 		<Tool symbol="icon-play" state="disabled"/>
 	</Group>
 	<Group width="40%" align="center">
