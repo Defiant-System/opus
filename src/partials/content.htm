@@ -5,28 +5,26 @@
 	</div>
 	
 	
-	<thumbs class="left" data-area="thumbs">
+	<sidebar class="thumbs" data-area="thumbs">
 		<div class="container">
 			<ul>
 				<li></li>
-				<li></li>
+				<li class="active"></li>
 				<li></li>
 			</ul>
 		</div>
-	</thumbs>
+	</sidebar>
 
 	<content>
 		<div class="body">
-			<div class="wrapper">
-				@import "sections/tools-text.htm"
-				<div class="slide-sections">
-					<!-- editor HTML goes here -->
-				</div>
+			@import "sections/tools-text.htm"
+			<div class="active-slide">
+				<!-- editor HTML goes here -->
 			</div>
 		</div>
 	</content>
 
-	<sidebar class="right" data-area="sidebar">
+	<sidebar class="format" data-area="format">
 		<div class="container">
 			@import "sections/sidebar-slides.htm"
 			@import "sections/sidebar-text.htm"
