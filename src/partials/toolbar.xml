@@ -1,9 +1,6 @@
 <ToolBar>
 	<Group width="30%">
-		<Options>
-			<Tool symbol="icon-undo" click="history-undo" state="disabled"/>
-			<Tool symbol="icon-redo" click="history-redo" state="disabled"/>
-		</Options>
+		<Tool symbol="icon-sidebar" state="disabled"/>
 		<!-- <Tool symbol="icon-sidebar"/> -->
 		<Select name="100%" width="35" menu="view-zoom" state="disabled"></Select>
 	</Group>

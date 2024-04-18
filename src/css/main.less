@@ -1,8 +1,27 @@
 
-content {
+// for dark theme
+@import "theme-dark";
+@import "blank-view";
+
+// auto applies to ".win-body_"
+overflow: initial;
+
+
+layout {
+	background: #fff;
+	color: #333;
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
+	overflow: hidden;
+	display: flex;
+	flex-flow: wrap;
+	border-radius: inherit;
+
+	&.show-blank-view {
+		.blank-view { display: block; }
+		content { display: none; }
+	}
 }

@@ -1,7 +1,76 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:template name="opus-example">
+<xsl:template name="blank-view">
+	<h2>Welcome to Opus.</h2>
 
-	</xsl:template>
+	<div class="block-buttons">
+		<div class="btn" data-click="new-file">
+			<i class="icon-new-file"></i>
+			New
+		</div>
+		
+		<div class="btn" data-click="open-file">
+			<i class="icon-folder-open"></i>
+			Open&#8230;
+		</div>
+
+		<div class="btn disabled_" data-click="from-clipboard">
+			<i class="icon-clipboard"></i>
+			From clipboard
+		</div>
+	</div>
+
+	<div class="block-samples" data-click="select-sample">
+		<h3>Templates</h3>
+		<xsl:call-template name="sample-list" />
+	</div>
+
+	<xsl:if test="count(./Recents/*) &gt; 0">
+		<div class="block-recent" data-click="select-recent-file">
+			<h3>Recent</h3>
+			<xsl:call-template name="recent-list" />
+		</div>
+	</xsl:if>
+</xsl:template>
+
+
+<xsl:template name="sample-list">
+	<xsl:for-each select="./Samples/*">
+		<div class="sample">
+			<!-- <xsl:attribute name="style">background-image: url(<xsl:value-of select="@img"/>);</xsl:attribute> -->
+			<xsl:attribute name="data-url"><xsl:value-of select="@path"/></xsl:attribute>
+		</div>
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="recent-list">
+	<xsl:for-each select="./Recents/*">
+		<div class="recent-file">
+			<xsl:attribute name="data-file"><xsl:value-of select="@path"/></xsl:attribute>
+			<span class="thumbnail">
+				<!-- <xsl:attribute name="style">background-image: url(<xsl:value-of select="@img"/>);</xsl:attribute> -->
+			</span>
+			<span class="name"><xsl:call-template name="get-file-name">
+									<xsl:with-param name="path" select="@path"/>
+								</xsl:call-template></span>
+		</div>
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="get-file-name">
+	<xsl:param name="path"/>
+	<xsl:choose>
+		<xsl:when test="contains($path, '/')">
+			<xsl:call-template name="get-file-name">
+				<xsl:with-param name="path" select="substring-after($path, '/')"/>
+			</xsl:call-template>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="$path"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
 
 </xsl:stylesheet>
