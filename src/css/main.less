@@ -3,6 +3,9 @@
 @import "theme-dark";
 @import "blank-view";
 
+@import "popups";
+
+
 // auto applies to ".win-body_"
 overflow: initial;
 
@@ -72,6 +75,18 @@ layout {
 		content { display: none; }
 	}
 
+	&.show-thumbs {
+		content {
+			padding-left: 180px;
+		}
+
+		thumbs {
+			left: 0;
+
+			&:after { border-color: lighten(@layout_outline, 9%); }
+		}
+	}
+
 	&.show-sidebar {
 		content {
 			padding-right: 270px;
@@ -98,6 +113,15 @@ layout {
 	&.hideMouse:before {
 		cursor: none;
 	}
+}
+
+thumbs {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -180px;
+	width: 180px;
+	transition: left @sidebar_speed * 0.75;
 }
 
 content {

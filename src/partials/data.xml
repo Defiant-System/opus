@@ -1,10 +1,10 @@
 <Data>
 	<Samples>
+		<i kind="xml" name="simple.xml"/>
 		<i kind="pptx" name="test-1.pptx"/>
 		<i kind="pptx" name="test-2.pptx"/>
 		<i kind="key" name="test-3.key"/>
 		<i kind="key" name="test-4.key"/>
-		<i kind="key" name="test-5.key"/>
 	</Samples>
 	<Recents/>
 </Data>

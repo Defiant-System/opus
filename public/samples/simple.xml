@@ -1,0 +1,74 @@
+<data>
+	<head>
+		<meta id="controls" value="true"/>
+		<meta id="progress" value="true"/>
+		<meta id="history" value="true"/>
+		<meta id="center" value="true"/>
+		<meta id="transition" value="slide"/>
+	</head>
+	<body><![CDATA[
+	<div class="slides">
+		<section>
+			<h1>RevealEditor</h1>
+			<p>
+				<small>Created by <a href="#">Luis Gonzalez-Yante</a> </small>
+			</p>
+			<p>
+				<small>Github: <a href="https://github.com/ctangel">ctangel</a> </small>
+			</p>
+		</section>
+
+		<section>
+			<p> RevealEditor is an text editor built for HTML presentation platform <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
+		</section>
+
+		<section>
+			<p>RevealEditor allows you to write and run Javascript, HTML, and CSS from within a presention and shows you the results without ever exiting fullscreen presentation mode.</p>
+		</section>
+
+		<section>
+			<p> Go ahead and click on the RevealEditor button on the top left corner and play around with the RevealEditor</p>
+		</section>
+
+		<section>
+			<section>
+				<p> If want to take code from the slide you are currently on, then you can simply press the COPY button. </p>
+				<p> For the COPY button to work properly, you must add the class 'js', 'html', or 'css' depending on the type of code being on the slide. </p>
+			</section>
+
+			<section>
+				<h2>Javascript</h2>
+				<pre><code class="hljs js" data-trim contenteditable>
+function add( x, y ) {
+	return x + y;
+}
+
+var val = add(3, 4);
+console.log(val);
+					</code></pre>
+			</section>
+
+			<section>
+				<h2>HTML</h2>
+				<pre><code class="hljs html" data-trim contenteditable>
+<h1> Why penguins are better than people?</h1>
+<ul>
+	<li> They are cute. </li>
+	<li> They are good swimmers. </li>
+	<li> They look good in tuxes. </li>
+</ul>
+				</code></pre>
+			</section>
+
+			<section>
+				<h2>CSS</h2>
+				<pre><code class="hljs css" data-trim contenteditable>
+body {
+	background: blue;
+}
+					</code></pre>
+			</section>
+		</section>
+	</div>
+]]></body>
+</data>

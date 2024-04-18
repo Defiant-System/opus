@@ -7,17 +7,31 @@
 	
 	<thumbs class="left" data-area="thumbs">
 		<div class="container">
-
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
 		</div>
 	</thumbs>
 
 	<content>
-		<!-- editor HTML goes here -->
+		<div class="body">
+			<div class="wrapper">
+				@import "sections/tools-text.htm"
+				<div class="slide-sections">
+					<!-- editor HTML goes here -->
+				</div>
+			</div>
+		</div>
 	</content>
 
 	<sidebar class="right" data-area="sidebar">
 		<div class="container">
-
+			@import "sections/sidebar-slides.htm"
+			@import "sections/sidebar-text.htm"
 		</div>
 	</sidebar>
 </layout>
+
+@import "sections/popups.htm"
