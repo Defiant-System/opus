@@ -21,6 +21,9 @@
 			el;
 		switch (event.type) {
 			// custom events
+			case "toggle-format":
+				value = event.isOn;
+				return !value;
 			case "select-tab":
 				event.el.find(".active").removeClass("active");
 				el = $(event.target).addClass("active");
@@ -28,6 +31,11 @@
 				pEl = event.el.parent();
 				pEl.find(".sidebar-body.active").removeClass("active");
 				pEl.find(".sidebar-body").get(el.index()).addClass("active");
+				break;
+			case "toggle-group-body":
+				el = event.el.parent();
+				value = el.hasClass("expanded");
+				el.toggleClass("expanded", value);
 				break;
 			// forward popup events
 			case "popup-color-ring":

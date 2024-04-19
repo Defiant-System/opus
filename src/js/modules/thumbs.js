@@ -16,7 +16,8 @@
 		switch (event.type) {
 			// custom events
 			case "toggle-thumbs":
-				break;
+				value = event.isOn;
+				return !value;
 		}
 	}
 }
