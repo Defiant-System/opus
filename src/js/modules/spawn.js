@@ -46,6 +46,12 @@
 			case "spawn.init":
 				Self.dispatch({ ...event, type: "tab.new" });
 				break;
+			case "spawn.blur":
+				// forward event to all sub-objects
+				Object.keys(Self)
+					.filter(i => typeof Self[i].dispatch === "function")
+					.map(i => Self[i].dispatch(event));
+				break;
 			case "spawn.focus":
 				// forward event to all sub-objects
 				Object.keys(Self)
@@ -57,16 +63,6 @@
 					layout: Spawn.find("layout"),
 					body: Spawn.find("content .body .active-slide"),
 					blankView: Spawn.find(".blank-view"),
-					tools: {
-						toolSlide: Spawn.find(`.toolbar-tool_[data-arg="slide"]`),
-						toolGrid: Spawn.find(`.toolbar-tool_[data-arg="grid"]`),
-						toolChart: Spawn.find(`.toolbar-tool_[data-arg="chart"]`),
-						toolText: Spawn.find(`.toolbar-tool_[data-click="insert-text-box"]`),
-						toolShape: Spawn.find(`.toolbar-tool_[data-arg="shape"]`),
-						toolImage: Spawn.find(`.toolbar-tool_[data-arg="image"]`),
-						thumbs: Spawn.find(`.toolbar-tool_[data-click="toggle-thumbs"]`),
-						format: Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`),
-					}
 				};
 				break;
 			case "load-samples":
@@ -87,6 +83,10 @@
 				break;
 				
 			// custom events
+			case "close-spawn":
+				// system close window / spawn
+				karaqu.shell("win -c");
+				break;
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");
 				break;

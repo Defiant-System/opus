@@ -26,6 +26,11 @@ class Tabs {
 		return Object.keys(this._stack).length;
 	}
 
+	setFocusElement(el) {
+		// focus element
+		this._active.focusEl = el;
+	}
+
 	add(fItem) {
 		// let file = fItem || new File();
 		let file = fItem || { base: "Blank" },
@@ -50,11 +55,6 @@ class Tabs {
 		this._stack[tId] = { tId, tabEl, bodyEl, history, file, sidebar };
 		// focus on file
 		this.focus(tId);
-		
-		if (file._file) {
-			// default renders
-			// file.dispatch({ type: "render-sheet", spawn: this._spawn });
-		}
 	}
 
 	merge(ref) {
@@ -84,7 +84,35 @@ class Tabs {
 	}
 
 	focus(tId) {
+		let spawn = this._spawn,
+			active = this._active;
+		if (active) {
+			// hide blurred body
+			active.bodyEl.addClass("hidden");
+		}
+		// reference to active tab
+		this._active = this._stack[tId];
+		// UI update
+		this.update();
+		// toggle sidebar
+		this._parent.format.dispatch({
+			type: "toggle-format",
+			isOn: !this._active.sidebar,
+		});
 
+		if (this._active.file._file) {
+			// hide blank view
+			this._parent.els.layout.removeClass("show-blank-view");
+			// enable toolbar
+			this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: true });
+		} else {
+			setTimeout(() => {
+				// show blank view
+				this._parent.els.layout.addClass("show-blank-view");
+				// disable toolbar
+				this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: null });
+			}, 10);
+		}
 	}
 
 	update() {

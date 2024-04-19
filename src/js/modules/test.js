@@ -1,7 +1,7 @@
 
 let Test = {
 	init(APP, Spawn) {
-		// return;
+		return;
 
 		// Spawn.el.find("layout").addClass("show-blank-view");
 		Spawn.el.find("layout").addClass("show-sidebar-format show-sidebar-thumbs");
