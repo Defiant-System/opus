@@ -9,7 +9,15 @@
 			.map(i => this[i].init());
 	},
 	dispose(event) {
-		
+		let Spawn = event.spawn;
+		let cmd = { type: "open.file", files: [] };
+		for (let key in Spawn.data.tabs._stack) {
+			let tab = Spawn.data.tabs._stack[key];
+			if (tab.file._file) {
+				cmd.files.push(tab.file._file.path);
+			}
+		}
+		return cmd.files.length ? cmd : { "type": "tab.new" };
 	},
 	dispatch(event) {
 		let APP = opus,
@@ -37,6 +45,32 @@
 				break;
 			case "spawn.init":
 				Self.dispatch({ ...event, type: "tab.new" });
+				break;
+			case "spawn.focus":
+				// forward event to all sub-objects
+				Object.keys(Self)
+					.filter(i => typeof Self[i].dispatch === "function")
+					.map(i => Self[i].dispatch(event));
+
+				// fast references
+				Self.els = {
+					layout: Spawn.find("layout"),
+					body: Spawn.find("content .body .active-slide"),
+					blankView: Spawn.find(".blank-view"),
+					tools: {
+						toolSlide: Spawn.find(`.toolbar-tool_[data-arg="slide"]`),
+						toolGrid: Spawn.find(`.toolbar-tool_[data-arg="grid"]`),
+						toolChart: Spawn.find(`.toolbar-tool_[data-arg="chart"]`),
+						toolText: Spawn.find(`.toolbar-tool_[data-click="insert-text-box"]`),
+						toolShape: Spawn.find(`.toolbar-tool_[data-arg="shape"]`),
+						toolImage: Spawn.find(`.toolbar-tool_[data-arg="image"]`),
+						thumbs: Spawn.find(`.toolbar-tool_[data-click="toggle-thumbs"]`),
+						format: Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`),
+					}
+				};
+				break;
+			case "load-samples":
+				// console.log(event);
 				break;
 
 			// tab related events

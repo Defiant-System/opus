@@ -20,6 +20,33 @@
 			pEl,
 			el;
 		switch (event.type) {
+			// system events
+			case "spawn.blur":
+				// unbind event handlers
+				if (Self.els.el) {
+					Self.els.el.off("mousedown", ".gradient-colors", Self.gradientPoints);
+					Self.els.el.off("mousedown", ".angle-ring", Self.angleRing);
+				}
+				// reset fast references
+				Self.els = {};
+				break;
+			case "spawn.focus":
+				// fast references
+				Self.els = {
+					doc: $(document),
+					layout: Spawn.find("layout"),
+					el: Spawn.find("sidebar.format"),
+					tbl: Spawn.find(".sidebar-table"),
+				};
+				// init all sub-objects
+				Object.keys(Self)
+					.filter(i => typeof Self[i].dispatch === "function")
+					.map(i => Self[i].dispatch(event));
+
+				// bind event handlers
+				Self.els.el.on("mousedown", ".gradient-colors", Self.gradientPoints);
+				Self.els.el.on("mousedown", ".angle-ring", Self.angleRing);
+				break;
 			// custom events
 			case "toggle-format":
 				value = event.isOn;
@@ -51,6 +78,30 @@
 				if (Self[name]) {
 					return Self[name].dispatch(event);
 				}
+		}
+	},
+	gradientPoints(event) {
+		let APP = eniac,
+			Self = APP.spawn.sidebar,
+			Parent = Self.parent,
+			Drag = Self.drag,
+			stops;
+		switch (event.type) {
+			case "mousedown": break;
+			case "mousemove": break;
+			case "mouseup": break;
+		}
+	},
+	angleRing(event) {
+		let APP = eniac,
+			Self = APP.spawn.sidebar,
+			Parent = Self.parent,
+			Drag = Self.drag,
+			stops;
+		switch (event.type) {
+			case "mousedown": break;
+			case "mousemove": break;
+			case "mouseup": break;
 		}
 	},
 	shape: @import "./shape.js",
