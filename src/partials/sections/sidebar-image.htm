@@ -1,0 +1,304 @@
+<div class="sidebar-image" data-section="image">
+	<div class="sidebar-head" data-click="select-tab">
+		<span class="active">Style</span>
+		<span>Image</span>
+		<span>Arrange</span>
+	</div>
+
+	<!-- Style body -->
+	<div class="sidebar-body active">
+		<div class="styles image-styles" data-click="set-image-style">
+			<span class="image-style-1" data-arg="style-1"></span>
+			<span class="image-style-2" data-arg="style-2"></span>
+			<span class="image-style-3" data-arg="style-3"></span>
+			<span class="image-style-4" data-arg="style-4"></span>
+			<span class="image-style-5" data-arg="style-5"></span>
+			<span class="image-style-6" data-arg="style-6"></span>
+		</div>
+
+		<div class="group-row">
+			<legend>Image Options</legend>
+			<div>
+				<span class="form-checkbox_"><input type="checkbox" id="image-title" data-click="toggle-image-title"/><i></i></span>
+				<label for="image-title">Title</label>
+			</div>
+			<div>
+				<span class="form-checkbox_"><input type="checkbox" id="image-caption" data-click="toggle-image-caption"/><i></i></span>
+				<label for="image-caption">Caption</label>
+			</div>
+		</div>
+
+		<div class="group-row image-outline-options">
+			<legend data-click="toggle-group-body">Border</legend>
+			<div class="group-body">
+				<div class="flex-row">
+					<div class="w37">
+						<selectbox class="image-outline" data-menu="image-outline">
+							<option class="prefix-icon" selected="1" value="solid"/>
+						</selectbox>
+					</div>
+					<div class="color-preset_" data-click="popup-color-palette-1" data-change="set-image-outline-color" style="--preset-color: #000000;"></div>
+					<div class="w23">
+						<input type="number" value="1" min="0" max="10" id="image-outline" data-change="set-image-outline-width"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row image-shadow-options">
+			<legend data-click="toggle-group-body">Shadow</legend>
+			<div class="group-body">
+				<div class="flex-row image-shadow-blur">
+					<div class="w63">
+						<span class="range-caption">Blur</span>
+						<input type="range" value="0" min="0" max="20" data-change="set-image-shadow">
+					</div>
+					<div class="has-caption" data-suffix="px">
+						<input type="number" value="0" min="0" max="20" data-change="set-image-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+				<div class="flex-row image-shadow-offset">
+					<div class="w63">
+						<span class="range-caption">Offset</span>
+						<input type="range" value="0" min="0" max="40" data-change="set-image-shadow">
+					</div>
+					<div class="has-caption" data-suffix="px">
+						<input type="number" value="0" min="0" max="40" data-change="set-image-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+				<div class="flex-row image-shadow-opacity">
+					<div class="w63">
+						<span class="range-caption">Opacity</span>
+						<input type="range" value="0" min="0" max="100" data-change="set-image-shadow">
+					</div>
+					<div class="has-caption" data-suffix="%">
+						<input type="number" value="0" min="0" max="100" data-change="set-image-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-row image-shadow-angle-color">
+					<legend class="bold">Angle</legend>
+					<div data-suffix="°">
+						<div class="angle-ring"></div>
+						<input type="number" name="image-shadow-angle" min="0" max="360" value="45" data-change="set-image-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+					<div class="color-preset_" data-click="popup-color-palette-1" data-change="set-image-shadow" style="--preset-color: #000000;"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row image-reflection-options">
+			<legend data-click="toggle-group-body">Reflection</legend>
+			<div class="group-body">
+				<div class="flex-row image-reflection">
+					<div class="w63">
+						<input type="range" value="50" min="0" max="100" data-change="set-image-reflection">
+					</div>
+					<div data-suffix="%">
+						<input type="number" value="50" min="0" max="100" data-change="set-image-reflection"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row image-opacity-options">
+			<legend data-click="toggle-group-body">Opacity</legend>
+			<div class="group-body">
+				<div class="flex-row image-opacity">
+					<div class="w63">
+						<input type="range" value="50" min="0" max="100" data-change="set-image-opacity">
+					</div>
+					<div data-suffix="%">
+						<input type="number" value="50" min="0" max="100" data-change="set-image-opacity"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Image body -->
+	<div class="sidebar-body">
+
+		<div class="group-row push-down">
+			<legend>Image Info</legend>
+			<div class="flex-row">
+				<div class="w73">
+					<input type="text" disabled value="coast.jpg"/>
+				</div>
+				<div>
+					<button data-click="image-replace-image">Replace</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<div class="full-row">
+				<button data-click="image-toggle-mask">Edit Mask</button>
+			</div>
+			<div class="full-row">
+				<button data-click="image-instant-alpha" disabled>Instant Alpha</button>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<legend>Adjustments</legend>
+			<div class="group-body">
+
+				<div class="flex-row image-brightness">
+					<div class="w63">
+						<span class="range-caption">Brightness</span>
+						<input type="range" value="0" min="-100" max="100" data-change="set-image-brightness">
+					</div>
+					<div class="has-caption" data-suffix="%">
+						<input type="number" value="0" min="-100" max="100" data-change="set-image-exposure"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-row image-saturate">
+					<div class="w63">
+						<span class="range-caption">Saturation</span>
+						<input type="range" value="0" min="-100" max="100" data-change="set-image-saturate">
+					</div>
+					<div class="has-caption" data-suffix="%">
+						<input type="number" value="0" min="-100" max="100" data-change="set-image-saturate"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-row">
+					<div class="w48 center">
+						<button disabled>Enhance</button>
+					</div>
+					<div class="w17 center">
+						<button class="btn-icon">
+							<span class="icon-equalizer"></span>
+						</button>
+					</div>
+					<div class="w27 center">
+						<button data-click="reset-image-filters">Reset</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Arrange body -->
+	<div class="sidebar-body">
+		<div class="group-row">
+			<div class="flex-row arrange" data-click="set-image-arrange">
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span data-name="z-back" title="Back">
+							<span class="icon-arrange-back c13x19"></span>
+						</span>
+						<span data-name="z-front" title="Front">
+							<span class="icon-arrange-front c13x19"></span>
+						</span>
+					</div>
+				</div>
+
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span data-name="z-backward" title="Backward">
+							<span class="icon-arrange-backward c13x19"></span>
+						</span>
+						<span data-name="z-forward" title="Forward">
+							<span class="icon-arrange-forward c13x19"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex-row">
+				<div class="w48">
+					<selectbox disabled data-menu="image-header-rows">
+						<option selected="1" value="align">Align</option>
+					</selectbox>
+				</div>
+
+				<div class="w48">
+					<selectbox disabled data-menu="image-header-rows">
+						<option selected="1" value="distribute">Distribute</option>
+					</selectbox>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row image-box-size">
+			<div class="flex-row">
+				<legend class="bold">Size</legend>
+				<div class="indent has-title" title="Width" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="width" data-change="set-image-box-size"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Height" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="height" data-change="set-image-box-size"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row image-box-position">
+			<div class="flex-row">
+				<legend class="bold">Position</legend>
+				<div class="indent has-title" title="X" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="x" data-change="set-image-box-position"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Y" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="y" data-change="set-image-box-position"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

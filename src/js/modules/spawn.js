@@ -56,7 +56,26 @@
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");
 				break;
+			// forwards events
+			default:
+				el = event.el || (event.origin && event.origin.el);
+				if (el) {
+					pEl = el.data("area") ? el : el.parents("[data-area]");
+					name = pEl.data("area");
+					if (pEl.length) {
+						if (Self[name] && Self[name].dispatch) {
+							return Self[name].dispatch(event);
+						}
+						if (Self.tools[name].dispatch) {
+							return Self.tools[name].dispatch(event);
+						}
+					}
+				}
 		}
 	},
 	blankView: @import "./blankView.js",
+	format: @import "../format/format.js",
+	thumbs: @import "./thumbs.js",
+	popups: @import "./popups.js",
+	tools: @import "../tools/tools.js",
 }

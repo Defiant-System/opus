@@ -1,0 +1,216 @@
+<div class="sidebar-line" data-section="line">
+	<div class="sidebar-head" data-click="select-tab">
+		<span class="active">Style</span>
+		<span>Arrange</span>
+	</div>
+
+	<!-- Style body -->
+	<div class="sidebar-body active">
+		<div class="styles line-styles" data-click="set-line-style">
+			<span class="icon-line-style-1" data-arg="#222222"></span>
+			<span class="icon-line-style-2" data-arg="#1ba3fc"></span>
+			<span class="icon-line-style-3" data-arg="#65d744"></span>
+			<span class="icon-line-style-4" data-arg="#ea261f"></span>
+			<span class="icon-line-style-5" data-arg="#fcad2a"></span>
+			<span class="icon-line-style-6" data-arg="#fc47a1"></span>
+		</div>
+
+		<div class="group-row">
+			<legend>Stroke</legend>
+			<div class="group-body">
+				<div class="flex-row">
+					<div class="w37">
+						<selectbox class="line-stroke" data-menu="line-stroke">
+							<option class="prefix-icon" selected="1" value="solid"/>
+						</selectbox>
+					</div>
+					<div class="color-preset_" data-click="popup-color-palette-1" data-change="set-line-stroke-color" style="--preset-color: #000000;"></div>
+					<div class="w23">
+						<input type="number" value="1" min="0" max="10" id="line-stroke" data-change="set-line-stroke-width"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row line-shadow-options">
+			<legend data-click="toggle-group-body">Shadow</legend>
+			<div class="group-body">
+				<div class="flex-row line-shadow-blur">
+					<div class="w63">
+						<span class="range-caption">Blur</span>
+						<input type="range" value="0" min="0" max="20" data-change="set-line-shadow">
+					</div>
+					<div class="has-caption" data-suffix="px">
+						<input type="number" value="0" min="0" max="20" data-change="set-line-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+				<div class="flex-row line-shadow-offset">
+					<div class="w63">
+						<span class="range-caption">Offset</span>
+						<input type="range" value="0" min="0" max="40" data-change="set-line-shadow">
+					</div>
+					<div class="has-caption" data-suffix="px">
+						<input type="number" value="0" min="0" max="40" data-change="set-line-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+				<div class="flex-row line-shadow-opacity">
+					<div class="w63">
+						<span class="range-caption">Opacity</span>
+						<input type="range" value="0" min="0" max="100" data-change="set-line-shadow">
+					</div>
+					<div class="has-caption" data-suffix="%">
+						<input type="number" value="0" min="0" max="100" data-change="set-line-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-row line-shadow-angle-color">
+					<legend class="bold">Angle</legend>
+					<div data-suffix="°">
+						<div class="angle-ring"></div>
+						<input type="number" name="line-shadow-angle" min="0" max="360" value="45" data-change="set-line-shadow"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+					<div class="color-preset_" data-click="popup-color-palette-1" data-change="set-line-shadow" style="--preset-color: #000000;"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row line-reflection-options">
+			<legend data-click="toggle-group-body">Reflection</legend>
+			<div class="group-body">
+				<div class="flex-row line-reflection">
+					<div class="w63">
+						<input type="range" value="50" min="0" max="100" data-change="set-line-reflection">
+					</div>
+					<div data-suffix="%">
+						<input type="number" value="50" min="0" max="100" data-change="set-line-reflection"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row line-opacity-options">
+			<legend data-click="toggle-group-body">Opacity</legend>
+			<div class="group-body">
+				<div class="flex-row line-opacity">
+					<div class="w63">
+						<input type="range" value="50" min="0" max="100" data-change="set-line-opacity">
+					</div>
+					<div data-suffix="%">
+						<input type="number" value="50" min="0" max="100" data-change="set-line-opacity"/>
+						<div>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Arrange body -->
+	<div class="sidebar-body">
+		<div class="group-row">
+			<div class="flex-row arrange" data-click="set-line-arrange">
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span data-name="z-back" title="Back">
+							<span class="icon-arrange-back c13x19"></span>
+						</span>
+						<span data-name="z-front" title="Front">
+							<span class="icon-arrange-front c13x19"></span>
+						</span>
+					</div>
+				</div>
+
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span data-name="z-backward" title="Backward">
+							<span class="icon-arrange-backward c13x19"></span>
+						</span>
+						<span data-name="z-forward" title="Forward">
+							<span class="icon-arrange-forward c13x19"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex-row">
+				<div class="w48">
+					<selectbox disabled data-menu="line-header-rows">
+						<option selected="1" value="align">Align</option>
+					</selectbox>
+				</div>
+
+				<div class="w48">
+					<selectbox disabled data-menu="line-header-rows">
+						<option selected="1" value="distribute">Distribute</option>
+					</selectbox>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<div class="flex-row">
+				<legend class="bold">Size</legend>
+				<div class="indent has-title" title="Width">
+					<input type="number" value="20"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Height">
+					<input type="number" value="20"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<div class="flex-row">
+				<legend class="bold">Position</legend>
+				<div class="indent has-title" title="X">
+					<input type="number" value="20"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Y">
+					<input type="number" value="20"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
