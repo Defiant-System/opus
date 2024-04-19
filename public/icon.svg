@@ -1,7 +1,7 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55">
 	<style type="text/css">
-		.st0{fill-rule:evenodd;clip-rule:evenodd;fill:url(#foot_1_);filter:url(#dropshadow);}
+		.st0{fill-rule:evenodd;clip-rule:evenodd;fill:url(#foot_1_);}
 		.st1{fill-rule:evenodd;clip-rule:evenodd;fill:url(#Oval-87_2_);}
 		.st2{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_1_);}
 		.st3{opacity:0.3553;fill-rule:evenodd;clip-rule:evenodd;fill:url(#Leg-Reflection_1_);enable-background:new    ;}
@@ -22,16 +22,7 @@
 		.st18{fill-rule:evenodd;clip-rule:evenodd;fill:#FFE244;}
 		.st19{fill-rule:evenodd;clip-rule:evenodd;fill:#8FE563;}
 	</style>
-	<filter filterUnits="objectBoundingBox" id="dropshadow">
-		<feOffset dx="0" dy=".35" in="SourceAlpha" result="defappShadowOffsetOuter1"></feOffset>
-		<feGaussianBlur stdDeviation=".35" in="defappShadowOffsetOuter1" result="defappShadowBlurOuter1"></feGaussianBlur>
-		<feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="defappShadowBlurOuter1" result="defappShadowMatrixOuter1"></feColorMatrix>
-		<feMerge>
-			<feMergeNode in="defappShadowMatrixOuter1"/>
-			<feMergeNode in="SourceGraphic"/>
-		</feMerge>
-	</filter>
-	<linearGradient id="foot_1_" gradientUnits="userSpaceOnUse" x1="-537.7058" y1="6.3388" x2="-537.6046" y2="6.34" gradientTransform="matrix(196.5409 0 0 69.3235 105697.9609 -391.5126)">
+	<linearGradient id="foot_1_" gradientUnits="userSpaceOnUse" x1="-806.332" y1="436.8531" x2="-806.2308" y2="436.8518" gradientTransform="matrix(196.5409 0 0 -69.3235 158494 30334.0977)">
 		<stop  offset="0" style="stop-color:#837E7C"/>
 		<stop  offset="0.044" style="stop-color:#A8AAB1"/>
 		<stop  offset="0.0725" style="stop-color:#C3D0D9"/>
@@ -49,7 +40,7 @@
 		<stop  offset="0.9597" style="stop-color:#898075"/>
 		<stop  offset="1" style="stop-color:#786E61"/>
 	</linearGradient>
-	<linearGradient id="Oval-87_2_" gradientUnits="userSpaceOnUse" x1="-537.7076" y1="6.4256" x2="-537.597" y2="6.4256" gradientTransform="matrix(196.5409 0 0 69.3235 105698.4609 -397.8485)">
+	<linearGradient id="Oval-87_2_" gradientUnits="userSpaceOnUse" x1="-806.3338" y1="436.7662" x2="-806.2232" y2="436.7662" gradientTransform="matrix(196.5409 0 0 -69.3235 158494.5 30327.7617)">
 		<stop  offset="0" style="stop-color:#88BFEA"/>
 		<stop  offset="0.3634" style="stop-color:#FEFFFF"/>
 		<stop  offset="0.5576" style="stop-color:#FFFFFF"/>
@@ -57,7 +48,7 @@
 		<stop  offset="0.633" style="stop-color:#FFFFFF"/>
 		<stop  offset="1" style="stop-color:#76B2F0"/>
 	</linearGradient>
-	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-527.65" y1="2.6477" x2="-527.5393" y2="2.6477" gradientTransform="matrix(30.5095 0 0 239.3817 16124.3145 -599.041)">
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-788.8003" y1="444.592" x2="-788.6896" y2="444.592" gradientTransform="matrix(30.5095 0 0 -239.3817 24091.8789 106463.9531)">
 		<stop  offset="0" style="stop-color:#837E7C"/>
 		<stop  offset="0.044" style="stop-color:#A8AAB1"/>
 		<stop  offset="0.0725" style="stop-color:#C3D0D9"/>
@@ -70,7 +61,7 @@
 		<stop  offset="0.9273" style="stop-color:#968F86"/>
 		<stop  offset="1" style="stop-color:#786E61"/>
 	</linearGradient>
-	<linearGradient id="Leg-Reflection_1_" gradientUnits="userSpaceOnUse" x1="-527.7369" y1="12.3807" x2="-527.6263" y2="12.3807" gradientTransform="matrix(30.7268 0 0 33.4804 16241.6572 -365.0948)">
+	<linearGradient id="Leg-Reflection_1_" gradientUnits="userSpaceOnUse" x1="-788.9498" y1="424.7112" x2="-788.8392" y2="424.7112" gradientTransform="matrix(30.7268 0 0 -33.4804 24267.8926 14270.9141)">
 		<stop  offset="0" style="stop-color:#837E7C"/>
 		<stop  offset="0.044" style="stop-color:#A8AAB1"/>
 		<stop  offset="0.0725" style="stop-color:#C3D0D9"/>
@@ -83,29 +74,28 @@
 		<stop  offset="0.9273" style="stop-color:#968F86"/>
 		<stop  offset="1" style="stop-color:#786E61"/>
 	</linearGradient>
-	<linearGradient id="Table-Shadow_1_" gradientUnits="userSpaceOnUse" x1="-538.6004" y1="4.4341" x2="-538.6004" y2="4.4399" gradientTransform="matrix(405.3541 0 0 180.2412 218351.375 -776.4043)">
+	<linearGradient id="Table-Shadow_1_" gradientUnits="userSpaceOnUse" x1="-807.9343" y1="442.2752" x2="-807.9343" y2="442.2694" gradientTransform="matrix(405.3541 0 0 -180.2412 327526.9688 79739.0234)">
 		<stop  offset="0" style="stop-color:#1D86CB"/>
 		<stop  offset="1" style="stop-color:#094275"/>
 	</linearGradient>
-	<linearGradient id="keynote-path-8_1_" gradientUnits="userSpaceOnUse" x1="-538.5994" y1="4.3747" x2="-538.5994" y2="4.4854" gradientTransform="matrix(404.7358 0 0 180.2412 218017.9688 -785.6387)">
+	<linearGradient id="keynote-path-8_1_" gradientUnits="userSpaceOnUse" x1="-807.9323" y1="442.3347" x2="-807.9323" y2="442.224" gradientTransform="matrix(404.7358 0 0 -180.2412 327026.625 79729.7891)">
 		<stop  offset="0" style="stop-color:#0299FB"/>
 		<stop  offset="1" style="stop-color:#6EDAFE"/>
 	</linearGradient>
-	<radialGradient id="keynote-path-11_2_" cx="-423.5069" cy="-4.2958" r="0.166" gradientTransform="matrix(3.395916e-16 5.5459 -84.8603 5.196131e-15 -337.0261 2369.6516)" gradientUnits="userSpaceOnUse">
+	<radialGradient id="keynote-path-11_2_" cx="-622.6437" cy="456.3672" r="0.166" gradientTransform="matrix(3.395916e-16 5.5459 84.8603 -5.196131e-15 -38699.9453 3474.0447)" gradientUnits="userSpaceOnUse">
 		<stop  offset="0" style="stop-color:#007AA8"/>
 		<stop  offset="1" style="stop-color:#004C87"/>
 	</radialGradient>
-	<radialGradient id="SVGID_2_" cx="-422.6093" cy="-4.2953" r="0.1659" gradientTransform="matrix(3.395874e-16 5.5459 -84.8593 5.196131e-15 -336.9787 2364.0542)" gradientUnits="userSpaceOnUse">
+	<radialGradient id="SVGID_2_" cx="-621.7462" cy="456.3668" r="0.1659" gradientTransform="matrix(3.395874e-16 5.5459 84.8593 -5.196131e-15 -38699.4492 3468.4473)" gradientUnits="userSpaceOnUse">
 		<stop  offset="0" style="stop-color:#A4E9FC"/>
 		<stop  offset="1" style="stop-color:#5DDDFD"/>
 	</radialGradient>
-	
-	<path id="foot" class="st0" d="M27.64,43.77c4.43,0,8.82,1.11,10.37,2.62c0.27,0.27,0.51,0.85,0.5,1.92
-		c-0.01,2.12-4.87,3.84-10.87,3.84s-10.87-1.72-10.87-3.84c0-0.73,0.12-1.78,1.13-2.36C19.81,44.84,23.71,43.77,27.64,43.77z"/>
-	<ellipse id="Oval-87_1_" class="st1" cx="27.7" cy="47.6" rx="10.87" ry="3.84"/>
-	<path class="st2" d="M29.34,47.55c0.01,0,0.02,0,0.02,0V21.51H26v25.93c0,0.01-0.01,0.03-0.01,0.05s0,0.03,0.01,0.05v0.02
-		c0,0,0,0,0.01,0c0.1,0.25,0.81,0.45,1.67,0.45C28.53,47.99,29.24,47.8,29.34,47.55z"/>
-	<path id="Leg-Reflection" class="st3" d="M29.23,51.44l0.16-4.05c0,0-0.32,0.2-0.68,0.32c-0.35,0.12-0.74,0.13-1.03,0.13
+	<path id="foot" class="st0" d="M27.64,45.77c4.43,0,8.82,1.11,10.37,2.62c0.27,0.27,0.51,0.85,0.5,1.92
+		c-0.01,2.12-4.87,3.84-10.87,3.84s-10.87-1.72-10.87-3.84c0-0.73,0.12-1.78,1.13-2.36C19.81,46.84,23.71,45.77,27.64,45.77z"/>
+	<ellipse id="Oval-87_1_" class="st1" cx="27.7" cy="49.6" rx="10.87" ry="3.84"/>
+	<path class="st2" d="M29.34,49.55c0.01,0,0.02,0,0.02,0V23.51H26v25.93c0,0.01-0.01,0.03-0.01,0.05s0,0.03,0.01,0.05v0.02
+		c0,0,0,0,0.01,0c0.1,0.25,0.81,0.45,1.67,0.45C28.53,49.99,29.24,49.8,29.34,49.55z"/>
+	<path id="Leg-Reflection" class="st3" d="M29.23,53.44l0.16-4.05c0,0-0.32,0.2-0.68,0.32c-0.35,0.12-0.74,0.13-1.03,0.13
 		c-0.24,0-0.64-0.03-0.97-0.13c-0.4-0.12-0.72-0.32-0.72-0.32l0.2,4.05H29.23z"/>
 	<g id="Table_1_" transform="translate(-0.000000, 0.000000)">
 		<path id="Table-Shadow" class="st4" d="M27.5,3.88h18.02c0.56,0,1.1,0.44,1.21,1c0,0,2.11,11.15,3.13,16.75
