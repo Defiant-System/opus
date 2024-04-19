@@ -31,7 +31,46 @@
 
 [data-ui="royale-purple"] {
 	.win-body-focused_.win-body_ layout {
-		
+		.sidebar-head {
+			border-bottom-color: #530e61bf;
+
+			span.active {
+				background: transparent;
+			}
+		}
+	}
+
+	.win-body_ layout {
+		sidebar {
+			.sidebar-head {
+				background: radial-gradient(ellipse at bottom center, #ff58e17d, transparent 70%),
+							radial-gradient(ellipse at top center, #f697ff59, transparent 75%),
+							linear-gradient(180deg, #73567b 0px, #534259 12px, #2b1c33 13px, #2f1c3b 24px);
+
+				span {
+					padding-top: 8px;
+					color: #e1b4ec9e;
+					border-right: 1px solid #f6b8ff12;
+
+					&.active {
+						color: #ecc9ff;
+					}
+				}
+			}
+
+			.container { // thumbs sidebar
+				background: radial-gradient(circle at top center, #89509988 0, transparent 90%);
+			}
+
+			.sidebar-body {
+				background: radial-gradient(circle at top center, #895099bb 0, transparent 90%);
+
+				.styles:after,
+				.group-row:not(:last-child):before {
+					opacity: .25;
+				}
+			}
+		}
 	}
 }
 
