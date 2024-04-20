@@ -31,7 +31,7 @@ class Tabs {
 		this._active.focusEl = el;
 	}
 
-	add(fItem) {
+	async add(fItem) {
 		// let file = fItem || new File();
 		let file = fItem || { base: "Blank" },
 			tId = "f"+ Date.now(),
@@ -46,6 +46,8 @@ class Tabs {
 			// add element to DOM + append file contents
 			bodyEl.attr({ "data-id": tId });
 			bodyEl = this._content.append(bodyEl);
+
+			await file.expand();
 
 			file.bodyEl = bodyEl;
 			// add first empty slide
@@ -135,7 +137,6 @@ class Tabs {
 					file.blob = blob;
 					if (blob.type === "application/xml") {
 						let reader = new FileReader();
-
 						reader.addEventListener("load", () => {
 							// this will then display a text file
 							file.data = $.xmlFromString(reader.result);
@@ -143,7 +144,6 @@ class Tabs {
 						}, false);
 
 						reader.readAsText(blob);
-
 					} else {
 						resolve(file);
 					}

@@ -3,9 +3,7 @@ class File {
 
 	constructor(fsFile, data) {
 		// save reference to original FS file
-		this._file = fsFile || new karaqu.File({ kind: "xml" });
-
-		// console.log( this._file );
+		this._file = fsFile || new karaqu.File({ kind: "opf" });
 	}
 
 	get base() {
@@ -14,6 +12,10 @@ class File {
 
 	get isDirty() {
 		
+	}
+
+	expand() {
+		this._file.unzip();
 	}
 
 	toBlob(kind) {
