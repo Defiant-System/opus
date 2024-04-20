@@ -39,21 +39,20 @@ class Tabs {
 			tabEl = this._spawn.tabs.add(tName, tId),
 			bodyEl = this._fileTemplate.clone(),
 			history = new window.History,
-			sidebar = false;
+			thumbs = false,
+			format = false;
 
 		if (fItem) {
 			// add element to DOM + append file contents
 			bodyEl.attr({ "data-id": tId });
 			bodyEl = this._content.append(bodyEl);
 
-			if (file._file) file.bodyEl = bodyEl;
-			else {
-				// add first empty slide
-				bodyEl.append(this._slideTemplate.clone(true));
-			}
+			file.bodyEl = bodyEl;
+			// add first empty slide
+			bodyEl.append(this._slideTemplate.clone(true));
 
 			// save reference to tab
-			this._stack[tId] = { tId, tabEl, bodyEl, history, file, sidebar };
+			this._stack[tId] = { tId, tabEl, bodyEl, history, file, thumbs, format };
 			// focus on file
 			this.focus(tId);
 		} else {
@@ -67,13 +66,13 @@ class Tabs {
 		let tId = ref.tId,
 			file = ref.file,
 			history = ref.history,
-			sidebar = ref.sidebar,
+			format = ref.format,
 			bodyEl = ref.bodyEl.clone(true).addClass("hidden"),
 			tabEl = this._spawn.tabs.add(file.base, tId, true);
 		// clone & append original bodyEl
 		bodyEl = this._content.append(bodyEl);
 		// save reference to this spawns stack
-		this._stack[tId] = { tId, tabEl, bodyEl, history, file, sidebar };
+		this._stack[tId] = { tId, tabEl, bodyEl, history, file, thumbs, format };
 	}
 
 	removeDelayed() {
@@ -98,19 +97,16 @@ class Tabs {
 		}
 		// reference to active tab
 		this._active = this._stack[tId];
-		// UI update
-		this.update();
-		// toggle sidebar
-		this._parent.format.dispatch({
-			type: "toggle-format",
-			isOn: !this._active.sidebar,
-		});
 
 		if (this._active.file._file) {
 			// hide blank view
 			this._parent.blankView.dispatch({ type: "hide-blank-view", spawn });
 			// enable toolbar
 			this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: true });
+			// toggle thumbs
+			this._parent.thumbs.dispatch({ type: "toggle-thumbs", spawn, isOn: this._active.thumbs });
+			// toggle format
+			this._parent.format.dispatch({ type: "toggle-format", spawn, isOn: this._active.format });
 		} else {
 			setTimeout(() => {
 				// show blank view

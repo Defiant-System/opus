@@ -49,7 +49,17 @@
 				break;
 			// custom events
 			case "toggle-format":
-				value = event.isOn;
+				if (event.target) {
+					el = $(event.target);
+					value = el.hasClass("tool-active_");
+				} else {
+					el = Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`);
+					value = !event.isOn;
+					el[value ? "removeClass" : "addClass"]("tool-active_");
+				}
+				// toggle app content
+				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-sidebar-format");
+				// return "state"
 				return !value;
 			case "select-tab":
 				event.el.find(".active").removeClass("active");
