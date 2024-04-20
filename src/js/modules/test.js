@@ -5,7 +5,7 @@ let Test = {
 		// return;
 		setTimeout(() => Spawn.find(`.blank-view .btn[data-click="new-file"]`).trigger("click"), 300);
 		
-		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-thumbs"]`).trigger("click"), 500);
+		// setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-thumbs"]`).trigger("click"), 500);
 		// setTimeout(() => APP.spawn.thumbs.dispatch({ type: "toggle-thumbs", spawn: Spawn, isOn: false }), 1400);
 
 		// setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`).trigger("click"), 500);

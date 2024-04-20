@@ -5,7 +5,7 @@ class Tabs {
 		this._spawn = spawn;
 		this._stack = {};
 		this._active = null;
-		this._content = spawn.find(".slides-wrapper");
+		this._content = spawn.find(".files-wrapper");
 
 		// file template
 		let template = this._content.find(`.file-template`);

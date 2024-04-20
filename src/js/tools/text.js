@@ -89,8 +89,10 @@
 					sel = document.getSelection();
 					sel.removeAllRanges();
 				}
-				// sidebar; notify event to sidebar
-				APP.spawn.format[APP.spawn.format.active].dispatch(event);
+				if (APP.spawn.format.active) {
+					// sidebar; notify event to sidebar
+					APP.spawn.format[APP.spawn.format.active].dispatch(event);
+				}
 				break;
 			case "query-command-state":
 				// do command state in "next tick"

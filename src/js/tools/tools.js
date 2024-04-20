@@ -5,7 +5,7 @@
 	init() {
 		// default tools
 		this.active = "sheet";
-		this.types = ["shape", "line", "image", "text"];
+		this.types = ["file", "shape", "line", "image", "text"];
 		this.shapeTypes = ["circle", "ellipse", "rect", "polygon", "polyline", "path", "line", "bezier", "image"];
 		
 		// init all sub-objects
@@ -239,9 +239,9 @@
 						// set file focus on element - used when switching between tabs
 						Spawn.data.tabs.setFocusElement(el);
 						// reference of active tool
-						Self.active = "sheet";
+						Self.active = "file";
 						// update sidebar
-						APP.spawn.format.dispatch({ type: "show-sheet", spawn: Spawn });
+						APP.spawn.format.dispatch({ type: "show-file", spawn: Spawn, el });
 						// blur XL element, if any
 						Self.dispatch({ type: "blur-focused", spawn: Spawn });
 				}

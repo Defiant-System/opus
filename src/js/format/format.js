@@ -114,6 +114,7 @@
 			case "mouseup": break;
 		}
 	},
+	file: @import "./file.js",
 	shape: @import "./shape.js",
 	image: @import "./image.js",
 	text: @import "./text.js",
