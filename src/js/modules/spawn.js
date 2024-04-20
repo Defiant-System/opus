@@ -67,7 +67,12 @@
 				};
 				break;
 			case "load-samples":
-				// console.log(event);
+				event.samples.map(async path => {
+					let fItem = await Spawn.data.tabs.openLocal(`~/sample/${path}`),
+						file = new File(fItem, data);
+					// auto add first base "tab"
+					Self.dispatch({ ...event, file, type: "tab.new" });
+				});
 				break;
 
 			// tab related events
