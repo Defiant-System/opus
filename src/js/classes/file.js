@@ -6,19 +6,15 @@ class File {
 		this._file = fsFile || new karaqu.File({ kind: "xml" });
 	}
 
-	toBlob(kind) {
-		
+	get base() {
+		return this._file.base;
 	}
 
 	get isDirty() {
 		
 	}
 
-	undo() {
-		
-	}
-
-	redo() {
+	toBlob(kind) {
 		
 	}
 

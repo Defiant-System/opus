@@ -4,6 +4,56 @@
 		<Menu type="divider"/>
 		<Menu name="Quit Opus" shell="win -c"/>
 	</Menu>
+	<Menu name="File">
+		<Menu name="New" click="new-spawn" hotkey="alt+n"/>
+		<Menu name="Open&#8230;" click="open-file" hotkey="alt+o"/>
+		<Menu type="divider"/>
+		<Menu name="Save" click="save-file" hotkey="alt+s"/>
+		<Menu name="Save as&#8230;" hotkey="alt+shift+s" click="save-file-as"/>
+		<Menu type="divider"/>
+		<Menu name="Export as PDF"/>
+		<Menu type="divider"/>
+		<Menu name="Close File" click="close-file"/>
+	</Menu>
+	<Menu name="Edit">
+		<Menu name="Undo" click="history-undo" hotkey="meta+z"/>
+		<Menu name="Redo" click="history-redo" hotkey="meta+shift+z"/>
+		<Menu type="divider"/>
+		<Menu name="Cut"/>
+		<Menu name="Copy"/>
+		<Menu name="Paste"/>
+		<Menu name="Select All" click="select-all" arg="selectAll" hotkey="meta+a"/>
+	</Menu>
+	<Menu name="View">
+		<Menu name="Zoom In"/>
+		<Menu name="Zoom Out"/>
+		<Menu name="Zoom&#8230;" for="view-zoom">
+			<Menu name="75%" click="set-document-zoom" arg="75"/>
+			<Menu name="100%" click="set-document-zoom" arg="100"/>
+			<Menu name="125%" click="set-document-zoom" arg="125"/>
+			<Menu name="150%" click="set-document-zoom" arg="150"/>
+			<Menu name="200%" click="set-document-zoom" arg="200"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Smart Guides">
+			<Menu name="Enable" check-group="smart-guides-enable" is-checked="1"/>
+			<Menu type="divider"/>
+			<Menu type="caption" name="Snap Sensitivity"/>
+			<Menu type="slider" min="3" max="20" value="7" change="set-guides-sensitivity"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Hide Toolbar"/>
+	</Menu>
+	<Menu name="Window">
+		<Menu name="New Window" click="new-spawn" hotkey="alt+n"/>
+		<Menu name="New Tab" click="tab.new" hotkey="alt+t"/>
+		<Menu name="Merge All Windows" click="merge-all-windows" hotkey="alt+c"/>
+		<Menu type="divider"/>
+		<Menu name="Minimize" shell="win -s min"/>
+		<Menu name="Maximize" shell="win -s max"/>
+		<Menu type="divider"/>
+		<Menu name="Close Window" click="close-spawn" hotkey="alt+w"/>
+	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>
 		<Menu type="divider"/>
