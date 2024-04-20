@@ -44,6 +44,7 @@
 				// DEV-ONLY-END
 				break;
 			case "spawn.init":
+				// makes sure "tab.new" comes after "spawn.focus"
 				Self.dispatch({ ...event, type: "tab.new" });
 				break;
 			case "spawn.blur":
@@ -81,12 +82,61 @@
 			case "tab.close":
 				Spawn.data.tabs.remove(event.el.data("id"));
 				break;
-				
-			// custom events
+			
+			// from menubar
+			case "new-spawn":
+				APP.dispatch({ type: "new", id: "spawn" });
+				break;
+			case "merge-all-windows":
+				Spawn.siblings.map(oSpawn => {
+					for (let key in oSpawn.data.tabs._stack) {
+						let ref = oSpawn.data.tabs._stack[key];
+						Spawn.data.tabs.merge(ref);
+					}
+					// close sibling spawn
+					oSpawn.close();
+				});
+				break;
+			case "new-file":
+				Self.dispatch({ type: "close-tab", spawn: Spawn, delayed: true });
+				Self.dispatch({ type: "tab.new", spawn: Spawn, file: new File() });
+				break;
+			case "open-file":
+				let fsHandler = fsItem => {
+						Self.dispatch({ type: "close-tab", spawn: Spawn, delayed: true });
+						Self.dispatch(fsItem);
+					};
+				Spawn.dialog.open({
+					odp: fsHandler,
+					xml: fsHandler,
+				});
+				break;
+			case "save-file":
+				console.log("todo");
+				break;
+			case "save-file-as":
+				file = Files.activeFile;
+				// pass on available file types
+				window.dialog.saveAs(file._file, {
+					odp: () => file.toBlob("odp"),
+					xml: () => file.toBlob("xml"),
+				});
+				break;
+			case "close-tab":
+				value = Spawn.data.tabs.length;
+				if (event.delayed) {
+					Spawn.data.tabs.removeDelayed();
+				} else if (value > 1) {
+					Spawn.data.tabs._active.tabEl.find(`[sys-click]`).trigger("click");
+				} else if (value === 1) {
+					Self.dispatch({ ...event, type: "close-spawn" });
+				}
+				break;
 			case "close-spawn":
 				// system close window / spawn
 				karaqu.shell("win -c");
 				break;
+			// custom events
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");
 				break;

@@ -20,6 +20,8 @@
 			case "spawn.focus":
 				// fast references
 				Self.els = {
+					toolZoom: Spawn.find(`.toolbar-selectbox_[data-menu="view-zoom"]`),
+					toolPlay: Spawn.find(`.toolbar-tool_[data-click="play-slides"]`),
 					toolSlide: Spawn.find(`.toolbar-tool_[data-arg="slide"]`),
 					toolGrid: Spawn.find(`.toolbar-tool_[data-arg="grid"]`),
 					toolChart: Spawn.find(`.toolbar-tool_[data-arg="chart"]`),

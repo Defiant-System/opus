@@ -34,6 +34,16 @@
 						target: el,
 					});
 				}
+				// show blank view
+				Self.dispatch({ ...event, type: "show-blank-view" });
+				break;
+			case "show-blank-view":
+				// hide blank view
+				Spawn.el.find("layout").addClass("show-blank-view");
+				break;
+			case "hide-blank-view":
+				// hide blank view
+				Spawn.el.find("layout").removeClass("show-blank-view");
 				break;
 			case "new-file":
 				APP.dispatch({ ...event, type: "new-file" });

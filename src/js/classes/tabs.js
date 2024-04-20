@@ -41,20 +41,26 @@ class Tabs {
 			history = new window.History,
 			sidebar = false;
 
-		// add element to DOM + append file contents
-		bodyEl.attr({ "data-id": tId });
-		bodyEl = this._content.append(bodyEl);
+		if (fItem) {
+			// add element to DOM + append file contents
+			bodyEl.attr({ "data-id": tId });
+			bodyEl = this._content.append(bodyEl);
 
-		if (file._file) file.bodyEl = bodyEl;
-		else {
-			// add first empty slide
-			bodyEl.append(this._slideTemplate.clone(true));
+			if (file._file) file.bodyEl = bodyEl;
+			else {
+				// add first empty slide
+				bodyEl.append(this._slideTemplate.clone(true));
+			}
+
+			// save reference to tab
+			this._stack[tId] = { tId, tabEl, bodyEl, history, file, sidebar };
+			// focus on file
+			this.focus(tId);
+		} else {
+			this._stack[tId] = { tId, tabEl, file };
+			// focus on file
+			this.focus(tId);
 		}
-
-		// save reference to tab
-		this._stack[tId] = { tId, tabEl, bodyEl, history, file, sidebar };
-		// focus on file
-		this.focus(tId);
 	}
 
 	merge(ref) {
@@ -86,7 +92,7 @@ class Tabs {
 	focus(tId) {
 		let spawn = this._spawn,
 			active = this._active;
-		if (active) {
+		if (active && active.bodyEl) {
 			// hide blurred body
 			active.bodyEl.addClass("hidden");
 		}
@@ -102,13 +108,13 @@ class Tabs {
 
 		if (this._active.file._file) {
 			// hide blank view
-			this._parent.els.layout.removeClass("show-blank-view");
+			this._parent.blankView.dispatch({ type: "hide-blank-view", spawn });
 			// enable toolbar
 			this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: true });
 		} else {
 			setTimeout(() => {
 				// show blank view
-				this._parent.els.layout.addClass("show-blank-view");
+				this._parent.blankView.dispatch({ type: "show-blank-view", spawn });
 				// disable toolbar
 				this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: null });
 			}, 10);
