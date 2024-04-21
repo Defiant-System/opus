@@ -14,8 +14,9 @@ class File {
 		
 	}
 
-	expand() {
-		this._file.unzip();
+	async expand() {
+		let files = await this._file.unzip();
+		return files;
 	}
 
 	toBlob(kind) {

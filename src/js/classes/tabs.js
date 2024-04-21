@@ -47,11 +47,20 @@ class Tabs {
 			bodyEl.attr({ "data-id": tId });
 			bodyEl = this._content.append(bodyEl);
 
-			await file.expand();
-
 			file.bodyEl = bodyEl;
 			// add first empty slide
 			bodyEl.append(this._slideTemplate.clone(true));
+
+
+			// temp
+			let vfs = await file.expand(),
+				str = bodyEl.html();
+			Object.keys(vfs).map(key => {
+				let rx = new RegExp(key, "g");
+				str = str.replace(rx, vfs[key]);
+			});
+			bodyEl.html(str);
+
 
 			// save reference to tab
 			this._stack[tId] = { tId, tabEl, bodyEl, history, file, thumbs, format };
