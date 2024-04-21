@@ -48,19 +48,13 @@ class Tabs {
 			bodyEl = this._content.append(bodyEl);
 
 			file.bodyEl = bodyEl;
-			// add first empty slide
-			bodyEl.append(this._slideTemplate.clone(true));
-
-
-			// temp
-			let vfs = await file.expand(),
-				str = bodyEl.html();
-			Object.keys(vfs).map(key => {
-				let rx = new RegExp(key, "g");
-				str = str.replace(rx, vfs[key]);
-			});
-			bodyEl.html(str);
-
+			if (file._body) {
+				// append file content
+				bodyEl.append(file._body);
+			} else {
+				// add first empty slide
+				bodyEl.append(this._slideTemplate.clone(true));	
+			}
 
 			// save reference to tab
 			this._stack[tId] = { tId, tabEl, bodyEl, history, file, thumbs, format };

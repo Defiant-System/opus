@@ -4,6 +4,24 @@ class File {
 	constructor(fsFile, data) {
 		// save reference to original FS file
 		this._file = fsFile || new karaqu.File({ kind: "opf" });
+
+		let xDoc = this._file.data ? this._file.data.documentElement : null;
+
+		switch (this._file.kind) {
+			case "xml":
+				// parse file "head"
+				this._head = {};
+				xDoc.selectNodes(`//head/meta[@name][@value]`).map(xMeta => {
+					let value = xMeta.getAttribute("value");
+					if ("true false".split(" ").includes(value)) value = value === "true";
+					this._head[xMeta.getAttribute("name")] = value;
+				});
+				// parse file "body"
+				this._body = xDoc.selectSingleNode(`//body`).textContent;
+				break;
+			case "opf":
+				break;
+		}
 	}
 
 	get base() {
@@ -16,6 +34,15 @@ class File {
 
 	async expand() {
 		let files = await this._file.unzip();
+
+		// temp
+		// let vfs = await file.expand(),
+		// 	str = bodyEl.html();
+		// Object.keys(vfs).map(key => {
+		// 	let rx = new RegExp(key, "g");
+		// 	str = str.replace(rx, vfs[key]);
+		// });
+		
 		return files;
 	}
 

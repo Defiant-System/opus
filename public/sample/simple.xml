@@ -1,10 +1,10 @@
 <data>
 	<head>
-		<meta id="controls" value="true"/>
-		<meta id="progress" value="true"/>
-		<meta id="history" value="true"/>
-		<meta id="center" value="true"/>
-		<meta id="transition" value="slide"/>
+		<meta name="controls" value="true"/>
+		<meta name="progress" value="true"/>
+		<meta name="history" value="true"/>
+		<meta name="center" value="true"/>
+		<meta name="transition" value="slide"/>
 	</head>
 	<body><![CDATA[
 	<div class="slides">
@@ -18,7 +18,7 @@
 			</p>
 		</section>
 
-		<section>
+		<!-- <section>
 			<p> RevealEditor is an text editor built for HTML presentation platform <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
 		</section>
 
@@ -68,7 +68,7 @@ body {
 }
 					</code></pre>
 			</section>
-		</section>
+		</section> -->
 	</div>
 ]]></body>
 </data>
