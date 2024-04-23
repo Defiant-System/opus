@@ -1,4 +1,6 @@
 
+@slideAnim: 800ms;
+
 .file-slides {
 	&.show-controls .player-helpers .progress { display: block; }
 	&.show-progress .player-helpers aside.controls { display: block; }
@@ -36,6 +38,10 @@
 		padding: 21px 0;
 		min-height: 0;
 		transform-style: preserve-3d;
+		transition: transform-origin @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985),
+					transform @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985),
+					visibility @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985),
+					opacity @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
 		&.present {
 			display: block;
