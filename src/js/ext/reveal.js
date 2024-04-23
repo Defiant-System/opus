@@ -403,10 +403,7 @@ let Reveal = (() => {
 
 				element.removeClass("past present future");
 				// http://www.w3.org/html/wg/drafts/html/master/editing.html#the-hidden-attribute
-				element.attr({
-					"hidden": "",
-					"aria-hidden": "true",
-				});
+				element.attr({ "aria-hidden": "true" });
 
 				// If this element contains vertical slides
 				if (element.find("section").length) {
@@ -425,7 +422,6 @@ let Reveal = (() => {
 			// Mark the current slide as present
 			slides.get(index)
 				.addClass("preset")
-				.removeAttr("hidden")
 				.removeAttr("aria-hidden");
 
 			// If this slide has a state associated with it, add it

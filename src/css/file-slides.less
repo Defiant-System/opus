@@ -29,7 +29,7 @@
 	}
 
 	section {
-		display: none;
+		// display: none;
 		position: absolute;
 		// top: 0;
 		// left: 0;
@@ -37,6 +37,7 @@
 		width: 100%;
 		padding: 21px 0;
 		min-height: 0;
+		opacity: 0;
 		transform-style: preserve-3d;
 		transition: transform-origin @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985),
 					transform @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985),
@@ -44,7 +45,17 @@
 					opacity @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
 		&.present {
-			display: block;
+			transform: translate(0, 0);
+			// display: block;
+			opacity: 1;
+		}
+
+		&.past {
+			transform: translate(-150%, 0);
+		}
+
+		&.future {
+			transform: translate(150%, 0);
 		}
 
 		> div {
