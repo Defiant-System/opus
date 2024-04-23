@@ -114,9 +114,10 @@ let Reveal = (() => {
 	 * Starts up the presentation if the client is capable.
 	 */
 	function initialize(options) {
-		dom.file = options.spawn.find(`.file-slides`);
-		dom.wrapper = dom.file.find(`.slides`);
-		
+		dom.file = options.spawn.find(".file-slides");
+		dom.wrapper = dom.file.find(".slides");
+		dom.progressbar = dom.wrapper.prepend(options.spawn.find(".player-helpers").clone(true));
+
 		// Copy options over to our config object
 		options = { ...config, ...options };
 
@@ -141,7 +142,7 @@ let Reveal = (() => {
 		dom.file[ config.progress ? "addClass" : "removeClass" ]("show-progress");
 		dom.file[ config.progress ? "addClass" : "removeClass" ]("vertical-center");
 
-		slide(0, 0);
+		setTimeout(() => slide(0, 0), 500);
 	}
 
 	/**
@@ -162,10 +163,10 @@ let Reveal = (() => {
 		// Query all horizontal slides in the deck
 		let horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
 
-		layout();
-
+		// make first slide active
 		horizontalSlides.get(h).addClass("present");
 
+		layout();
 	}
 
 	/**
@@ -196,7 +197,7 @@ let Reveal = (() => {
 		// Prefer zoom for scaling up so that content remains crisp.
 		// Don't use zoom to scale down since that can lead to shifts
 		// in text layout/line breaks.
-		if( scale < 1 ) {
+		if (scale < 1 ) {
 			left = "50%";
 			top = "50%";
 			bottom = "auto";
@@ -208,8 +209,19 @@ let Reveal = (() => {
 
 		// Select all slides, vertical and horizontal
 		dom.wrapper.find(SLIDES_SELECTOR).map(el => {
-			let slide = $(el);
+			let slide = $(el),
+				top = "";
+			if (!slide.is(":visible")) return;
+			
+			if (config.center || slide.hasClass("center")) {
+				// Vertical stacks are not centred since their section
+				// children will be
+				top = slide.hasClass("stack") ? 0 : Math.max(((size.height - getAbsoluteHeight(slide)) / 2) - slidePadding, 0);
+			}
+			slide.css({ top });
 		});
+
+		updateProgress();
 	}
 
 	/**
@@ -218,7 +230,7 @@ let Reveal = (() => {
 	 */
 	function layoutSlideContents(width, height, padding) {
 		// Handle sizing of elements with the 'stretch' class
-		dom.wrapper.find(`section > .stretch`).map(element => {
+		dom.wrapper.find("section > .stretch").map(element => {
 			// Determine how much vertical space we can use
 			let remainingHeight = getRemainingHeight(element, height);
 			// Consider the aspect ratio of media elements
@@ -254,6 +266,33 @@ let Reveal = (() => {
 	}
 
 	/**
+	 * Retrieves the height of the given element by looking
+	 * at the position and height of its immediate children.
+	 */
+	function getAbsoluteHeight(el) {
+		let height = 0;
+		if (el.length) {
+			let absoluteChildren = 0;
+			el.find("> *").map(child => {
+				let cEl = $(child),
+					offset = cEl.offset();
+				if (typeof offset.top === "number") {
+					// Count # of abs children
+					if (cEl.cssProp("position") === "absolute") {
+						absoluteChildren += 1;
+					}
+					height = Math.max(height, offset.top + offset.height);
+				}
+			});
+			// If there are no absolute children, use offsetHeight
+			if (absoluteChildren === 0 ) {
+				height = el.offset().height;
+			}
+		}
+		return height;
+	}
+
+	/**
 	 * Returns the remaining height within the parent of the
 	 * target element.
 	 *
@@ -268,14 +307,84 @@ let Reveal = (() => {
 			// the other elements
 			element.style.height = "0px";
 			newHeight = height - element.parentNode.offsetHeight;
-
 			// Restore the old height, just in case
 			element.style.height = `${oldHeight}px`;
 			return newHeight;
 		}
-
 		return height;
+	}
 
+	/**
+	 * Retrieves the total number of slides in this presentation.
+	 */
+	function getTotalSlides() {
+		return dom.wrapper.find(`${SLIDES_SELECTOR}:not(.stack)`).length;
+	}
+
+	/**
+	 * Returns the number of past slides. This can be used as a global
+	 * flattened index for slides.
+	 */
+	function getSlidePastCount() {
+		let horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
+		// The number of past slides
+		let pastCount = 0;
+		// Step through all slides and count the past ones
+		mainLoop: for(let i=0; i<horizontalSlides.length; i++) {
+			let horizontalSlide = horizontalSlides.get(i);
+			let verticalSlides = horizontalSlide.find("section");
+			for(let j=0; j<verticalSlides.length; j++) {
+				// Stop as soon as we arrive at the present
+				if (verticalSlides.get(j).hasClass("present")) {
+					break mainLoop;
+				}
+				pastCount++;
+			}
+			// Stop as soon as we arrive at the present
+			if (horizontalSlide.hasClass("present")) {
+				break;
+			}
+			// Don't count the wrapping section for vertical slides
+			if (!horizontalSlide.hasClass("stack")) {
+				pastCount++;
+			}
+		}
+		return pastCount;
+	}
+
+	/**
+	 * Returns a value ranging from 0-1 that represents
+	 * how far into the presentation we have navigated.
+	 */
+	function getProgress() {
+		// The number of past and total slides
+		let totalCount = getTotalSlides();
+		let pastCount = getSlidePastCount();
+		if (currentSlide) {
+			let allFragments = currentSlide.querySelectorAll(".fragment");
+			// If there are fragments in the current slide those should be
+			// accounted for in the progress.
+			if (allFragments.length > 0) {
+				let visibleFragments = currentSlide.querySelectorAll(".fragment.visible");
+				// This value represents how big a portion of the slide progress
+				// that is made up by its fragments (0-1)
+				let fragmentWeight = 0.9;
+				// Add fragment progress to the past slide count
+				pastCount += (visibleFragments.length / allFragments.length) * fragmentWeight;
+			}
+		}
+		return pastCount / (totalCount - 1);
+	}
+
+	/**
+	 * Updates the progress bar to reflect the current slide.
+	 */
+	function updateProgress() {
+		// Update progress if enabled
+		if (config.progress && dom.progressbar) {
+			let width = getProgress() * dom.wrapper.offsetWidth;
+			dom.progressbar.css({ width });
+		}
 	}
 
 

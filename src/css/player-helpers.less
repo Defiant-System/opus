@@ -17,6 +17,8 @@
 		right: 0;
 		height: 17px;
 		text-align: center;
+		color: #ffffffaa;
+		text-shadow: 0 1px 0 rgba(#000,.2);
 	}
 
 	.progress {
@@ -25,6 +27,8 @@
 		left: 0;
 		right: 0;
 		height: 4px;
+		overflow: hidden;
+		border-radius: 0 0 4px 4px;
 		background: rgba(#000,.2);
 
 		span {
@@ -47,10 +51,15 @@
 			position: absolute;
 			width: 0;
 			height: 0;
-			opacity: .7;
+			opacity: .5;
 			cursor: pointer;
 			pointer-events: all;
+			filter: drop-shadow(0 0 1px rgba(#000,.35));
 			border: 12px solid transparent;
+
+			&:hover:not(.disabled_) {
+				opacity: 1;
+			}
 
 			&.disabled_ {
 				opacity: .15;

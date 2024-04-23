@@ -13,23 +13,27 @@
 		margin: auto;
 		text-align: center;
 		perspective: 600px;
-	}
-
-	section {
-		display: none;
-		position: absolute;
-		top: 29px;
-		left: 29px;
-		width: calc( 100% - 58px );
-		height: calc( 100% - 58px );
-		padding: 21px 21px;
-		background: #81b7ee linear-gradient(180deg, #baf0ff, #5ec6f4);
+		background: linear-gradient(180deg, #ffe6ba, #e89d52);
 		color: #fff;
 		font-family: "Source Sans Pro", sans-serif;
 		line-height: 1.35;
 		border-radius: 4px;
 		box-shadow: 0 0 3px rgba(#000,.1),
 					0 1px 7px rgba(#000,.2);
+
+		.player-helpers {
+			display: block;
+		}
+	}
+
+	section {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding: 21px 21px;
 		transform-style: preserve-3d;
 
 		&.present {
