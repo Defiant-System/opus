@@ -1,4 +1,7 @@
 
+@import "./ext/reveal.js"
+@import "./ext/zoom.js"
+
 @import "./classes/file.js"
 @import "./classes/tabs.js"
 @import "./modules/test.js"

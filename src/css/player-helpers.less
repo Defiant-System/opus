@@ -1,0 +1,89 @@
+
+.player-helpers {
+	// background: rgba(#f00,.15);
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 99;
+	pointer-events: none;
+
+	.slide-number {
+		position: absolute;
+		bottom: 5px;
+		left: 0;
+		right: 0;
+		height: 17px;
+		text-align: center;
+	}
+
+	.progress {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: rgba(#000,.2);
+
+		span {
+			display: block;
+			height: 100%;
+			background: #42affa;
+		}
+	}
+
+	.controls {
+		// background: rgba(#fff,.1);
+		position: absolute;
+		right: 11px;
+		bottom: 11px;
+		width: 105px;
+		height: 105px;
+		border-radius: 50%;
+
+		span {
+			position: absolute;
+			width: 0;
+			height: 0;
+			opacity: .7;
+			cursor: pointer;
+			pointer-events: all;
+			border: 12px solid transparent;
+
+			&.disabled_ {
+				opacity: .15;
+				cursor: default;
+			}
+		}
+
+		.nav-left {
+			top: 41px;
+			left: 0;
+			border-right-color: #42affa;
+			border-right-width: 22px;
+		}
+
+		.nav-right {
+			top: 41px;
+			left: 73px;
+			border-left-color: #42affa;
+			border-left-width: 22px;
+		}
+
+		.nav-up {
+			top: 0;
+			left: 41px;
+			border-bottom-color: #42affa;
+			border-bottom-width: 22px;
+		}
+
+		.nav-down {
+			top: 73px;
+			left: 41px;
+			border-top-color: #42affa;
+			border-top-width: 22px;
+		}
+	}
+}

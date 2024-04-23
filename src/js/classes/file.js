@@ -24,6 +24,26 @@ class File {
 		}
 	}
 
+	dispatch(event) {
+		let APP = opus,
+			spawn = event.spawn,
+			name,
+			value;
+		// console.log(event);
+		switch (event.type) {
+			case "init":
+				Reveal.initialize({
+					controls: true,
+					progress: true,
+					history: true,
+					center: true,
+					transition: "slide", //  none/fade/slide/convex/concave/zoom
+					spawn,
+				});
+				break;
+		}
+	}
+
 	get base() {
 		return this._file.base;
 	}

@@ -1,9 +1,9 @@
 
-/* Rewrite of "zoom.js" by Hakim El Hattab
- * http://lab.hakim.se/zoom-js
+/* Heavy rewrite of "zoom.js" by Hakim El Hattab
+ * https://github.com/hakimel/zoom.js
  */
 
-let Zoom = () => {
+let Zoom = (() => {
 
 	// The current zoom level (scale)
 	let level = 1;
@@ -14,4 +14,4 @@ let Zoom = () => {
 	let panEngageTimeout = -1,
 		panUpdateInterval = -1;
 	
-}();
+})();
