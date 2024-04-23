@@ -152,6 +152,9 @@
 					pEl = el.data("area") ? el : el.parents("[data-area]");
 					name = pEl.data("area");
 					if (pEl.length) {
+						if (name === "file") {
+							return Spawn.data.tabs._active.file.dispatch(event);
+						}
 						if (Self[name] && Self[name].dispatch) {
 							return Self[name].dispatch(event);
 						}

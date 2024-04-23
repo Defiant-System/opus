@@ -156,12 +156,16 @@ let Reveal = (() => {
 	 * target slide to activate
 	 * @param {int} o Optional origin for use in multimaster environments
 	 */
-	function slide( h, v, f, o ) {
+	function slide(h, v, f, o) {
 		// Remember where we were at before
 		previousSlide = currentSlide;
 
 		// Query all horizontal slides in the deck
 		let horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
+
+		// Activate and transition to the new slide
+		indexh = updateSlides(HORIZONTAL_SLIDES_SELECTOR, h === undefined ? indexh : h);
+		indexv = updateSlides(VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v);
 
 		// make first slide active
 		horizontalSlides.get(h).addClass("present");
@@ -197,7 +201,7 @@ let Reveal = (() => {
 		// Prefer zoom for scaling up so that content remains crisp.
 		// Don't use zoom to scale down since that can lead to shifts
 		// in text layout/line breaks.
-		if (scale < 1 ) {
+		if (scale < 1) {
 			left = "50%";
 			top = "50%";
 			bottom = "auto";
@@ -285,7 +289,7 @@ let Reveal = (() => {
 				}
 			});
 			// If there are no absolute children, use offsetHeight
-			if (absoluteChildren === 0 ) {
+			if (absoluteChildren === 0) {
 				height = el.offset().height;
 			}
 		}
@@ -353,6 +357,74 @@ let Reveal = (() => {
 	}
 
 	/**
+	 * Updates one dimension of slides by showing the slide
+	 * with the specified index.
+	 *
+	 * @param {String} selector A CSS selector that will fetch
+	 * the group of slides we are working with
+	 * @param {Number} index The index of the slide that should be
+	 * shown
+	 *
+	 * @return {Number} The index of the slide that is now shown,
+	 * might differ from the passed in index if it was out of
+	 * bounds.
+	 */
+	function updateSlides(selector, index) {
+		// Select all slides and convert the NodeList result to
+		// an array
+		let slides = dom.wrapper.find(selector),
+			slidesLength = slides.length;
+
+		if (slidesLength) {
+			// Enforce max and minimum index bounds
+			index = Math.max(Math.min(index, slidesLength - 1), 0);
+
+			for (let i=0; i<slidesLength; i++) {
+				let element = slides.get(i);
+				let reverse = !isVerticalSlide( element);
+
+				element.removeClass("past present future");
+				// http://www.w3.org/html/wg/drafts/html/master/editing.html#the-hidden-attribute
+				element.attr({
+					"hidden": "",
+					"aria-hidden": "true",
+				});
+
+				// If this element contains vertical slides
+				if (element.find("section").length) {
+					element.addClass("stack");
+				}
+
+				if (i < index) {
+					// Any element previous to index is given the "past" class
+					element.addClass(reverse ? "future" : "past");
+				} else if (i > index) {
+					// Any element subsequent to index is given the "future" class
+					element.addClass(reverse ? "past" : "future");
+				}
+			}
+
+			// Mark the current slide as present
+			slides.get(index)
+				.addClass("preset")
+				.removeAttr("hidden")
+				.removeAttr("aria-hidden");
+
+			// If this slide has a state associated with it, add it
+			// onto the current state of the deck
+			let slideState = slides.get(index).data("state");
+			if (slideState) {
+				state = state.concat(slideState.split(" "));
+			}
+		} else {
+			// Since there are no slides we can't be anywhere beyond the
+			// zeroth index
+			index = 0;
+		}
+		return index;
+	}
+
+	/**
 	 * Returns a value ranging from 0-1 that represents
 	 * how far into the presentation we have navigated.
 	 */
@@ -387,6 +459,35 @@ let Reveal = (() => {
 		}
 	}
 
+	/**
+	 * Checks if the current or specified slide is vertical
+	 * (nested within another slide).
+	 *
+	 * @param {HTMLElement} slide [optional] The slide to check
+	 * orientation of
+	 */
+	function isVerticalSlide(slide) {
+		// Prefer slide argument, otherwise use current slide
+		slide = slide.length ? slide : currentSlide;
+		return slide && slide.parent() &&  slide.parent().nodeName() !== "section";
+	}
+
+	function navigateLeft() {
+		slide(indexh - 1);
+	}
+
+	function navigateRight() {
+		slide(indexh + 1);
+	}
+
+	function navigateUp() {
+		slide(indexh, indexv - 1);
+	}
+
+	function navigateDown() {
+		slide(indexh, indexv + 1);
+	}
+
 
 	/*
 	 * API
@@ -395,6 +496,11 @@ let Reveal = (() => {
 	let Reveal = {
 		VERSION,
 		initialize,
+
+		navigateLeft,
+		navigateRight,
+		navigateUp,
+		navigateDown,
 	};
 
 	return Reveal;

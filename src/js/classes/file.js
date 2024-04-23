@@ -44,6 +44,10 @@ class File {
 				break;
 			case "blur-file":
 				break;
+			case "nav-left": Reveal.navigateLeft(); break;
+			case "nav-right": Reveal.navigateRight(); break;
+			case "nav-up": Reveal.navigateUp(); break;
+			case "nav-down": Reveal.navigateDown(); break;
 		}
 	}
 

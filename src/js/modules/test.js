@@ -3,6 +3,9 @@ let Test = {
 	init(APP, Spawn) {
 
 		return;
+		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-right"]`).trigger("click"), 300);
+
+		return;
 		setTimeout(() => Spawn.find(`.blank-view .btn[data-click="new-file"]`).trigger("click"), 300);
 		setTimeout(() => APP.spawn.dispatch({ type: "tab.new", spawn: Spawn }), 1000);
 		
