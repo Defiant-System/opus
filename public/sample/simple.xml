@@ -18,7 +18,7 @@
 			</p>
 		</section>
 
-		<!-- <section>
+		<section>
 			<p> RevealEditor is an text editor built for HTML presentation platform <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
 		</section>
 
@@ -68,7 +68,7 @@ body {
 }
 					</code></pre>
 			</section>
-		</section> -->
+		</section>
 	</div>
 ]]></body>
 </data>

@@ -19,8 +19,8 @@ let Reveal = (() => {
 			width: 960,
 			height: 700,
 
-			// Factor of the display size that should remain empty around the content
-			margin: 0.1,
+			// Margin pixels that should remain empty around the content
+			margin: 29,
 
 			// Bounds for smallest/largest possible scale to apply to content
 			minScale: 0.2,
@@ -118,7 +118,7 @@ let Reveal = (() => {
 		dom.wrapper = dom.file.find(`.slides`);
 		
 		// Copy options over to our config object
-		extend( config, options );
+		options = { ...config, ...options };
 
 		// Updates the presentation to match the current configuration values
 		configure(options);
@@ -129,12 +129,12 @@ let Reveal = (() => {
 	 * object. May be called multiple times.
 	 */
 	function configure(options) {
-		var numberOfSlides = dom.file.find(SLIDES_SELECTOR).length;
+		let numberOfSlides = dom.file.find(SLIDES_SELECTOR).length;
 		dom.file.removeClass(config.transition);
 
 		// New config options may be passed when this method
 		// is invoked through the API after initialization
-		extend(config, options);
+		options = { ...config, ...options };
 
 		dom.file.addClass(config.transition);
 		dom.file[ config.controls ? "addClass" : "removeClass" ]("show-controls");
@@ -160,467 +160,123 @@ let Reveal = (() => {
 		previousSlide = currentSlide;
 
 		// Query all horizontal slides in the deck
-		var horizontalSlides = dom.file.find(HORIZONTAL_SLIDES_SELECTOR);
-
-		// If no vertical index is specified and the upcoming slide is a
-		// stack, resume at its previous vertical index
-		if( v === undefined && !isOverview() ) {
-			v = getPreviousVerticalIndex( horizontalSlides[ h ] );
-		}
-
-		// If we were on a vertical stack, remember what vertical index
-		// it was on so we can resume at the same position when returning
-		if( previousSlide && previousSlide.parentNode && previousSlide.parentNode.classList.contains( "stack" ) ) {
-			setPreviousVerticalIndex( previousSlide.parentNode, indexv );
-		}
-
-		// Remember the state before this slide
-		var stateBefore = state.concat();
-
-		// Reset the state array
-		state.length = 0;
-
-		var indexhBefore = indexh || 0,
-			indexvBefore = indexv || 0;
-
-		// Activate and transition to the new slide
-		indexh = updateSlides( HORIZONTAL_SLIDES_SELECTOR, h === undefined ? indexh : h );
-		indexv = updateSlides( VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v );
-
-		// Update the visibility of slides now that the indices have changed
-		updateSlidesVisibility();
+		let horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
 
 		layout();
 
-		// Apply the new state
-		stateLoop: for( var i = 0, len = state.length; i < len; i++ ) {
-			// Check if this state existed on the previous slide. If it
-			// did, we will avoid adding it repeatedly
-			for( var j = 0; j < stateBefore.length; j++ ) {
-				if( stateBefore[j] === state[i] ) {
-					stateBefore.splice( j, 1 );
-					continue stateLoop;
-				}
-			}
-
-			document.documentElement.classList.add( state[i] );
-
-			// Dispatch custom event matching the state's name
-			dispatchEvent( state[i] );
-		}
-
-		// Clean up the remains of the previous state
-		while( stateBefore.length ) {
-			document.documentElement.classList.remove( stateBefore.pop() );
-		}
-
-		// Update the overview if it's currently active
-		if( isOverview() ) {
-			updateOverview();
-		}
-
-		// Find the current horizontal slide and any possible vertical slides
-		// within it
-		var currentHorizontalSlide = horizontalSlides[ indexh ],
-			currentVerticalSlides = currentHorizontalSlide.querySelectorAll( "section" );
-
-		// Store references to the previous and current slides
-		currentSlide = currentVerticalSlides[ indexv ] || currentHorizontalSlide;
-
-		// Show fragment, if specified
-		if( typeof f !== "undefined" ) {
-			navigateFragment( f );
-		}
-
-		// Dispatch an event if the slide changed
-		var slideChanged = ( indexh !== indexhBefore || indexv !== indexvBefore );
-		if( slideChanged ) {
-			dispatchEvent( "slidechanged", {
-				"indexh": indexh,
-				"indexv": indexv,
-				"previousSlide": previousSlide,
-				"currentSlide": currentSlide,
-				"origin": o
-			} );
-		}
-		else {
-			// Ensure that the previous slide is never the same as the current
-			previousSlide = null;
-		}
-
-		// Solves an edge case where the previous slide maintains the
-		// 'present' class when navigating between adjacent vertical
-		// stacks
-		if( previousSlide ) {
-			previousSlide.classList.remove( "present" );
-			previousSlide.setAttribute( "aria-hidden", "true" );
-
-			// Reset all slides upon navigate to home
-			// Issue: #285
-			if ( dom.wrapper.querySelector( HOME_SLIDE_SELECTOR ).classList.contains( "present" ) ) {
-				// Launch async task
-				setTimeout( function () {
-					var slides = dom.wrapper.find(`${HORIZONTAL_SLIDES_SELECTOR}.stack`),
-						i;
-					for( i in slides ) {
-						if( slides[i] ) {
-							// Reset stack
-							setPreviousVerticalIndex( slides[i], 0 );
-						}
-					}
-				}, 0 );
-			}
-		}
-
-		// Handle embedded content
-		if( slideChanged || !previousSlide ) {
-			stopEmbeddedContent( previousSlide );
-			startEmbeddedContent( currentSlide );
-		}
-
-		// Announce the current slide contents, for screen readers
-		dom.statusDiv.textContent = currentSlide.textContent;
-
-		updateControls();
-		updateProgress();
-		updateBackground();
-		updateParallax();
-		updateSlideNumber();
-		updateNotes();
-
-		// Update the URL hash
-		writeURL();
-
-		cueAutoSlide();
-
-	}
-
-
-	/**
-	 * Extend object a with the properties of object b.
-	 * If there's a conflict, object b takes precedence.
-	 */
-	function extend(a, b) {
-		for(var i in b) {
-			a[i] = b[i];
-		}
-	}
-
-	/**
-	 * Checks if the overview is currently active.
-	 *
-	 * @return {Boolean} true if the overview is active,
-	 * false otherwise
-	 */
-	function isOverview() {
-		return overview;
-	}
-
-	/**
-	 * Stores the vertical index of a stack so that the same
-	 * vertical slide can be selected when navigating to and
-	 * from the stack.
-	 *
-	 * @param {HTMLElement} stack The vertical stack element
-	 * @param {int} v Index to memorize
-	 */
-	function setPreviousVerticalIndex( stack, v ) {
-
-		if( typeof stack === "object" && typeof stack.setAttribute === "function" ) {
-			stack.setAttribute( "data-previous-indexv", v || 0 );
-		}
+		horizontalSlides.get(h).addClass("present");
 
 	}
 
 	/**
-	 * Retrieves the vertical index which was stored using
-	 * #setPreviousVerticalIndex() or 0 if no previous index
-	 * exists.
-	 *
-	 * @param {HTMLElement} stack The vertical stack element
+	 * Applies JavaScript-controlled layout rules to the
+	 * presentation.
 	 */
-	function getPreviousVerticalIndex( stack ) {
+	function layout() {
+		let size = getComputedSlideSize(),
+			slidePadding = 20, // TODO Dig this out of DOM
+			zoom = "",
+			left = "",
+			top = "",
+			bottom = "",
+			right = "";
+		// Layout the contents of the slides
+		layoutSlideContents(config.width, config.height, slidePadding);
 
-		if( typeof stack === "object" && typeof stack.setAttribute === "function" && stack.classList.contains( "stack" ) ) {
-			// Prefer manually defined start-indexv
-			var attributeName = stack.hasAttribute( "data-start-indexv" ) ? "data-start-indexv" : "data-previous-indexv";
+		dom.wrapper.css({ width: size.width, height: size.height });
 
-			return parseInt( stack.getAttribute( attributeName ) || 0, 10 );
-		}
+		// Determine scale of content to fit within available space
+		scale = Math.min( size.presentationWidth / size.width, size.presentationHeight / size.height );
+		console.log(scale);
 
-		return 0;
+		// Respect max/min scale settings
+		scale = Math.max( scale, config.minScale );
+		scale = Math.min( scale, config.maxScale );
 
-	}
-
-	/**
-	 * Updates one dimension of slides by showing the slide
-	 * with the specified index.
-	 *
-	 * @param {String} selector A CSS selector that will fetch
-	 * the group of slides we are working with
-	 * @param {Number} index The index of the slide that should be
-	 * shown
-	 *
-	 * @return {Number} The index of the slide that is now shown,
-	 * might differ from the passed in index if it was out of
-	 * bounds.
-	 */
-	function updateSlides( selector, index ) {
-
-		// Select all slides and convert the NodeList result to
-		// an array
-		var slides = dom.wrapper.find(selector),
-			slidesLength = slides.length;
-
-		if( slidesLength ) {
-
-			// Enforce max and minimum index bounds
-			index = Math.max( Math.min( index, slidesLength - 1 ), 0 );
-
-			for( var i = 0; i < slidesLength; i++ ) {
-				var element = slides[i];
-
-				var reverse = config.rtl && !isVerticalSlide( element );
-
-				element.classList.remove( "past" );
-				element.classList.remove( "present" );
-				element.classList.remove( "future" );
-
-				// http://www.w3.org/html/wg/drafts/html/master/editing.html#the-hidden-attribute
-				element.setAttribute( "hidden", "" );
-				element.setAttribute( "aria-hidden", "true" );
-
-				// If this element contains vertical slides
-				if( element.querySelector( "section" ) ) {
-					element.classList.add( "stack" );
-				}
-
-				if( i < index ) {
-					// Any element previous to index is given the "past" class
-					element.classList.add( reverse ? "future" : "past" );
-
-					if( config.fragments ) {
-						var pastFragments = toArray( element.querySelectorAll( ".fragment" ) );
-
-						// Show all fragments on prior slides
-						while( pastFragments.length ) {
-							var pastFragment = pastFragments.pop();
-							pastFragment.classList.add( "visible" );
-							pastFragment.classList.remove( "current-fragment" );
-						}
-					}
-				} else if( i > index ) {
-					// Any element subsequent to index is given the 'future' class
-					element.classList.add( reverse ? "past" : "future" );
-
-					if( config.fragments ) {
-						var futureFragments = toArray( element.querySelectorAll( ".fragment.visible" ) );
-
-						// No fragments in future slides should be visible ahead of time
-						while( futureFragments.length ) {
-							var futureFragment = futureFragments.pop();
-							futureFragment.classList.remove( "visible" );
-							futureFragment.classList.remove( "current-fragment" );
-						}
-					}
-				}
-			}
-
-			// Mark the current slide as present
-			slides[index].classList.add( "present" );
-			slides[index].removeAttribute( "hidden" );
-			slides[index].removeAttribute( "aria-hidden" );
-
-			// If this slide has a state associated with it, add it
-			// onto the current state of the deck
-			var slideState = slides[index].getAttribute( "data-state" );
-			if( slideState ) {
-				state = state.concat( slideState.split( " " ) );
-			}
-
+		// Don't apply any scaling styles if scale is 1
+		if (scale === 1) {
+			
 		} else {
-			// Since there are no slides we can't be anywhere beyond the
-			// zeroth index
-			index = 0;
-		}
-
-		return index;
-
-	}
-
-	/**
-	 * Optimization method; hide all slides that are far away
-	 * from the present slide.
-	 */
-	function updateSlidesVisibility() {
-
-		// Select all slides and convert the NodeList result to
-		// an array
-		var horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR),
-			horizontalSlidesLength = horizontalSlides.length,
-			distanceX,
-			distanceY;
-
-		if( horizontalSlidesLength && typeof indexh !== "undefined" ) {
-
-			// The number of steps away from the present slide that will
-			// be visible
-			var viewDistance = isOverview() ? 10 : config.viewDistance;
-
-			for( var x = 0; x < horizontalSlidesLength; x++ ) {
-				var horizontalSlide = horizontalSlides.get(x),
-					verticalSlides = horizontalSlide.find( "section" ),
-					verticalSlidesLength = verticalSlides.length;
-
-				// Determine how far away this slide is from the present
-				distanceX = Math.abs( ( indexh || 0 ) - x ) || 0;
-
-				// If the presentation is looped, distance should measure
-				// 1 between the first and last slides
-				if( config.loop ) {
-					distanceX = Math.abs( ( ( indexh || 0 ) - x ) % ( horizontalSlidesLength - viewDistance ) ) || 0;
-				}
-
-				// Show the horizontal slide if it's within the view distance
-				if( distanceX < viewDistance ) {
-					showSlide( horizontalSlide );
-				}
-				else {
-					hideSlide( horizontalSlide );
-				}
-
-				if( verticalSlidesLength ) {
-
-					var oy = getPreviousVerticalIndex( horizontalSlide );
-
-					for( var y = 0; y < verticalSlidesLength; y++ ) {
-						var verticalSlide = verticalSlides[y];
-
-						distanceY = x === ( indexh || 0 ) ? Math.abs( ( indexv || 0 ) - y ) : Math.abs( y - oy );
-
-						if( distanceX + distanceY < viewDistance ) {
-							showSlide( verticalSlide );
-						}
-						else {
-							hideSlide( verticalSlide );
-						}
-					}
-
-				}
+			// Prefer zoom for scaling up so that content remains crisp.
+			// Don't use zoom to scale down since that can lead to shifts
+			// in text layout/line breaks.
+			if( scale > 1 ) {
+				
+			} else {
+				left = "50%";
+				top = "50%";
+				bottom = "auto";
+				right = "auto";
 			}
-
 		}
-
+		dom.wrapper.css({ top, left, bottom, right, zoom });
 	}
 
 	/**
-	 * Called when the given slide is within the configured view
-	 * distance. Shows the slide element and loads any content
-	 * that is set to load lazily (data-src).
+	 * Applies layout logic to the contents of all slides in
+	 * the presentation.
 	 */
-	function showSlide( slide ) {
-
-		// Show the slide element
-		slide.style.display = 'block';
-
-		// Media elements with data-src attributes
-		slide.find(`img[data-src], video[data-src], audio[data-src]`).map(element => {
-			element.setAttribute( "src", element.getAttribute( "data-src" ) );
-			element.removeAttribute( "data-src" );
-		});
-
-		// Media elements with <source> children
-		slide.find(`video, audio`).map(media => {
-			var sources = 0;
-
-			$(`source[data-src]`, media).map(source => {
-				source.setAttribute( "src", source.getAttribute( "data-src" ) );
-				source.removeAttribute( "data-src" );
-				sources += 1;
-			});
-
-			// If we rewrote sources for this video/audio element, we need
-			// to manually tell it to load from its new origin
-			if( sources > 0 ) {
-				media.load();
+	function layoutSlideContents(width, height, padding) {
+		// Handle sizing of elements with the 'stretch' class
+		dom.wrapper.find(`section > .stretch`).map(element => {
+			// Determine how much vertical space we can use
+			let remainingHeight = getRemainingHeight(element, height);
+			// Consider the aspect ratio of media elements
+			if (/(img|video)/gi.test(element.nodeName)) {
+				let nw = element.naturalWidth || element.videoWidth,
+					nh = element.naturalHeight || element.videoHeight,
+					es = Math.min( width / nw, remainingHeight / nh );
+				element.style.width = `${nw * es}px`;
+				element.style.height = `${nh * es}px`;
+			} else {
+				element.style.width = `${width}px`;
+				element.style.height = `${remainingHeight}px`;
 			}
 		});
-
-
-		// Show the corresponding background element
-		var indices = getIndices( slide );
-		var background = getSlideBackground( indices.h, indices.v );
-		if( background ) {
-			background.style.display = 'block';
-
-			// If the background contains media, load it
-			if( background.hasAttribute( 'data-loaded' ) === false ) {
-				background.setAttribute( 'data-loaded', 'true' );
-
-				var backgroundImage = slide.getAttribute( 'data-background-image' ),
-					backgroundVideo = slide.getAttribute( 'data-background-video' ),
-					backgroundVideoLoop = slide.hasAttribute( 'data-background-video-loop' ),
-					backgroundVideoMuted = slide.hasAttribute( 'data-background-video-muted' ),
-					backgroundIframe = slide.getAttribute( 'data-background-iframe' );
-
-				// Images
-				if( backgroundImage ) {
-					background.style.backgroundImage = 'url('+ backgroundImage +')';
-				}
-				// Videos
-				else if ( backgroundVideo && !isSpeakerNotes() ) {
-					var video = document.createElement( 'video' );
-
-					if( backgroundVideoLoop ) {
-						video.setAttribute( 'loop', '' );
-					}
-
-					if( backgroundVideoMuted ) {
-						video.muted = true;
-					}
-
-					// Support comma separated lists of video sources
-					backgroundVideo.split( ',' ).forEach( function( source ) {
-						video.innerHTML += '<source src="'+ source +'">';
-					} );
-
-					background.appendChild( video );
-				}
-				// Iframes
-				else if( backgroundIframe ) {
-					var iframe = document.createElement( 'iframe' );
-						iframe.setAttribute( 'src', backgroundIframe );
-						iframe.style.width  = '100%';
-						iframe.style.height = '100%';
-						iframe.style.maxHeight = '100%';
-						iframe.style.maxWidth = '100%';
-
-					background.appendChild( iframe );
-				}
-			}
-		}
-
 	}
 
 	/**
-	 * Called when the given slide is moved outside of the
-	 * configured view distance.
+	 * Calculates the computed pixel size of our slides. These
+	 * values are based on the width and height configuration
+	 * options.
 	 */
-	function hideSlide( slide ) {
-
-		// Hide the slide element
-		slide.style.display = 'none';
-
-		// Hide the corresponding background element
-		var indices = getIndices( slide );
-		var background = getSlideBackground( indices.h, indices.v );
-		if( background ) {
-			background.style.display = 'none';
-		}
-
+	function getComputedSlideSize() {
+		let offset = dom.wrapper.parents(".files-wrapper").offset(),
+			size = {
+				// Slide size
+				width: config.width,
+				height: config.height,
+				// Presentation size - Reduce available space by margin
+				presentationWidth: offset.width - (config.margin * 2),
+				presentationHeight: offset.height - (config.margin * 2),
+			};
+		return size;
 	}
 
+	/**
+	 * Returns the remaining height within the parent of the
+	 * target element.
+	 *
+	 * remaining height = [ configured parent height ] - [ current parent height ]
+	 */
+	function getRemainingHeight(element, height) {
+		height = height || 0;
+		if (element) {
+			let newHeight,
+				oldHeight = element.style.height;
+			// Change the .stretch element height to 0 in order find the height of all
+			// the other elements
+			element.style.height = "0px";
+			newHeight = height - element.parentNode.offsetHeight;
 
+			// Restore the old height, just in case
+			element.style.height = `${oldHeight}px`;
+			return newHeight;
+		}
+
+		return height;
+
+	}
 
 
 	/*

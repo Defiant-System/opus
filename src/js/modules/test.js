@@ -21,5 +21,8 @@ let Test = {
 
 		Spawn.el.find(".tool-disabled_:nth(0), .tool-disabled_:nth(9)").removeClass("tool-disabled_");
 
+
+		// document.documentElement.webkitRequestFullscreen.apply(Spawn.find(".slides")[0]);
+
 	}
 };

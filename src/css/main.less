@@ -8,6 +8,7 @@
 @import "sidebar-format";
 @import "op-elements";
 @import "player-helpers";
+@import "file-slides";
 
 
 // auto applies to ".win-body_"
@@ -231,64 +232,6 @@ content {
 		.file-template,
 		.slide-template {
 			display: none;
-		}
-	}
-
-	.file-slides {
-		&.show-controls .player-helpers .progress { display: block; }
-		&.show-progress .player-helpers aside.controls { display: block; }
-		
-		section {
-			position: absolute;
-			top: 10%;
-			left: 29px;
-			width: calc( 100% - 58px );
-			height: 80%;
-			background: #81b7ee linear-gradient(180deg, #baf0ff, #5ec6f4);
-			color: #fff;
-			text-shadow: 0 2px 5px rgba(#000,.2);
-			padding: 37px 23px 53px;
-			font-family: "Source Sans Pro", sans-serif;
-			text-align: center;
-			border-radius: 4px;
-			box-shadow: 0 0 3px rgba(#000,.1),
-						0 1px 7px rgba(#000,.2);
-			// border: 1px solid rgba(#000,.125);
-
-			> div {
-				position: relative;
-				padding: 3px 0;
-				margin: 5px 0;
-				// box-shadow: 0 0 0 1px rgba(#000,.1);
-			}
-
-			h1 {
-				font-size: 60px;
-				font-weight: 600;
-				line-height: 1;
-				word-wrap: break-word;
-				margin: 0;
-			}
-
-			p {
-				font-size: 25px;
-				line-height: 1.3;
-			}
-
-			a {
-				text-decoration: none;
-				color: #369;
-			}
-
-			hr {
-				background: #fff;
-				margin: 11px auto;
-				height: 3px;
-			}
-
-			.op-image {
-				position: absolute;
-			}
 		}
 	}
 }
