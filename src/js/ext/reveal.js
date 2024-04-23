@@ -59,6 +59,8 @@ let Reveal = (() => {
 			// Number of slides away from the current that are visible
 			viewDistance: 3,
 		},
+
+		options = {},
 	
 		// Flags if the overview mode is currently active
 		overview = false,
@@ -90,7 +92,7 @@ let Reveal = (() => {
 		slidesTransform = { layout: "", overview: "" },
 
 		// Cached references to DOM elements
-		dom = {},
+		Dom = {},
 
 		// Features supported by the browser, see #checkCapabilities()
 		features = {},
@@ -113,13 +115,24 @@ let Reveal = (() => {
 	/**
 	 * Starts up the presentation if the client is capable.
 	 */
-	function initialize(options) {
-		dom.file = options.spawn.find(".file-slides");
-		dom.wrapper = dom.file.find(".slides");
-		dom.progressbar = dom.wrapper.prepend(options.spawn.find(".player-helpers").clone(true));
-
+	function initialize(opt) {
 		// Copy options over to our config object
-		options = { ...config, ...options };
+		options = { ...config, ...opt };
+
+		Dom.file = options.spawn.find(".file-slides");
+		Dom.wrapper = Dom.file.find(".slides");
+		// prepend player helpers (controls + progress + slide number)
+		Dom.wrapper.prepend(options.spawn.find(".player-helpers").clone(true));
+		// reference to elements
+		Dom.controls = {
+			all: Dom.wrapper.find(".controls span"),
+			left: Dom.wrapper.find(".controls .nav-left"),
+			right: Dom.wrapper.find(".controls .nav-right"),
+			up: Dom.wrapper.find(".controls .nav-up"),
+			down: Dom.wrapper.find(".controls .nav-down"),
+		};
+		Dom.progressbar = Dom.wrapper.find(".progress span");
+		Dom.slideNumber = Dom.wrapper.find(".slide-number");
 
 		// Updates the presentation to match the current configuration values
 		configure(options);
@@ -129,20 +142,21 @@ let Reveal = (() => {
 	 * Applies the configuration settings from the config
 	 * object. May be called multiple times.
 	 */
-	function configure(options) {
-		let numberOfSlides = dom.file.find(SLIDES_SELECTOR).length;
-		dom.file.removeClass(config.transition);
+	function configure(opt) {
+		let numberOfSlides = Dom.file.find(SLIDES_SELECTOR).length;
+		Dom.file.removeClass(config.transition);
 
 		// New config options may be passed when this method
 		// is invoked through the API after initialization
-		options = { ...config, ...options };
+		options = { ...config, ...opt };
 
-		dom.file.addClass(config.transition);
-		dom.file[ config.controls ? "addClass" : "removeClass" ]("show-controls");
-		dom.file[ config.progress ? "addClass" : "removeClass" ]("show-progress");
-		dom.file[ config.progress ? "addClass" : "removeClass" ]("vertical-center");
+		Dom.file.addClass(options.transition);
+		Dom.file[ options.controls ? "addClass" : "removeClass" ]("show-controls");
+		Dom.file[ options.progress ? "addClass" : "removeClass" ]("show-progress");
+		Dom.file[ options.progress ? "addClass" : "removeClass" ]("vertical-center");
 
-		setTimeout(() => slide(0, 0), 500);
+		// setTimeout(() => slide(0, 0), 500);
+		slide(0, 0);
 	}
 
 	/**
@@ -161,7 +175,7 @@ let Reveal = (() => {
 		previousSlide = currentSlide;
 
 		// Query all horizontal slides in the deck
-		let horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
+		let horizontalSlides = Dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
 
 		// Activate and transition to the new slide
 		indexh = updateSlides(HORIZONTAL_SLIDES_SELECTOR, h === undefined ? indexh : h);
@@ -171,6 +185,10 @@ let Reveal = (() => {
 		horizontalSlides.get(h).addClass("present");
 
 		layout();
+
+		updateControls();
+		updateProgress();
+		updateSlideNumber();
 	}
 
 	/**
@@ -187,16 +205,16 @@ let Reveal = (() => {
 			right = "",
 			transform = "";
 		// Layout the contents of the slides
-		layoutSlideContents(config.width, config.height, slidePadding);
+		layoutSlideContents(options.width, options.height, slidePadding);
 
-		dom.wrapper.css({ width: size.width, height: size.height });
+		Dom.wrapper.css({ width: size.width, height: size.height });
 
 		// Determine scale of content to fit within available space
 		scale = Math.min( size.presentationWidth / size.width, size.presentationHeight / size.height );
 
 		// Respect max/min scale settings
-		scale = Math.max( scale, config.minScale );
-		scale = Math.min( scale, config.maxScale );
+		scale = Math.max( scale, options.minScale );
+		scale = Math.min( scale, options.maxScale );
 
 		// Prefer zoom for scaling up so that content remains crisp.
 		// Don't use zoom to scale down since that can lead to shifts
@@ -209,15 +227,15 @@ let Reveal = (() => {
 			transform = `translate(-50%, -50%) scale(${scale})`;
 		}
 		// Don't apply any scaling styles if scale is >= 1
-		dom.wrapper.css({ top, left, bottom, right, zoom, transform });
+		Dom.wrapper.css({ top, left, bottom, right, zoom, transform });
 
 		// Select all slides, vertical and horizontal
-		dom.wrapper.find(SLIDES_SELECTOR).map(el => {
+		Dom.wrapper.find(SLIDES_SELECTOR).map(el => {
 			let slide = $(el),
 				top = "";
 			if (!slide.is(":visible")) return;
 			
-			if (config.center || slide.hasClass("center")) {
+			if (options.center || slide.hasClass("center")) {
 				// Vertical stacks are not centred since their section
 				// children will be
 				top = slide.hasClass("stack") ? 0 : Math.max(((size.height - getAbsoluteHeight(slide)) / 2) - slidePadding, 0);
@@ -234,7 +252,7 @@ let Reveal = (() => {
 	 */
 	function layoutSlideContents(width, height, padding) {
 		// Handle sizing of elements with the 'stretch' class
-		dom.wrapper.find("section > .stretch").map(element => {
+		Dom.wrapper.find("section > .stretch").map(element => {
 			// Determine how much vertical space we can use
 			let remainingHeight = getRemainingHeight(element, height);
 			// Consider the aspect ratio of media elements
@@ -257,14 +275,14 @@ let Reveal = (() => {
 	 * options.
 	 */
 	function getComputedSlideSize() {
-		let offset = dom.wrapper.parents(".files-wrapper").offset(),
+		let offset = Dom.wrapper.parents(".files-wrapper").offset(),
 			size = {
 				// Slide size
-				width: config.width,
-				height: config.height,
+				width: options.width,
+				height: options.height,
 				// Presentation size - Reduce available space by margin
-				presentationWidth: offset.width - (config.margin * 2),
-				presentationHeight: offset.height - (config.margin * 2),
+				presentationWidth: offset.width - (options.margin * 2),
+				presentationHeight: offset.height - (options.margin * 2),
 			};
 		return size;
 	}
@@ -322,7 +340,7 @@ let Reveal = (() => {
 	 * Retrieves the total number of slides in this presentation.
 	 */
 	function getTotalSlides() {
-		return dom.wrapper.find(`${SLIDES_SELECTOR}:not(.stack)`).length;
+		return Dom.wrapper.find(`${SLIDES_SELECTOR}:not(.stack)`).length;
 	}
 
 	/**
@@ -330,7 +348,7 @@ let Reveal = (() => {
 	 * flattened index for slides.
 	 */
 	function getSlidePastCount() {
-		let horizontalSlides = dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
+		let horizontalSlides = Dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
 		// The number of past slides
 		let pastCount = 0;
 		// Step through all slides and count the past ones
@@ -372,7 +390,7 @@ let Reveal = (() => {
 	function updateSlides(selector, index) {
 		// Select all slides and convert the NodeList result to
 		// an array
-		let slides = dom.wrapper.find(selector),
+		let slides = Dom.wrapper.find(selector),
 			slidesLength = slides.length;
 
 		if (slidesLength) {
@@ -453,10 +471,78 @@ let Reveal = (() => {
 	 */
 	function updateProgress() {
 		// Update progress if enabled
-		if (config.progress && dom.progressbar) {
-			let width = getProgress() * dom.wrapper.offsetWidth;
-			dom.progressbar.css({ width });
+		if (options.progress && Dom.progressbar) {
+			let width = getProgress() * +Dom.progressbar.parent().prop("offsetWidth");
+			Dom.progressbar.css({ width });
 		}
+	}
+
+	/**
+	 * Updates the state of all control/navigation arrows.
+	 */
+	function updateControls() {
+		let routes = availableRoutes();
+		// Remove the 'enabled' class from all directions
+		Dom.controls.all.addClass("disabled_");
+		// Add the 'enabled' class to the available routes
+		if (routes.left) Dom.controls.left.removeClass("disabled_");
+		if (routes.right) Dom.controls.right.removeClass("disabled_");
+		if (routes.up) Dom.controls.up.removeClass("disabled_");
+		if (routes.down) Dom.controls.down.removeClass("disabled_");
+	}
+
+	/**
+	 * Updates the slide number div to reflect the current slide.
+	 *
+	 * The following slide number formats are available:
+	 *  "count":       flattened slide number (default)
+	 *  "count-total": flattened slide number / total slides
+	 *  "h-dot-v": 	   horizontal . vertical slide number
+	 *  "h-slash-v":   horizontal / vertical slide number
+	 */
+	function updateSlideNumber() {
+		// Update slide number if enabled
+		if (options.slideNumber && Dom.slideNumber.length) {
+			let value = [];
+			let format = "count";
+			// Check if a custom number format is available
+			if (typeof options.slideNumber === "string") {
+				format = options.slideNumber;
+			}
+			switch (format) {
+				case "h-slash-v":
+					value.push(indexh + 1);
+					if (isVerticalSlide()) value.push("/", indexv + 1);
+					break;
+				case "h-dot-v":
+					value.push(indexh + 1);
+					if (isVerticalSlide()) value.push(".", indexv + 1);
+				case "count-total":
+					value.push(getSlidePastCount() + 1, "/", getTotalSlides());
+					break;
+				default:
+					value.push(getSlidePastCount() + 1);
+					break;
+			}
+			Dom.slideNumber.data({ format }).html(value.join(" "));
+		}
+	}
+
+	/**
+	 * Determine what available routes there are for navigation.
+	 *
+	 * @return {Object} containing four booleans: left/right/up/down
+	 */
+	function availableRoutes() {
+		let horizontalSlides = Dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR),
+			verticalSlides = Dom.wrapper.find(VERTICAL_SLIDES_SELECTOR),
+			routes = {
+				left: indexh > 0,
+				right: indexh < horizontalSlides.length - 1,
+				up: indexv > 0,
+				down: indexv < verticalSlides.length - 1
+			};
+		return routes;
 	}
 
 	/**
