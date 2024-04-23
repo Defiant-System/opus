@@ -144,13 +144,12 @@ let Reveal = (() => {
 	 */
 	function configure(opt) {
 		let numberOfSlides = Dom.file.find(SLIDES_SELECTOR).length;
-		Dom.file.removeClass(config.transition);
 
 		// New config options may be passed when this method
 		// is invoked through the API after initialization
 		options = { ...config, ...opt };
 
-		Dom.file.addClass(options.transition);
+		Dom.file.data({ "background-transition": options.transition });
 		Dom.file[ options.controls ? "addClass" : "removeClass" ]("show-controls");
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("show-progress");
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("vertical-center");

@@ -2,6 +2,40 @@
 @slideAnim: 800ms;
 
 .file-slides {
+	&[data-background-transition="none"] .slides section {
+		transition: none;
+	}
+
+	&[data-background-transition="slide"] .slides section {
+		&.present { opacity: 1; transform: translate(0, 0); }
+		&.past { transform: translate(-150%, 0); }
+		&.future { transform: translate(150%, 0); }
+	}
+
+	&[data-background-transition="zoom"] .slides section {
+		&.present { opacity: 1; transform: translate(0, 0); }
+		&.past { transform: scale(16); }
+		&.future { transform: scale(0.2); }
+	}
+
+	&[data-background-transition="fade"] .slides section {
+		&.present { opacity: 1; }
+		&.past { }
+		&.future { }
+	}
+
+	&[data-background-transition="convex"] .slides section {
+		&.present { opacity: 1; transform: translate3d(0, 0, 0); transition-duration: @slideAnim * 1.5; }
+		&.past { transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0); transition-duration: @slideAnim * 1.5; }
+		&.future { transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0); transition-duration: @slideAnim * 1.5; }
+	}
+
+	&[data-background-transition="concave"] .slides section {
+		&.present { opacity: 1; transform: translate3d(0, 0, 0); transition-duration: @slideAnim * 1.5; }
+		&.past { transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0); transition-duration: @slideAnim * 1.5; }
+		&.future { transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0); transition-duration: @slideAnim * 1.5; }
+	}
+
 	&.show-controls .player-helpers .progress { display: block; }
 	&.show-progress .player-helpers aside.controls { display: block; }
 	
@@ -14,7 +48,7 @@
 		z-index: 1;
 		margin: auto;
 		text-align: center;
-		perspective: 600px;
+		perspective: 400px;
 		background: linear-gradient(180deg, #ffe6ba, #e89d52);
 		color: #fff;
 		font-family: "Source Sans Pro", sans-serif;
@@ -29,7 +63,6 @@
 	}
 
 	section {
-		// display: none;
 		position: absolute;
 		// top: 0;
 		// left: 0;
@@ -44,19 +77,18 @@
 					visibility @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985),
 					opacity @slideAnim cubic-bezier(0.26, 0.86, 0.44, 0.985);
 
-		&.present {
-			transform: translate(0, 0);
-			// display: block;
-			opacity: 1;
-		}
+		// &.present {
+		// 	transform: translate(0, 0);
+		// 	opacity: 1;
+		// }
 
-		&.past {
-			transform: translate(-150%, 0);
-		}
+		// &.past {
+		// 	transform: translate(-150%, 0);
+		// }
 
-		&.future {
-			transform: translate(150%, 0);
-		}
+		// &.future {
+		// 	transform: translate(150%, 0);
+		// }
 
 		> div {
 			position: relative;
