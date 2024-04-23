@@ -7,10 +7,10 @@ let Reveal = (() => {
 
 	// Rewrite from reveal.js version
 	let VERSION = "3.3.0",
-		SLIDES_SELECTOR = ".slides section",
-		HORIZONTAL_SLIDES_SELECTOR = ".slides > section",
-		VERTICAL_SLIDES_SELECTOR = ".slides > section.present > section",
-		HOME_SLIDE_SELECTOR = ".slides > section:first-of-type";
+		SLIDES_SELECTOR = "section",
+		HORIZONTAL_SLIDES_SELECTOR = "> section",
+		VERTICAL_SLIDES_SELECTOR = "> section.present > section",
+		HOME_SLIDE_SELECTOR = "> section:first-of-type";
 
 	// Configuration defaults, can be overridden at initialization time
 	let config = {
@@ -109,16 +109,43 @@ let Reveal = (() => {
 	 * Starts up the presentation if the client is capable.
 	 */
 	function initialize(options) {
-		dom.wrapper = options.spawn.find(`.file-slides .slides`);
-		console.log( dom.wrapper ); // .find(HOME_SLIDE_SELECTOR)
+		dom.file = options.spawn.find(`.file-slides`);
+		dom.wrapper = dom.file.find(`.slides`);
+		
+		// Copy options over to our config object
+		extend( config, options );
+
+		// Updates the presentation to match the current configuration values
+		configure(options);
 	}
 
 	/**
 	 * Applies the configuration settings from the config
 	 * object. May be called multiple times.
 	 */
-	function configure( options ) {
+	function configure(options) {
 		var numberOfSlides = dom.wrapper.find(SLIDES_SELECTOR).length;
+		dom.wrapper.removeClass(config.transition);
+
+		// New config options may be passed when this method
+		// is invoked through the API after initialization
+		extend(config, options);
+
+		dom.wrapper.addClass(config.transition);
+		dom.file[ config.controls ? "addClass" : "removeClass" ]("show-controls");
+		dom.file[ config.progress ? "addClass" : "removeClass" ]("show-progress");
+
+		console.log(options);
+	}
+
+	/**
+	 * Extend object a with the properties of object b.
+	 * If there's a conflict, object b takes precedence.
+	 */
+	function extend(a, b) {
+		for(var i in b) {
+			a[i] = b[i];
+		}
 	}
 
 

@@ -99,6 +99,8 @@ class Tabs {
 		if (active && active.bodyEl) {
 			// hide blurred body
 			active.bodyEl.addClass("hidden");
+			// notify file
+			this._active.file.dispatch({ type: "blur-file", spawn });
 		}
 		// reference to active tab
 		this._active = this._stack[tId];
@@ -112,6 +114,8 @@ class Tabs {
 			this._parent.thumbs.dispatch({ type: "toggle-thumbs", spawn, isOn: this._active.thumbs });
 			// toggle format
 			this._parent.format.dispatch({ type: "toggle-format", spawn, isOn: this._active.format });
+			// notify file
+			this._active.file.dispatch({ type: "focus-file", spawn });
 		} else {
 			setTimeout(() => {
 				// show blank view

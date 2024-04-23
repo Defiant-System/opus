@@ -31,7 +31,8 @@ class File {
 			value;
 		// console.log(event);
 		switch (event.type) {
-			case "init":
+			case "focus-file":
+				// temp
 				Reveal.initialize({
 					controls: true,
 					progress: true,
@@ -40,6 +41,8 @@ class File {
 					transition: "slide", //  none/fade/slide/convex/concave/zoom
 					spawn,
 				});
+				break;
+			case "blur-file":
 				break;
 		}
 	}
@@ -50,6 +53,10 @@ class File {
 
 	get isDirty() {
 		
+	}
+
+	set parent(p) {
+		this._parent = p;
 	}
 
 	async expand() {
