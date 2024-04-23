@@ -179,7 +179,8 @@ let Reveal = (() => {
 			left = "",
 			top = "",
 			bottom = "",
-			right = "";
+			right = "",
+			transform = "";
 		// Layout the contents of the slides
 		layoutSlideContents(config.width, config.height, slidePadding);
 
@@ -187,29 +188,28 @@ let Reveal = (() => {
 
 		// Determine scale of content to fit within available space
 		scale = Math.min( size.presentationWidth / size.width, size.presentationHeight / size.height );
-		console.log(scale);
 
 		// Respect max/min scale settings
 		scale = Math.max( scale, config.minScale );
 		scale = Math.min( scale, config.maxScale );
 
-		// Don't apply any scaling styles if scale is 1
-		if (scale === 1) {
-			
-		} else {
-			// Prefer zoom for scaling up so that content remains crisp.
-			// Don't use zoom to scale down since that can lead to shifts
-			// in text layout/line breaks.
-			if( scale > 1 ) {
-				
-			} else {
-				left = "50%";
-				top = "50%";
-				bottom = "auto";
-				right = "auto";
-			}
+		// Prefer zoom for scaling up so that content remains crisp.
+		// Don't use zoom to scale down since that can lead to shifts
+		// in text layout/line breaks.
+		if( scale < 1 ) {
+			left = "50%";
+			top = "50%";
+			bottom = "auto";
+			right = "auto";
+			transform = `translate(-50%, -50%) scale(${scale})`;
 		}
-		dom.wrapper.css({ top, left, bottom, right, zoom });
+		// Don't apply any scaling styles if scale is >= 1
+		dom.wrapper.css({ top, left, bottom, right, zoom, transform });
+
+		// Select all slides, vertical and horizontal
+		dom.wrapper.find(SLIDES_SELECTOR).map(el => {
+			let slide = $(el);
+		});
 	}
 
 	/**
