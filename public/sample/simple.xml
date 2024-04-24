@@ -20,6 +20,9 @@
 
 		<section>
 			<p> RevealEditor is an text editor built for HTML presentation platform <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
+			<p class="fragment" data-fragment-index="3">Appears last</p>
+			<p class="fragment" data-fragment-index="1">Appears first</p>
+			<p class="fragment" data-fragment-index="2">Appears second</p>
 		</section>
 
 		<section>

@@ -199,7 +199,6 @@ let Reveal = (() => {
 
 		// Activate and transition to the new slide
 		indexh = updateSlides(HORIZONTAL_SLIDES_SELECTOR, h === undefined ? indexh : h);
-		console.log( updateSlides( VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v ) );
 		indexv = updateSlides(VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v);
 
 		// Update the visibility of slides now that the indices have changed

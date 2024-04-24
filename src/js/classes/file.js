@@ -40,7 +40,7 @@ class File {
 					center: true,
 					transition: "slide", //  none/fade/slide/convex/concave/zoom
 					slideNumber: "count",
-					goTo: [4,2],
+					goTo: [1],  // 4,2
 					spawn,
 				});
 				break;
