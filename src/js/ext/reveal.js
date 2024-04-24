@@ -35,14 +35,11 @@ let Reveal = (() => {
 			// Display the page number of the current slide
 			slideNumber: false,
 
-			// Push each slide change to the browser history
-			history: false,
+			// Turns fragments on and off globally
+			fragments: true,
 
 			// Enable the slide overview mode
 			overview: true,
-
-			// Vertical centering of slides
-			center: true,
 
 			// Loop the presentation
 			loop: false,
@@ -212,7 +209,8 @@ let Reveal = (() => {
 			currentVerticalSlides = currentHorizontalSlide.find("section");
 
 		// Store references to the previous and current slides
-		currentSlide = currentVerticalSlides.get(indexv) || currentHorizontalSlide;
+		currentSlide = currentVerticalSlides.get(indexv);
+		if (!currentSlide.length) currentSlide = currentHorizontalSlide;
 
 		// Dispatch an event if the slide changed
 		var slideChanged = (indexh !== indexhBefore || indexv !== indexvBefore);
@@ -602,9 +600,9 @@ let Reveal = (() => {
 				}
 				// Show the horizontal slide if it's within the view distance
 				if (distanceX < viewDistance) {
-					showSlide(horizontalSlide[0]);
+					showSlide(horizontalSlide);
 				} else {
-					hideSlide(horizontalSlide[0]);
+					hideSlide(horizontalSlide);
 				}
 				if (verticalSlidesLength) {
 					let oy = getPreviousVerticalIndex(horizontalSlide);
@@ -612,9 +610,9 @@ let Reveal = (() => {
 						let verticalSlide = verticalSlides.get(y);
 						distanceY = x === (indexh || 0) ? Math.abs((indexv || 0) - y) : Math.abs(y - oy);
 						if (distanceX + distanceY < viewDistance) {
-							showSlide(verticalSlide[0]);
+							showSlide(verticalSlide);
 						} else {
-							hideSlide(verticalSlide[0]);
+							hideSlide(verticalSlide);
 						}
 					}
 				}
@@ -662,6 +660,8 @@ let Reveal = (() => {
 	 */
 	function updateControls() {
 		let routes = availableRoutes();
+		var fragments = availableFragments();
+
 		// Remove the 'enabled' class from all directions
 		Dom.controls.all.addClass("disabled_");
 		// Add the 'enabled' class to the available routes
@@ -669,6 +669,19 @@ let Reveal = (() => {
 		if (routes.right) Dom.controls.right.removeClass("disabled_");
 		if (routes.up) Dom.controls.up.removeClass("disabled_");
 		if (routes.down) Dom.controls.down.removeClass("disabled_");
+
+		// Highlight fragment directions
+		if (currentSlide) {
+			// Apply fragment decorators to directional buttons based on
+			// what slide axis they are in
+			if (isVerticalSlide(currentSlide)) {
+				if (fragments.prev) Dom.controls.up.addClass("fragmented").removeClass("disabled_");
+				if (fragments.next) Dom.controls.down.addClass("fragmented").removeClass("disabled_");
+			} else {
+				if (fragments.prev) Dom.controls.left.addClass("fragmented").removeClass("disabled_");
+				if (fragments.next) Dom.controls.right.addClass("fragmented").removeClass("disabled_");
+			}
+		}
 	}
 
 	/**
@@ -715,15 +728,15 @@ let Reveal = (() => {
 	 */
 	function showSlide(slide) {
 		// Show the slide element
-		slide.style.display = "block";
+		slide.css({ display: "block" });
 		// Media elements with data-src attributes
-		$("img[data-src], video[data-src], audio[data-src]", slide).map(element => {
+		slide.find("img[data-src], video[data-src], audio[data-src]").map(element => {
 			element.setAttribute("src", element.getAttribute( "data-src"));
 			element.removeAttribute("data-src");
 		});
 
 		// Media elements with <source> children
-		$("video, audio", slide).map(element => {
+		slide.find("video, audio").map(element => {
 			let sources = 0;
 			$("source[data-src]", media).map(source => {
 				source.setAttribute("src", source.getAttribute( "data-src"));
@@ -747,10 +760,10 @@ let Reveal = (() => {
 			if (background.hasAttribute("data-loaded") === false) {
 				background.setAttribute("data-loaded", "true");
 
-				let backgroundImage = slide.getAttribute("data-background-image"),
-					backgroundVideo = slide.getAttribute("data-background-video"),
-					backgroundVideoLoop = slide.hasAttribute("data-background-video-loop"),
-					backgroundVideoMuted = slide.hasAttribute("data-background-video-muted");
+				let backgroundImage = slide.data("background-image"),
+					backgroundVideo = slide.data("background-video"),
+					backgroundVideoLoop = !!slide.data("background-video-loop"),
+					backgroundVideoMuted = !!slide.data("background-video-muted");
 
 				if (backgroundImage) {
 					// Images
@@ -780,7 +793,7 @@ let Reveal = (() => {
 	 */
 	function hideSlide(slide) {
 		// Hide the slide element
-		slide.style.display = "none";
+		slide.css({ display: "none" });
 		// Hide the corresponding background element
 		let indices = getIndices(slide);
 		let background = getSlideBackground(indices.h, indices.v);
@@ -804,6 +817,24 @@ let Reveal = (() => {
 				down: indexv < verticalSlides.length - 1
 			};
 		return routes;
+	}
+
+	/**
+	 * Returns an object describing the available fragment
+	 * directions.
+	 *
+	 * @return {Object} two boolean properties: prev/next
+	 */
+	function availableFragments() {
+		let prev = false,
+			next = false;
+		if (currentSlide.length && config.fragments) {
+			var fragments = currentSlide.find(".fragment");
+			var hiddenFragments = currentSlide.find(".fragment:not(.visible)");
+			prev = fragments.length - hiddenFragments.length > 0;
+			next = !!hiddenFragments.length;
+		}
+		return { prev, next };
 	}
 
 	/**
