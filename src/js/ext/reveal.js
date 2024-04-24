@@ -205,7 +205,7 @@ let Reveal = (() => {
 
 		// Find the current horizontal slide and any possible vertical slides
 		// within it
-		var currentHorizontalSlide = horizontalSlides.get(indexh),
+		let currentHorizontalSlide = horizontalSlides.get(indexh),
 			currentVerticalSlides = currentHorizontalSlide.find("section");
 
 		// Store references to the previous and current slides
@@ -213,7 +213,7 @@ let Reveal = (() => {
 		if (!currentSlide.length) currentSlide = currentHorizontalSlide;
 
 		// Dispatch an event if the slide changed
-		var slideChanged = (indexh !== indexhBefore || indexv !== indexvBefore);
+		let slideChanged = (indexh !== indexhBefore || indexv !== indexvBefore);
 		if (slideChanged) {
 			// dispatchEvent ?
 		} else {
@@ -660,7 +660,7 @@ let Reveal = (() => {
 	 */
 	function updateControls() {
 		let routes = availableRoutes();
-		var fragments = availableFragments();
+		let fragments = availableFragments();
 
 		// Remove the 'enabled' class from all directions
 		Dom.controls.all.addClass("disabled_");
@@ -829,8 +829,8 @@ let Reveal = (() => {
 		let prev = false,
 			next = false;
 		if (currentSlide.length && config.fragments) {
-			var fragments = currentSlide.find(".fragment");
-			var hiddenFragments = currentSlide.find(".fragment:not(.visible)");
+			let fragments = currentSlide.find(".fragment");
+			let hiddenFragments = currentSlide.find(".fragment:not(.visible)");
 			prev = fragments.length - hiddenFragments.length > 0;
 			next = !!hiddenFragments.length;
 		}
@@ -847,23 +847,159 @@ let Reveal = (() => {
 	function isVerticalSlide(slide) {
 		// Prefer slide argument, otherwise use current slide
 		slide = slide.length ? slide : currentSlide;
-		return slide && slide.length && slide.parent() &&  slide.parent().nodeName() !== "section";
+		return slide && slide.length && slide.parent() && slide.parent().nodeName() === "section";
+	}
+
+	/**
+	 * Return a sorted fragments list, ordered by an increasing
+	 * "data-fragment-index" attribute.
+	 *
+	 * Fragments will be revealed in the order that they are returned by
+	 * this function, so you can use the index attributes to control the
+	 * order of fragment appearance.
+	 *
+	 * To maintain a sensible default fragment order, fragments are presumed
+	 * to be passed in document order. This function adds a "fragment-index"
+	 * attribute to each node if such an attribute is not already present,
+	 * and sets that attribute to an integer value which is the position of
+	 * the fragment within the fragments list.
+	 */
+	function sortFragments(fragments ) {
+		let ordered = [],
+			unordered = [],
+			sorted = [];
+		// Group ordered and unordered elements
+		fragments.map((fragment, i) => {
+			if (fragment.hasAttribute("data-fragment-index")) {
+				let index = parseInt(fragment.getAttribute("data-fragment-index"), 10);
+				if (!ordered[index]) {
+					ordered[index] = [];
+				}
+				ordered[index].push(fragment);
+			} else {
+				unordered.push([fragment]);
+			}
+		});
+
+		// Append fragments without explicit indices in their DOM order
+		ordered = ordered.concat(unordered);
+		// Manually count the index up per group to ensure there are no gaps
+		let index = 0;
+
+		// Push all fragments in their sorted order to an array, this flattens the groups
+		ordered.forEach(group => {
+			group.forEach(fragment => {
+				sorted.push( fragment );
+				fragment.setAttribute("data-fragment-index", index);
+			} );
+			index ++;
+		});
+
+		return sorted;
+	}
+
+	/**
+	 * Navigate to the specified slide fragment.
+	 *
+	 * @param {Number} index The index of the fragment that
+	 * should be shown, -1 means all are invisible
+	 * @param {Number} offset Integer offset to apply to the
+	 * fragment index
+	 *
+	 * @return {Boolean} true if a change was made in any
+	 * fragments visibility as part of this call
+	 */
+	function navigateFragment(index, offset) {
+		if (currentSlide && config.fragments) {
+			let fragments = sortFragments(currentSlide.find(".fragment"));
+			if (fragments.length) {
+				// If no index is specified, find the current
+				if (typeof index !== "number") {
+					let lastVisibleFragment = sortFragments(currentSlide.find(".fragment.visible")).pop();
+					if (lastVisibleFragment) {
+						index = parseInt(lastVisibleFragment.getAttribute("data-fragment-index") || 0, 10);
+					} else {
+						index = -1;
+					}
+				}
+				// If an offset is specified, apply it to the index
+				if (typeof offset === "number") {
+					index += offset;
+				}
+
+				let fragmentsShown = [],
+					fragmentsHidden = [];
+				fragments.map((element, i) => {
+					if (element.hasAttribute("data-fragment-index")) {
+						i = parseInt(element.getAttribute("data-fragment-index"), 10);
+					}
+
+					// Visible fragments
+					if (i <= index) {
+						if (!element.classList.contains( "visible")) fragmentsShown.push(element);
+						element.classList.add("visible");
+						element.classList.remove("current-fragment");
+
+						if (i === index) {
+							element.classList.add("current-fragment");
+						}
+					} else {
+						// Hidden fragments
+						if (element.classList.contains("visible")) fragmentsHidden.push(element);
+						element.classList.remove("visible");
+						element.classList.remove("current-fragment");
+					}
+				} );
+				updateControls();
+				updateProgress();
+				return !!( fragmentsShown.length || fragmentsHidden.length );
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Navigate to the next slide fragment.
+	 *
+	 * @return {Boolean} true if there was a next fragment,
+	 * false otherwise
+	 */
+	function nextFragment() {
+		return navigateFragment(null, 1);
+	}
+
+	/**
+	 * Navigate to the previous slide fragment.
+	 *
+	 * @return {Boolean} true if there was a previous fragment,
+	 * false otherwise
+	 */
+	function previousFragment() {
+		return navigateFragment(null, -1);
 	}
 
 	function navigateLeft() {
-		slide(indexh - 1);
+		if (previousFragment() === false) {
+			slide(indexh - 1);
+		}
 	}
 
 	function navigateRight() {
-		slide(indexh + 1);
+		if (nextFragment() === false) {
+			slide(indexh + 1);
+		}
 	}
 
 	function navigateUp() {
-		slide(indexh, indexv - 1);
+		if (previousFragment() === false) {
+			slide(indexh, indexv - 1);
+		}
 	}
 
 	function navigateDown() {
-		slide(indexh, indexv + 1);
+		if (nextFragment() === false) {
+			slide(indexh, indexv + 1);
+		}
 	}
 
 

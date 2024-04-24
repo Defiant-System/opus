@@ -2,10 +2,10 @@
 let Test = {
 	init(APP, Spawn) {
 
+		// return;
+		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-right"]`).trigger("click"), 500);
 		return;
 		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-left"]`).trigger("click"), 500);
-		return;
-		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-right"]`).trigger("click"), 1000);
 
 		return;
 		setTimeout(() => Spawn.find(`.blank-view .btn[data-click="new-file"]`).trigger("click"), 300);
