@@ -111,9 +111,9 @@ class Tabs {
 			// enable toolbar
 			this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: true });
 			// toggle thumbs
-			this._parent.thumbs.dispatch({ type: "toggle-thumbs", spawn, isOn: this._active.thumbs });
+			// this._parent.thumbs.dispatch({ type: "toggle-thumbs", spawn, isOn: this._active.thumbs });
 			// toggle format
-			this._parent.format.dispatch({ type: "toggle-format", spawn, isOn: this._active.format });
+			// this._parent.format.dispatch({ type: "toggle-format", spawn, isOn: this._active.format });
 			// notify file
 			this._active.file.dispatch({ type: "focus-file", spawn });
 		} else {

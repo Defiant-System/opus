@@ -19,6 +19,7 @@
 			value,
 			pEl,
 			el;
+		// console.log(\event);
 		switch (event.type) {
 			// system events
 			case "spawn.blur":
@@ -57,8 +58,16 @@
 					value = !event.isOn;
 					el[value ? "removeClass" : "addClass"]("tool-active_");
 				}
+
+				let formatWidth = Self.els.el.offset().width,
+					offset = Spawn.find(".files-wrapper").offset(),
+					width = offset.width + (value ? formatWidth : -formatWidth),
+					height = offset.height;
+				Reveal.layout({ width, height });
+
 				// toggle app content
 				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-sidebar-format");
+
 				// return "state"
 				return !value;
 			case "select-tab":

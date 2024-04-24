@@ -2,7 +2,9 @@
 let Test = {
 	init(APP, Spawn) {
 
-		// return;
+		return;
+		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`).trigger("click"), 500);
+		return;
 		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-right"]`).trigger("click"), 500);
 		return;
 		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-left"]`).trigger("click"), 500);
@@ -14,7 +16,6 @@ let Test = {
 		// setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-thumbs"]`).trigger("click"), 500);
 		// setTimeout(() => APP.spawn.thumbs.dispatch({ type: "toggle-thumbs", spawn: Spawn, isOn: false }), 1400);
 
-		// setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`).trigger("click"), 500);
 		// setTimeout(() => APP.spawn.format.dispatch({ type: "toggle-format", spawn: Spawn, isOn: false }), 1400);
 
 		return;

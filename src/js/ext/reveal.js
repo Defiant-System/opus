@@ -240,7 +240,7 @@ let Reveal = (() => {
 	 * Applies JavaScript-controlled layout rules to the
 	 * presentation.
 	 */
-	function layout() {
+	function layout(dim) {
 		let size = getComputedSlideSize(),
 			slidePadding = 20, // TODO Dig this out of DOM
 			zoom = "",
@@ -249,6 +249,13 @@ let Reveal = (() => {
 			bottom = "",
 			right = "",
 			transform = "";
+		
+		// adopt "width" & "height", if any
+		if (dim) {
+			size.presentationWidth = dim.width - (options.margin * 2);
+			size.presentationHeight = dim.height - (options.margin * 2);
+		}
+
 		// Layout the contents of the slides
 		layoutSlideContents(options.width, options.height, slidePadding);
 
@@ -264,7 +271,9 @@ let Reveal = (() => {
 		// Prefer zoom for scaling up so that content remains crisp.
 		// Don't use zoom to scale down since that can lead to shifts
 		// in text layout/line breaks.
-		if (scale < 1) {
+		if (scale > 1) {
+			zoom = scale;
+		} else {
 			left = "50%";
 			top = "50%";
 			bottom = "auto";
@@ -1014,7 +1023,7 @@ let Reveal = (() => {
 		VERSION,
 		initialize,
 		slide,
-
+		layout,
 		navigateLeft,
 		navigateRight,
 		navigateUp,
