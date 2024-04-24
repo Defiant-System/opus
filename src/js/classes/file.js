@@ -38,7 +38,7 @@ class File {
 					progress: true,
 					history: true,
 					center: true,
-					transition: "zoom", //  none/fade/slide/convex/concave/zoom
+					transition: "concave", //  none/fade/slide/convex/concave/zoom
 					slideNumber: "count",
 					spawn,
 				});

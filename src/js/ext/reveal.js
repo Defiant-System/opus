@@ -154,8 +154,7 @@ let Reveal = (() => {
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("show-progress");
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("vertical-center");
 
-		// setTimeout(() => slide(0, 0), 500);
-		slide(0, 0);
+		slide(4, 0);
 	}
 
 	/**
@@ -176,14 +175,55 @@ let Reveal = (() => {
 		// Query all horizontal slides in the deck
 		let horizontalSlides = Dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
 
+		// If no vertical index is specified and the upcoming slide is a
+		// stack, resume at its previous vertical index
+		if (v === undefined) {
+			v = getPreviousVerticalIndex(horizontalSlides[h]);
+		}
+
+		// If we were on a vertical stack, remember what vertical index
+		// it was on so we can resume at the same position when returning
+		if (previousSlide && previousSlide.parentNode && previousSlide.parentNode.classList.contains("stack")) {
+			setPreviousVerticalIndex(previousSlide.parentNode, indexv);
+		}
+
+		// Remember the state before this slide
+		let stateBefore = state.concat();
+
+		// Reset the state array
+		state.length = 0;
+
+		let indexhBefore = indexh || 0,
+			indexvBefore = indexv || 0;
+
 		// Activate and transition to the new slide
 		indexh = updateSlides(HORIZONTAL_SLIDES_SELECTOR, h === undefined ? indexh : h);
 		indexv = updateSlides(VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v);
 
+		// Update the visibility of slides now that the indices have changed
+		updateSlidesVisibility();
+
 		// make first slide active
-		horizontalSlides.get(h).addClass("present");
+		// horizontalSlides.get(h).addClass("present");
 
 		layout();
+
+		// Find the current horizontal slide and any possible vertical slides
+		// within it
+		var currentHorizontalSlide = horizontalSlides.get(indexh),
+			currentVerticalSlides = currentHorizontalSlide.find("section");
+
+		// Store references to the previous and current slides
+		currentSlide = currentVerticalSlides.get(indexv) || currentHorizontalSlide;
+
+		// Dispatch an event if the slide changed
+		var slideChanged = ( indexh !== indexhBefore || indexv !== indexvBefore );
+		if (slideChanged) {
+			// dispatchEvent ?
+		} else {
+			// Ensure that the previous slide is never the same as the current
+			previousSlide = null;
+		}
 
 		updateControls();
 		updateProgress();
@@ -269,6 +309,36 @@ let Reveal = (() => {
 	}
 
 	/**
+	 * Stores the vertical index of a stack so that the same
+	 * vertical slide can be selected when navigating to and
+	 * from the stack.
+	 *
+	 * @param {HTMLElement} stack The vertical stack element
+	 * @param {int} v Index to memorize
+	 */
+	function setPreviousVerticalIndex(stack, v) {
+		if (typeof stack === "object" && typeof stack.setAttribute === "function") {
+			stack.setAttribute("data-previous-indexv", v || 0);
+		}
+	}
+
+	/**
+	 * Retrieves the vertical index which was stored using
+	 * #setPreviousVerticalIndex() or 0 if no previous index
+	 * exists.
+	 *
+	 * @param {HTMLElement} stack The vertical stack element
+	 */
+	function getPreviousVerticalIndex(stack) {
+		if (typeof stack === "object" && typeof stack.setAttribute === "function" && stack.classList.contains("stack")) {
+			// Prefer manually defined start-indexv
+			let attributeName = stack.hasAttribute("data-start-indexv") ? "data-start-indexv" : "data-previous-indexv";
+			return parseInt(stack.getAttribute(attributeName) || 0, 10);
+		}
+		return 0;
+	}
+
+	/**
 	 * Calculates the computed pixel size of our slides. These
 	 * values are based on the width and height configuration
 	 * options.
@@ -336,10 +406,70 @@ let Reveal = (() => {
 	}
 
 	/**
+	 * Retrieves the h/v location of the current, or specified,
+	 * slide.
+	 *
+	 * @param {HTMLElement} slide If specified, the returned
+	 * index will be for this slide rather than the currently
+	 * active one
+	 *
+	 * @return {Object} { h: <int>, v: <int>, f: <int> }
+	 */
+	function getIndices(slide) {
+		// By default, return the current indices
+		let h = indexh,
+			v = indexv,
+			f;
+		// If a slide is specified, return the indices of that slide
+		if (slide) {
+			let isVertical = isVerticalSlide(slide);
+			let slideh = isVertical ? slide.parentNode : slide;
+			// Select all horizontal slides
+			let horizontalSlides = Dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR);
+			// Now that we know which the horizontal slide is, get its index
+			h = Math.max(horizontalSlides.indexOf(slideh), 0);
+			// Assume we're not vertical
+			v = undefined;
+			// If this is a vertical slide, grab the vertical index
+			if (isVertical) {
+				v = Math.max(slide.parent().find("section").indexOf(slide), 0);
+			}
+		}
+		if (!slide && currentSlide) {
+			let hasFragments = currentSlide.find(".fragment").length > 0;
+			if (hasFragments) {
+				let currentFragment = currentSlide.querySelector(".current-fragment");
+				if (currentFragment && currentFragment.hasAttribute("data-fragment-index")) {
+					f = parseInt(currentFragment.getAttribute("data-fragment-index"), 10);
+				} else {
+					f = currentSlide.find(".fragment.visible").length - 1;
+				}
+			}
+		}
+		return { h, v, f };
+
+	}
+
+	/**
 	 * Retrieves the total number of slides in this presentation.
 	 */
 	function getTotalSlides() {
 		return Dom.wrapper.find(`${SLIDES_SELECTOR}:not(.stack)`).length;
+	}
+
+	/**
+	 * Returns the background element for the given slide.
+	 * All slides, even the ones with no background properties
+	 * defined, have a background element so as long as the
+	 * index is valid an element will be returned.
+	 */
+	function getSlideBackground(x, y) {
+		let horizontalBackground = Dom.wrapper.find(".backgrounds > .slide-background")[x];
+		let verticalBackgrounds = horizontalBackground && $(horizontalBackground).find(".slide-background");
+		if (verticalBackgrounds && verticalBackgrounds.length && typeof y === "number") {
+			return verticalBackgrounds ? verticalBackgrounds[y] : undefined;
+		}
+		return horizontalBackground;
 	}
 
 	/**
@@ -420,7 +550,7 @@ let Reveal = (() => {
 
 			// Mark the current slide as present
 			slides.get(index)
-				.addClass("preset")
+				.addClass("present")
 				.removeAttr("aria-hidden");
 
 			// If this slide has a state associated with it, add it
@@ -438,6 +568,54 @@ let Reveal = (() => {
 	}
 
 	/**
+	 * Optimization method; hide all slides that are far away
+	 * from the present slide.
+	 */
+	function updateSlidesVisibility() {
+		// Select all slides and convert the NodeList result to
+		// an array
+		let horizontalSlides = Dom.wrapper.find(HORIZONTAL_SLIDES_SELECTOR),
+			horizontalSlidesLength = horizontalSlides.length,
+			distanceX,
+			distanceY;
+		if (horizontalSlidesLength && typeof indexh !== "undefined") {
+			// The number of steps away from the present slide that will
+			// be visible
+			let viewDistance = config.viewDistance;
+			for (let x = 0; x < horizontalSlidesLength; x++) {
+				let horizontalSlide = horizontalSlides.get(x);
+				let verticalSlides = horizontalSlide.find("section"),
+					verticalSlidesLength = verticalSlides.length;
+				// Determine how far away this slide is from the present
+				distanceX = Math.abs( ( indexh || 0 ) - x ) || 0;
+				// If the presentation is looped, distance should measure
+				// 1 between the first and last slides
+				if (config.loop) {
+					distanceX = Math.abs(((indexh || 0) - x) % (horizontalSlidesLength - viewDistance)) || 0;
+				}
+				// Show the horizontal slide if it's within the view distance
+				if (distanceX < viewDistance) {
+					showSlide(horizontalSlide[0]);
+				} else {
+					hideSlide(horizontalSlide[0]);
+				}
+				if (verticalSlidesLength) {
+					let oy = getPreviousVerticalIndex(horizontalSlide);
+					for (let y = 0; y < verticalSlidesLength; y++) {
+						let verticalSlide = verticalSlides.get(y);
+						distanceY = x === (indexh || 0) ? Math.abs((indexv || 0) - y) : Math.abs(y - oy);
+						if (distanceX + distanceY < viewDistance) {
+							showSlide(verticalSlide[0]);
+						} else {
+							hideSlide(verticalSlide[0]);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Returns a value ranging from 0-1 that represents
 	 * how far into the presentation we have navigated.
 	 */
@@ -445,12 +623,12 @@ let Reveal = (() => {
 		// The number of past and total slides
 		let totalCount = getTotalSlides();
 		let pastCount = getSlidePastCount();
-		if (currentSlide) {
-			let allFragments = currentSlide.querySelectorAll(".fragment");
+		if (currentSlide && currentSlide.length) {
+			let allFragments = currentSlide.find(".fragment");
 			// If there are fragments in the current slide those should be
 			// accounted for in the progress.
 			if (allFragments.length > 0) {
-				let visibleFragments = currentSlide.querySelectorAll(".fragment.visible");
+				let visibleFragments = currentSlide.find(".fragment.visible");
 				// This value represents how big a portion of the slide progress
 				// that is made up by its fragments (0-1)
 				let fragmentWeight = 0.9;
@@ -524,6 +702,87 @@ let Reveal = (() => {
 	}
 
 	/**
+	 * Called when the given slide is within the configured view
+	 * distance. Shows the slide element and loads any content
+	 * that is set to load lazily (data-src).
+	 */
+	function showSlide(slide) {
+		// Show the slide element
+		slide.style.display = "block";
+		// Media elements with data-src attributes
+		$("img[data-src], video[data-src], audio[data-src]", slide).map(element => {
+			element.setAttribute("src", element.getAttribute( "data-src"));
+			element.removeAttribute("data-src");
+		});
+
+		// Media elements with <source> children
+		$("video, audio", slide).map(element => {
+			let sources = 0;
+			$("source[data-src]", media).map(source => {
+				source.setAttribute("src", source.getAttribute( "data-src"));
+				source.removeAttribute("data-src");
+				sources += 1;
+			});
+			// If we rewrote sources for this video/audio element, we need
+			// to manually tell it to load from its new origin
+			if (sources > 0) {
+				media.load();
+			}
+		});
+
+		// Show the corresponding background element
+		let indices = getIndices(slide);
+		let background = getSlideBackground(indices.h, indices.v);
+		if (background) {
+			background.style.display = "block";
+
+			// If the background contains media, load it
+			if (background.hasAttribute("data-loaded") === false) {
+				background.setAttribute("data-loaded", "true");
+
+				let backgroundImage = slide.getAttribute("data-background-image"),
+					backgroundVideo = slide.getAttribute("data-background-video"),
+					backgroundVideoLoop = slide.hasAttribute("data-background-video-loop"),
+					backgroundVideoMuted = slide.hasAttribute("data-background-video-muted");
+
+				if (backgroundImage) {
+					// Images
+					background.style.backgroundImage = "url("+ backgroundImage +")";
+				} else if (backgroundVideo) {
+					// Videos
+					let video = document.createElement("video");
+					if (backgroundVideoLoop) {
+						video.setAttribute("loop", "");
+					}
+					if (backgroundVideoMuted) {
+						video.muted = true;
+					}
+					// Support comma separated lists of video sources
+					backgroundVideo.split(",").forEach(source => {
+						video.innerHTML += `<source src="${source}">`;
+					});
+					background.appendChild(video);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Called when the given slide is moved outside of the
+	 * configured view distance.
+	 */
+	function hideSlide(slide) {
+		// Hide the slide element
+		slide.style.display = "none";
+		// Hide the corresponding background element
+		let indices = getIndices(slide);
+		let background = getSlideBackground(indices.h, indices.v);
+		if (background) {
+			background.style.display = "none";
+		}
+	}
+
+	/**
 	 * Determine what available routes there are for navigation.
 	 *
 	 * @return {Object} containing four booleans: left/right/up/down
@@ -550,7 +809,7 @@ let Reveal = (() => {
 	function isVerticalSlide(slide) {
 		// Prefer slide argument, otherwise use current slide
 		slide = slide.length ? slide : currentSlide;
-		return slide && slide.parent() &&  slide.parent().nodeName() !== "section";
+		return slide && slide.length && slide.parent() &&  slide.parent().nodeName() !== "section";
 	}
 
 	function navigateLeft() {
