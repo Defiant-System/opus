@@ -74,8 +74,8 @@ let Reveal = (() => {
 		indexv,
 
 		// The previous and current slide HTML elements
-		previousSlide,
-		currentSlide,
+		previousSlide = [],
+		currentSlide = [],
 
 		previousBackground,
 
@@ -154,7 +154,9 @@ let Reveal = (() => {
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("show-progress");
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("vertical-center");
 
-		slide(4, 1);
+		// auto go to slide number
+		let initSlide = options.goTo || [0,0]; // <-- first slide
+		slide(...initSlide);
 	}
 
 	/**
@@ -166,9 +168,8 @@ let Reveal = (() => {
 	 * @param {int} v Vertical index of the target slide
 	 * @param {int} f Optional index of a fragment within the
 	 * target slide to activate
-	 * @param {int} o Optional origin for use in multimaster environments
 	 */
-	function slide(h, v, f, o) {
+	function slide(h, v, f) {
 		// Remember where we were at before
 		previousSlide = currentSlide;
 
@@ -178,13 +179,13 @@ let Reveal = (() => {
 		// If no vertical index is specified and the upcoming slide is a
 		// stack, resume at its previous vertical index
 		if (v === undefined) {
-			v = getPreviousVerticalIndex(horizontalSlides[h]);
+			v = getPreviousVerticalIndex(horizontalSlides.get(h));
 		}
 
 		// If we were on a vertical stack, remember what vertical index
 		// it was on so we can resume at the same position when returning
-		if (previousSlide && previousSlide.parentNode && previousSlide.parentNode.classList.contains("stack")) {
-			setPreviousVerticalIndex(previousSlide.parentNode, indexv);
+		if (previousSlide.length && previousSlide.parent().hasClass("stack")) {
+			setPreviousVerticalIndex(previousSlide.parent(), indexv);
 		}
 
 		// Remember the state before this slide
@@ -198,6 +199,7 @@ let Reveal = (() => {
 
 		// Activate and transition to the new slide
 		indexh = updateSlides(HORIZONTAL_SLIDES_SELECTOR, h === undefined ? indexh : h);
+		console.log( updateSlides( VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v ) );
 		indexv = updateSlides(VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v);
 
 		// Update the visibility of slides now that the indices have changed
@@ -214,12 +216,19 @@ let Reveal = (() => {
 		currentSlide = currentVerticalSlides.get(indexv) || currentHorizontalSlide;
 
 		// Dispatch an event if the slide changed
-		var slideChanged = ( indexh !== indexhBefore || indexv !== indexvBefore );
+		var slideChanged = (indexh !== indexhBefore || indexv !== indexvBefore);
 		if (slideChanged) {
 			// dispatchEvent ?
 		} else {
 			// Ensure that the previous slide is never the same as the current
-			previousSlide = null;
+			previousSlide = [];
+		}
+
+		// Solves an edge case where the previous slide maintains the
+		// 'present' class when navigating between adjacent vertical
+		// stacks
+		if (previousSlide.length) {
+			previousSlide.removeClass("present").attr({ "aria-hidden": "true" });
 		}
 
 		updateControls();
@@ -314,8 +323,8 @@ let Reveal = (() => {
 	 * @param {int} v Index to memorize
 	 */
 	function setPreviousVerticalIndex(stack, v) {
-		if (typeof stack === "object" && typeof stack.setAttribute === "function") {
-			stack.setAttribute("data-previous-indexv", v || 0);
+		if (stack.length) {
+			stack.data({ "previous-indexv": v || 0 });
 		}
 	}
 
@@ -327,10 +336,10 @@ let Reveal = (() => {
 	 * @param {HTMLElement} stack The vertical stack element
 	 */
 	function getPreviousVerticalIndex(stack) {
-		if (typeof stack === "object" && typeof stack.setAttribute === "function" && stack.classList.contains("stack")) {
+		if (stack.length && stack.hasClass("stack")) {
 			// Prefer manually defined start-indexv
-			let attributeName = stack.hasAttribute("data-start-indexv") ? "data-start-indexv" : "data-previous-indexv";
-			return parseInt(stack.getAttribute(attributeName) || 0, 10);
+			let attributeName = stack.data("start-indexv") ? "start-indexv" : "previous-indexv"
+			return parseInt(stack.data(attributeName) || 0, 10);
 		}
 		return 0;
 	}
@@ -835,6 +844,7 @@ let Reveal = (() => {
 	let Reveal = {
 		VERSION,
 		initialize,
+		slide,
 
 		navigateLeft,
 		navigateRight,

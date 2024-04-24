@@ -38,7 +38,7 @@
 
 			<section>
 				<h2>Javascript</h2>
-				<pre><code class="hljs js" data-trim contenteditable>
+				<pre><code class="hljs js">
 function add( x, y ) {
     return x + y;
 }
@@ -50,7 +50,7 @@ console.log(val);
 
 			<section>
 				<h2>HTML</h2>
-				<pre><code class="hljs html" data-trim contenteditable>
+				<pre><code class="hljs html">
 &lt;h1> Why penguins are better than people?&lt;/h1>
 &lt;ul>
     &lt;li> They are cute. &lt;/li>
@@ -62,7 +62,7 @@ console.log(val);
 
 			<section>
 				<h2>CSS</h2>
-				<pre><code class="hljs css" data-trim contenteditable>
+				<pre><code class="hljs css">
 body {
     background: blue;
 }
