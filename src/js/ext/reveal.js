@@ -154,7 +154,7 @@ let Reveal = (() => {
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("show-progress");
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("vertical-center");
 
-		slide(4, 0);
+		slide(4, 1);
 	}
 
 	/**
@@ -202,9 +202,6 @@ let Reveal = (() => {
 
 		// Update the visibility of slides now that the indices have changed
 		updateSlidesVisibility();
-
-		// make first slide active
-		// horizontalSlides.get(h).addClass("present");
 
 		layout();
 
@@ -528,7 +525,7 @@ let Reveal = (() => {
 
 			for (let i=0; i<slidesLength; i++) {
 				let element = slides.get(i);
-				let reverse = !isVerticalSlide( element);
+				let reverse = !isVerticalSlide(element);
 
 				element.removeClass("past present future");
 				// http://www.w3.org/html/wg/drafts/html/master/editing.html#the-hidden-attribute
@@ -541,10 +538,12 @@ let Reveal = (() => {
 
 				if (i < index) {
 					// Any element previous to index is given the "past" class
-					element.addClass(reverse ? "future" : "past");
+					element.addClass("past");
+					// element.addClass(reverse ? "future" : "past");
 				} else if (i > index) {
 					// Any element subsequent to index is given the "future" class
-					element.addClass(reverse ? "past" : "future");
+					element.addClass("future");
+					// element.addClass(reverse ? "past" : "future");
 				}
 			}
 

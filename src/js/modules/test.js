@@ -3,6 +3,8 @@ let Test = {
 	init(APP, Spawn) {
 
 		return;
+		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-down"]`).trigger("click"), 1000);
+		return;
 		setTimeout(() => Spawn.find(`.file-slides .controls span[data-click="nav-right"]`).trigger("click"), 1000);
 
 		return;
