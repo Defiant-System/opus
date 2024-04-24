@@ -7,6 +7,10 @@
 @import "./modules/test.js"
 
 
+// import libs
+let { Hljs } = await window.fetch("~/js/bundle.js");
+
+
 // default settings
 const DefaultSettings = {
 	"document-zoom": 100,

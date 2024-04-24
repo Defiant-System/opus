@@ -133,6 +133,9 @@ let Reveal = (() => {
 
 		// Updates the presentation to match the current configuration values
 		configure(options);
+
+		// code hightlight
+		Dom.wrapper.find("pre code").map(code => Hljs.highlightElement(code));
 	}
 
 	/**
