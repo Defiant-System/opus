@@ -15,29 +15,6 @@
 			el;
 		// console.log(event);
 		switch (event.type) {
-			// native events
-			case "mouseover":
-				el = $(event.target);
-				// if (el.hasClass("overview")) {
-				// 	console.log(event.target);
-				// 	return Self.els.toolAdd.removeAttr("data-option");
-				// }
-
-				let [a, b, c, d, x, y] = Self.els.container.css("transform").replace(/matrix\(|\)/g, "").split(",").map(i => +i),
-					offset = el.offset(),
-					top = offset.top + y,
-					left = offset.left + x,
-					options = [];
-				
-				options.push("n");
-				// options.push("s");
-				// options.push("e");
-				// options.push("w");
-
-				Self.els.toolAdd
-					.css({ top, left })
-					.data({ option: options.join("") });
-				break;
 			// system events
 			case "spawn.focus":
 				// fast references
@@ -47,14 +24,10 @@
 					toolAdd: Spawn.find(`.tool-add`),
 				};
 				// bind event handler
-				Self.els.container.on("mouseover", "li:not(.stack)", Self.dispatch);
-				// Self.els.overview.on("mouseover", Self.dispatch);
 				Self.els.overview.on("mousedown", Self.doPan);
 				break;
 			case "spawn.blur":
 				// unbind event handler
-				Self.els.container.off("mouseover", "li:not(.stack)", Self.dispatch);
-				// Self.els.overview.off("mouseover", Self.dispatch);
 				Self.els.overview.off("mousedown", Self.doPan);
 				// reset references
 				Self.els = {};
@@ -79,6 +52,32 @@
 				// active indicator
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
+
+				let ul = el,
+					ulIndex = 0;
+				while (!ul.parent().hasClass("container")) {
+					ul = ul.parents("ul");
+					ulIndex++;
+				}
+
+				let rect1 = Self.els.overview[0].getBoundingClientRect(),
+					rect2 = el[0].getBoundingClientRect(),
+					top = rect2.y - rect1.y,
+					left = rect2.x - rect1.x,
+					options = [];
+
+				if (ulIndex % 2 === 1) {
+					options.push("n");
+					options.push("s");	
+				}
+				if (ulIndex % 2 === 0) {
+					options.push("e");
+					options.push("w");
+				}
+
+				Self.els.toolAdd
+					.css({ top, left })
+					.data({ option: options.join("") });
 				break;
 		}
 	},
