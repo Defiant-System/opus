@@ -25,7 +25,7 @@
 					el[value ? "removeClass" : "addClass"]("tool-active_");
 				}
 				// toggle app content
-				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-sidebar-overview");
+				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-overview");
 				// return "state"
 				return !value;
 		}

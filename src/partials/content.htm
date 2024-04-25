@@ -1,9 +1,11 @@
-<layout>
+<layout class="show-overview">
 	<!-- shown if no file is opened -->
 	<div class="blank-view" data-area="blankView">
 		<!-- blank view HTML goes here -->
 	</div>
 	
+	@import "sections/temp-overview.htm"
+
 	<content>
 		<div class="body">
 			@import "sections/tools-text.htm"
@@ -11,7 +13,6 @@
 			@import "sections/tools-shape.htm"
 
 			@import "sections/player-helpers.htm"
-			@import "sections/temp-overview.htm"
 
 			<div class="files-wrapper" data-area="file">
 				<!-- slide HTML goes here -->
