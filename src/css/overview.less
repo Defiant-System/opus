@@ -11,6 +11,12 @@
 	perspective: 700px;
 	--width: 120px;
 	--height: 80px;
+	--mT: 7px;
+	--mR: 21px;
+	--mB: 7px;
+	--mL: 11px;
+	--tX: 0;
+	--tY: 0;
 
 	> .container {
 		position: absolute;
@@ -21,13 +27,13 @@
 
 	ul {
 		li > ul {
-			width: 100%;
-			margin: -7px 0 0 -21px;
 			white-space: normal;
+			margin: calc( var(--mT) * -1 ) 0 0 calc( var(--mR) * -1 );
+			transform: translateY( calc( calc( calc( var(--height) + var(--mT) ) + var(--mB) ) * var(--tY) ) );
 
 			li > ul {
 				white-space: nowrap;
-				transform: translateX(-304px);
+				transform: translateX( calc( calc( calc( var(--width) + var(--mL) ) + var(--mR) ) * var(--tX) ) );
 			}
 		}
 	}
@@ -38,18 +44,23 @@
 		white-space: nowrap;
 		counter-reset: slides-counter;
 
+		&:hover > li.stack:after,
+		&:hover > li:not(.stack):after {
+			opacity: .75;
+		}
+
 		li {
 			position: relative;
 			display: inline-block;
 			width: var( --width );
 			height: var( --height );
+			margin: var(--mT) var(--mL) var(--mB) var(--mR);
 			background: #e0e0e0;
 			border-radius: 6px;
-			margin: 7px 11px 7px 21px;
 			vertical-align: bottom;
 			counter-increment: slides-counter;
 
-			&:not(.stack):after {
+			&:after {
 				content: counter(slides-counter);
 				position: absolute;
 				bottom: 1px;
@@ -57,10 +68,10 @@
 				width: 19px;
 				text-align: right;
 				font-size: 12px;
-				opacity: .75;
+				opacity: 0;
 			}
 
-			&:not(.stack):hover {
+			&:not(.stack, .active):hover {
 				&:before {
 					content: "";
 					background: rgba(#fff,.75);
@@ -76,6 +87,10 @@
 
 			&.stack {
 				background: transparent;
+
+				&:after {
+					opacity: 0;
+				}
 			}
 
 			&.active {

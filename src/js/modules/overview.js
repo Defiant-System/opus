@@ -29,5 +29,18 @@
 				// return "state"
 				return !value;
 		}
+	},
+	pan(event) {
+		let APP = opus,
+			Self = APP.spawn.overview,
+			Drag = Self.drag;
+		switch (event.type) {
+			case "mousedown":
+				break;
+			case "mousemove":
+				break;
+			case "mouseup":
+				break;
+		}
 	}
 }
