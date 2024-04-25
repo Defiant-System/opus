@@ -10,7 +10,7 @@
 			Self = APP.spawn.overview,
 			Spawn = event.spawn,
 			Tab = Spawn ? Spawn.data.tabs._active : null,
-			name,
+			oRect,
 			value,
 			el;
 		// console.log(event);
@@ -44,8 +44,35 @@
 				}
 				// toggle app content
 				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-overview");
+				// auto-center view
+				Self.dispatch({ type: "auto-center-overview" });
 				// return "state"
 				return !value;
+			case "auto-center-overview":
+				oRect = Self.els.overview[0].getBoundingClientRect();
+				value = {
+					y: 1e5,
+					x: 1e5,
+					w: 0,
+					h: 0,
+				};
+				Self.els.container.find("li").map(element => {
+					let rect = element.getBoundingClientRect();
+					value.y = Math.min(value.y, (rect.y - oRect.y)) | 0;
+					value.x = Math.min(value.x, (rect.x - oRect.x)) | 0;
+					value.w = Math.max(value.w, (rect.x - oRect.x) + rect.width) | 0;
+					value.h = Math.max(value.h, (rect.y - oRect.y) + rect.height) | 0;
+				});
+				// normalize values
+				value.w -= value.x;
+				value.h -= value.y;
+				value.x = value.y = 0;
+				console.log(value);
+				console.log(oRect);
+
+				// center overview container
+				Self.els.container.css({ transform: `translate(70px, 210px)` });
+				break;
 			case "add-slide":
 				console.log(event);
 				break;
@@ -66,10 +93,11 @@
 					ulIndex++;
 				}
 
-				let rect1 = Self.els.overview[0].getBoundingClientRect(),
-					rect2 = el[0].getBoundingClientRect(),
-					top = rect2.y - rect1.y,
-					left = rect2.x - rect1.x,
+				oRect = Self.els.overview[0].getBoundingClientRect();
+
+				let rect = el[0].getBoundingClientRect(),
+					top = rect.y - oRect.y,
+					left = rect.x - oRect.x,
 					options = [];
 
 				if (ulIndex % 2 === 1) {
@@ -86,7 +114,6 @@
 					if (el.index() === 0) options.push("n");
 					if (el.index() === siblings.length-1) options.push("s");
 				}
-
 				// normalize options
 				options = options.join("");
 				// apply to add tools
