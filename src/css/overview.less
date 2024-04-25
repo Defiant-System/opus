@@ -19,9 +19,14 @@
 	--tY: 0;
 
 	> .container {
+		// background: rgba(#f00,.1);
 		position: absolute;
 		top: 0;
 		left: 0;
+		width: calc( calc( var(--width) + var(--mL) ) + var(--mR) );
+		height: calc( calc( var(--height) + var(--mT) ) + var(--mB) );
+		border-radius: 9px;
+		// transform: translate(0, 0); // default
 		transform: translate(10px, 180px);
 	}
 
@@ -74,7 +79,7 @@
 			&:not(.stack, .active):hover {
 				&:before {
 					content: "";
-					background: rgba(#fff,.75);
+					background: rgba(#000,.025);
 					border-radius: 9px;
 					position: absolute;
 					top: -5px;

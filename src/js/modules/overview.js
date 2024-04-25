@@ -13,7 +13,17 @@
 			name,
 			value,
 			el;
+		// console.log(event);
 		switch (event.type) {
+			// system events
+			case "spawn.focus":
+				// bind event handler
+				Spawn.find(`.overview`).on("mousedown", Self.doPan);
+				break;
+			case "spawn.blur":
+				// unbind event handler
+				Spawn.find(`.overview`).off("mousedown", Self.doPan);
+				break;
 			// custom events
 			case "toggle-overview":
 				if (event.target) {
@@ -30,16 +40,38 @@
 				return !value;
 		}
 	},
-	pan(event) {
+	doPan(event) {
 		let APP = opus,
 			Self = APP.spawn.overview,
 			Drag = Self.drag;
 		switch (event.type) {
 			case "mousedown":
+				// stop default behaviour
+				event.preventDefault();
+
+				let doc = $(document),
+					el = $(event.target).parents("?.overview").find(".container"),
+					tr = el.css("transform").replace(/matrix\(|\)/g, "").split(",").map(i => +i),
+					click = {
+						x: event.clientX - tr[4],
+						y: event.clientY - tr[5],
+					};
+
+				// create drag object
+				Self.drag = { el, doc, click };
+
+				// bind event
+				Self.drag.doc.on("mousemove mouseup", Self.doPan);
 				break;
 			case "mousemove":
+				let x = event.clientX - Drag.click.x,
+					y = event.clientY - Drag.click.y,
+					transform = `translate(${x}px, ${y}px)`;
+				Drag.el.css({ transform });
 				break;
 			case "mouseup":
+				// unbind event
+				Self.drag.doc.off("mousemove mouseup", Self.doPan);
 				break;
 		}
 	}
