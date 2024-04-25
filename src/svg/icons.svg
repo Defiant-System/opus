@@ -10,13 +10,19 @@
 			l-1.6,1.6c-1-1-2.4-1.6-3.9-1.6C3.5,1.9,1,4.4,1,7.4z"/>
 	</svg>
 
-	<svg id="icon-sidebar" viewBox="0 0 13 13">
+	<svg id="icon-overview" viewBox="0 0 13 13">
 		<style type="text/css">
 			.st0{fill:#333;}
 		</style>
-		<path class="st0" d="M11,2H6H5H2H1v1v7v1h1h3h1h5h1v-1V3V2H11z M2,10V3h3v7H2z M11,10H6V3h5V10z"/>
-		<rect x="3" y="4" class="st0" width="1" height="1"/>
-		<rect x="3" y="6" class="st0" width="1" height="1"/>
+		<path class="st0" d="M1,1v3h3V1H1z"/>
+		<path class="st0" d="M5,1v3h3V1H5z"/>
+		<path class="st0" d="M9,1v3h3V1H9z"/>
+		<path class="st0" d="M1,5v3h3V5H1z"/>
+		<path class="st0" d="M5,5v3h3V5H5z"/>
+		<path class="st0" d="M9,5v3h3V5H9z"/>
+		<path class="st0" d="M1,9v3h3V9H1z"/>
+		<path class="st0" d="M5,9v3h3V9H5z"/>
+		<path class="st0" d="M9,9v3h3V9H9z"/>
 	</svg>
 
 	<svg id="icon-play" viewBox="0 0 13 13">

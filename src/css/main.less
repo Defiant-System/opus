@@ -4,7 +4,7 @@
 @import "blank-view";
 
 @import "popups";
-@import "sidebar-thumbs";
+@import "overview";
 @import "sidebar-format";
 @import "op-elements";
 @import "player-helpers";
@@ -113,12 +113,12 @@ layout {
 		content { display: none; }
 	}
 
-	&.show-sidebar-thumbs {
+	&.show-overview {
 		content {
 			padding-left: 163px;
 		}
 
-		sidebar.thumbs {
+		.overview {
 			left: 0;
 
 			&:after { border-color: lighten(@layout_outline, 9%); }

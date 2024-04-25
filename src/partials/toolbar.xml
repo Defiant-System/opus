@@ -1,6 +1,6 @@
 <ToolBar>
 	<Group width="21%">
-		<Tool symbol="icon-sidebar" click="toggle-thumbs" state="disabled"/>
+		<Tool symbol="icon-overview" click="toggle-overview" state="disabled"/>
 		<Select name="100%" width="35" menu="view-zoom" state="disabled"></Select>
 	</Group>
 	<Group width="9%">

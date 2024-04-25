@@ -39,7 +39,7 @@ class Tabs {
 			tabEl = this._spawn.tabs.add(tName, tId),
 			bodyEl = this._fileTemplate.clone(),
 			history = new window.History,
-			thumbs = false,
+			overview = false,
 			format = false;
 
 		if (fItem) {
@@ -57,7 +57,7 @@ class Tabs {
 			}
 
 			// save reference to tab
-			this._stack[tId] = { tId, tabEl, bodyEl, history, file, thumbs, format };
+			this._stack[tId] = { tId, tabEl, bodyEl, history, file, overview, format };
 			// focus on file
 			this.focus(tId);
 		} else {
@@ -77,7 +77,7 @@ class Tabs {
 		// clone & append original bodyEl
 		bodyEl = this._content.append(bodyEl);
 		// save reference to this spawns stack
-		this._stack[tId] = { tId, tabEl, bodyEl, history, file, thumbs, format };
+		this._stack[tId] = { tId, tabEl, bodyEl, history, file, overview, format };
 	}
 
 	removeDelayed() {
@@ -110,8 +110,8 @@ class Tabs {
 			this._parent.blankView.dispatch({ type: "hide-blank-view", spawn });
 			// enable toolbar
 			this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: true });
-			// toggle thumbs
-			// this._parent.thumbs.dispatch({ type: "toggle-thumbs", spawn, isOn: this._active.thumbs });
+			// toggle overview
+			// this._parent.overview.dispatch({ type: "toggle-overview", spawn, isOn: this._active.overview });
 			// toggle format
 			// this._parent.format.dispatch({ type: "toggle-format", spawn, isOn: this._active.format });
 			// notify file

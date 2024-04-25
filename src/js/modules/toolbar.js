@@ -28,13 +28,13 @@
 					toolText: Spawn.find(`.toolbar-tool_[data-click="insert-text-box"]`),
 					toolShape: Spawn.find(`.toolbar-tool_[data-arg="shape"]`),
 					toolImage: Spawn.find(`.toolbar-tool_[data-arg="image"]`),
-					thumbs: Spawn.find(`.toolbar-tool_[data-click="toggle-thumbs"]`),
+					overview: Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`),
 					format: Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`),
 				};
 				break;
 			// custom events
-			case "toggle-thumbs":
-				return APP.spawn.thumbs.dispatch(event);
+			case "toggle-overview":
+				return APP.spawn.overview.dispatch(event);
 			case "toggle-format":
 				return APP.spawn.format.dispatch(event);
 			case "toggle-toolbars":
