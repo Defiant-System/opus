@@ -16,17 +16,18 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		transform: translate(50px, 220px);
+		transform: translate(10px, 180px);
 	}
 
 	ul {
-		li ul {
+		li > ul {
 			width: 100%;
 			margin: -7px 0 0 -21px;
 			white-space: normal;
 
-			li {
-				// background: rgba(#f00,.15);
+			li > ul {
+				white-space: nowrap;
+				transform: translateX(-304px);
 			}
 		}
 	}
