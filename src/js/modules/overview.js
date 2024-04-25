@@ -75,9 +75,10 @@
 					options.push("w");
 				}
 
-				Self.els.toolAdd
-					.css({ top, left })
-					.data({ option: options.join("") });
+				// normalize options
+				options = options.join("");
+				// apply to add tools
+				Self.els.toolAdd.css({ top, left }).data({ options });
 				break;
 		}
 	},
@@ -89,6 +90,8 @@
 			case "mousedown":
 				// stop default behaviour
 				event.preventDefault();
+
+				Self.els.toolAdd.removeAttr("data-options");
 
 				let doc = $(document),
 					el = $(event.target).parents("?.overview").find(".container"),
