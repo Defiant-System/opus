@@ -18,6 +18,98 @@
 	--tX: 0;
 	--tY: 0;
 
+	.tool-add {
+		// background: rgba(#f00,.1);
+		position: absolute;
+		top: 0;
+		left: 0;
+		pointer-events: none;
+		width: var(--width);
+		height: var(--height);
+		border-radius: 9px;
+		z-index: 99;
+
+		&[data-option*="n"] div.add-north,
+		&[data-option*="w"] div.add-west,
+		&[data-option*="s"] div.add-south,
+		&[data-option*="e"] div.add-east { display: block; }
+
+		> div {
+			// background: rgba(#00f,.1);
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			pointer-events: all;
+			border-radius: inherit;
+			border: 3px dashed #ddd;
+
+			&:before {
+				content: "";
+				// background: rgba(#f00,.1);
+				background: transparent;
+				position: absolute;
+			}
+
+			&:after {
+				content: "";
+				background: url(~/icons/icon-add.png) 50% 50%/contain no-repeat;
+				position: absolute;
+				top: 25px;
+				left: 45px;
+				width: 26px;
+				height: 26px;
+				opacity: .15;
+			}
+
+			&.add-north {
+				transform: translateY( calc( -100% - 13px ) );
+
+				&:before {
+					top: 100%;
+					left: 0;
+					right: 0;
+					height: 17px;
+				}
+			}
+
+			&.add-west {
+				transform: translateX( calc( 100% + 13px ) );
+
+				&:before {
+					top: 0;
+					bottom: 0;
+					right: 100%;
+					width: 17px;
+				}
+			}
+
+			&.add-south {
+				transform: translateY( calc( 100% + 13px ) );
+
+				&:before {
+					left: 0;
+					right: 0;
+					bottom: 100%;
+					height: 17px;
+				}
+			}
+
+			&.add-east {
+				transform: translateX( calc( -100% - 13px ) );
+
+				&:before {
+					top: 0;
+					bottom: 0;
+					left: 100%;
+					width: 17px;
+				}
+			}
+		}
+	}
+
 	> .container {
 		// background: rgba(#f00,.1);
 		position: absolute;
