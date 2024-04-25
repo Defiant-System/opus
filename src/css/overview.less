@@ -82,8 +82,8 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: calc( calc( var(--width) + var(--mL) ) + var(--mR) );
-		height: calc( calc( var(--height) + var(--mT) ) + var(--mB) );
+		// width: calc( calc( var(--width) + var(--mL) ) + var(--mR) );
+		// height: calc( calc( var(--height) + var(--mT) ) + var(--mB) );
 		border-radius: 9px;
 		// transform: translate(0, 0); // default
 		// transform: translate(70px, 210px);
@@ -108,8 +108,12 @@
 		white-space: nowrap;
 		counter-reset: slides-counter;
 
-		&:hover > li.stack:after,
-		&:hover > li:not(.stack):after {
+		// &:hover > li.stack:after,
+		// &:hover > li:not(.stack):after {
+		// 	opacity: .75;
+		// }
+
+		&:hover:not(:has(li:hover)) >  li:after {
 			opacity: .75;
 		}
 

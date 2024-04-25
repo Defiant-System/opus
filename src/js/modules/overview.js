@@ -56,7 +56,7 @@
 					w: 0,
 					h: 0,
 				};
-				Self.els.container.find("li").map(element => {
+				Self.els.container.find("ul").map(element => {
 					let rect = element.getBoundingClientRect();
 					value.y = Math.min(value.y, (rect.y - oRect.y)) | 0;
 					value.x = Math.min(value.x, (rect.x - oRect.x)) | 0;
@@ -66,12 +66,15 @@
 				// normalize values
 				value.w -= value.x;
 				value.h -= value.y;
-				value.x = value.y = 0;
-				console.log(value);
-				console.log(oRect);
+				value.x = (oRect.width - value.w) >> 1;
+				value.y = (oRect.height - value.h) >> 1;
+				// push an extra height
+				value.y += parseInt(Self.els.container.cssProp("--height"), 10);
+				// console.log(value);
+				// console.log(oRect);
 
 				// center overview container
-				Self.els.container.css({ transform: `translate(70px, 210px)` });
+				Self.els.container.css({ transform: `translate(${value.x}px, ${value.y}px)` });
 				break;
 			case "add-slide":
 				console.log(event);
