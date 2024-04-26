@@ -78,16 +78,20 @@
 				Self.els.container.css({ transform: `translate(${value.x}px, ${value.y}px)` });
 				break;
 			case "add-slide":
-				let [what, dir] = event.el.prop("className").split("-");
+				let [what, dir] = event.el.prop("className").split("-"),
+					aEl = Self.els.overview.find(".active").removeClass("active selected"),
+					aUl = aEl.parent(),
+					nEl;
+
+				if (aUl.parent().hasClass("container") && aUl.find("li").length === 1) {
+					if (["north", "south"].includes(dir)) aUl.removeClass("slides-h slides-v").addClass("slides-v");
+					else aUl.removeClass("slides-h slides-v").addClass("slides-h");
+				}
 
 				// hide add-tools
 				Self.els.toolAdd.removeAttr("data-options");
 
-				// insert new cloned item
-				let aEl = Self.els.overview.find(".active").removeClass("active selected"),
-					nEl;
-
-				if (aEl.parent().hasClass("slides-h")) {
+				if (aUl.hasClass("slides-h")) {
 					switch (dir) {
 						case "north": break;
 						case "south": break;
@@ -99,7 +103,9 @@
 						case "north": nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`)); break;
 						case "south": nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`)); break;
 						case "east": break;
-						case "west": break;
+						case "west":
+							return console.log(123);
+							break;
 					}
 				}
 				// wait until next tick
@@ -108,6 +114,9 @@
 						el.removeClass(`new-${dir} appear`).trigger("click");
 					});
 				});
+				break;
+			case "delete-slide":
+				console.log(event);
 				break;
 			case "select-slide":
 				el = $(event.target).parents("?li").get(0);
@@ -138,7 +147,7 @@
 				if (ul.hasClass("slides-v")) {
 					options.push("e");
 					options.push("w");
-					if (el.index() === -ultY) options = [];
+					if (el.index() === -ultY && !ul.parent().hasClass("container")) options = [];
 					if (el.index() === 0) options.push("n");
 					if (el.index() === siblings.length-1) options.push("s");
 				}

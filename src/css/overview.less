@@ -33,7 +33,8 @@
 		&[data-options*="n"] div.add-north,
 		&[data-options*="w"] div.add-west,
 		&[data-options*="s"] div.add-south,
-		&[data-options*="e"] div.add-east { display: block; }
+		&[data-options*="e"] div.add-east,
+		&[data-options] i.icon-trashcan { display: block; }
 
 		> div {
 			// background: rgba(#00f,.1);
@@ -59,20 +60,37 @@
 				opacity: .15;
 			}
 
-			&.add-north {
-				transform: translateY( calc( -100% - 13px ) );
+			&.add-north { transform: translateY( calc( -100% - 13px ) ); }
+			&.add-west  { transform: translateX( calc( 100% + 32px ) ); }
+			&.add-south { transform: translateY( calc( 100% + 13px ) ); }
+			&.add-east  { transform: translateX( calc( -100% - 32px ) ); }
+		}
+
+		.icon-trashcan {
+			position: absolute;
+			right: -25px;
+			bottom: 0;
+			width: 21px;
+			height: 21px;
+			pointer-events: all;
+			cursor: pointer;
+
+			&:after {
+				content: "";
+				background: url(~/icons/icon-trashcan.png) 0 0 no-repeat;
+				background-size: 17px 17px;
+				position: absolute;
+				top: 2px;
+				left: 2px;
+				width: 17px;
+				height: 17px;
+				opacity: .25;
 			}
 
-			&.add-west {
-				transform: translateX( calc( 100% + 32px ) );
-			}
-
-			&.add-south {
-				transform: translateY( calc( 100% + 13px ) );
-			}
-
-			&.add-east {
-				transform: translateX( calc( -100% - 32px ) );
+			&:hover {
+				&:after {
+					opacity: .75;
+				}
 			}
 		}
 	}
@@ -110,22 +128,6 @@
 			transform: translateX( calc( calc( calc( var(--width) + var(--mL) ) + var(--mR) ) * var(--tX) ) );
 
 			> li {
-				&.new-north {
-					top: -31px;
-					opacity: 0;
-					width: 0;
-					margin-right: 0;
-					transition: all 150ms ease-in-out;
-				}
-
-				&.new-south {
-					top: 31px;
-					opacity: 0;
-					width: 0;
-					margin-right: 0;
-					transition: all 150ms ease-in-out;
-				}
-
 				&.new-east {
 					left: 31px;
 					opacity: 0;
@@ -142,11 +144,14 @@
 					transition: all 150ms ease-in-out;
 				}
 
-				&.appear {
-					left: 0;
-					opacity: 1;
-					width: var( --width );
-					margin-right: var(--mR);
+				&.new-east,
+				&.new-west {
+					&.appear {
+						left: 0;
+						opacity: 1;
+						width: var( --width );
+						margin-right: var(--mR);
+					}
 				}
 			}
 		}
@@ -155,6 +160,34 @@
 			width: calc( calc( var(--width) + var(--mL) ) + var(--mR) );
 			white-space: normal;
 			transform: translateY( calc( calc( calc( var(--height) + var(--mT) ) + var(--mB) ) * var(--tY) ) );
+			
+			> li {
+				&.new-north {
+					top: -31px;
+					opacity: 0;
+					height: 0;
+					margin-bottom: 0;
+					transition: all 150ms ease-in-out;
+				}
+
+				&.new-south {
+					top: 31px;
+					opacity: 0;
+					height: 0;
+					margin-bottom: 0;
+					transition: all 150ms ease-in-out;
+				}
+
+				&.new-north,
+				&.new-south {
+					&.appear {
+						top: 0;
+						opacity: 1;
+						height: var( --height );
+						margin-bottom: var(--mB);
+					}
+				}
+			}
 		}
 
 		// &:hover:not(:has(li:hover)) > li:after {
