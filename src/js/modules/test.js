@@ -2,10 +2,11 @@
 let Test = {
 	init(APP, Spawn) {
 
+		// return;
 
-		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 1000);
-		return;
-		setTimeout(() => Spawn.find(`.overview li:nth(2)`).trigger("click"), 700);
+		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 300);
+		// return;
+		setTimeout(() => Spawn.find(`.overview li:nth(0)`).trigger("click"), 700);
 		return;
 		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-sidebar"]`).trigger("click"), 500);
 		return;

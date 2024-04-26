@@ -12,6 +12,7 @@
 			Tab = Spawn ? Spawn.data.tabs._active : null,
 			oRect,
 			value,
+			ul,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -19,7 +20,7 @@
 			case "spawn.focus":
 				// fast references
 				Self.els = {
-					container: Spawn.find(`.container`),
+					container: Spawn.find(`.overview .container`),
 					overview: Spawn.find(`.overview`),
 					toolAdd: Spawn.find(`.tool-add`),
 				};
@@ -77,24 +78,48 @@
 				Self.els.container.css({ transform: `translate(${value.x}px, ${value.y}px)` });
 				break;
 			case "add-slide":
-				console.log(event);
+				let [what, dir] = event.el.prop("className").split("-");
+
+				// hide add-tools
+				Self.els.toolAdd.removeAttr("data-options");
+
+				// insert new cloned item
+				let aEl = Self.els.overview.find(".active").removeClass("active selected"),
+					nEl;
+
+				if (aEl.parent().hasClass("slides-h")) {
+					switch (dir) {
+						case "north": break;
+						case "south": break;
+						case "east": nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`)); break;
+						case "west": nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`)); break;
+					}
+				} else {
+					switch (dir) {
+						case "north": nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`)); break;
+						case "south": nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`)); break;
+						case "east": break;
+						case "west": break;
+					}
+				}
+				// wait until next tick
+				requestAnimationFrame(() => {
+					nEl.cssSequence("appear", "transitionend", el => {
+						el.removeClass(`new-${dir} appear`).trigger("click");
+					});
+				});
 				break;
 			case "select-slide":
 				el = $(event.target).parents("?li").get(0);
 				if (!el.length) return;
 				// active indicator
-				event.el.find(".active").removeClass("active");
+				event.el.find(".active, .selected").removeClass("active selected");
 				el.addClass("active");
 
-				let siblings = el.parent().find("> li"),
+				ul = el.parent();
+				let siblings = ul.find("> li"),
 					ultY = +el.parent().cssProp("--tY"),
-					ultX = +el.parent().cssProp("--tX"),
-					ul = el,
-					ulIndex = 0;
-				while (!ul.parent().hasClass("container")) {
-					ul = ul.parents("ul");
-					ulIndex++;
-				}
+					ultX = +el.parent().cssProp("--tX");
 
 				oRect = Self.els.overview[0].getBoundingClientRect();
 
@@ -103,14 +128,14 @@
 					left = rect.x - oRect.x,
 					options = [];
 
-				if (ulIndex % 2 === 1) {
+				if (ul.hasClass("slides-h")) {
 					options.push("n");
 					options.push("s");
-					if (el.index() === -ultX && ulIndex > 1) options = [];
+					if (el.index() === -ultX && !ul.parent().hasClass("container")) options = [];
 					if (el.index() === 0) options.push("e");
 					if (el.index() === siblings.length-1) options.push("w");
 				}
-				if (ulIndex % 2 === 0) {
+				if (ul.hasClass("slides-v")) {
 					options.push("e");
 					options.push("w");
 					if (el.index() === -ultY) options = [];
