@@ -6,7 +6,8 @@ let Test = {
 
 		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 300);
 		// return;
-		setTimeout(() => Spawn.find(`.overview li:nth(1)`).trigger("click"), 700);
+		setTimeout(() => Spawn.find(`.overview li:nth(1)`).trigger("click"), 500);
+		// setTimeout(() => Spawn.find(`.overview .add-east`).trigger("click"), 700);
 		return;
 		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-sidebar"]`).trigger("click"), 500);
 		return;

@@ -12,6 +12,8 @@
 			Tab = Spawn ? Spawn.data.tabs._active : null,
 			oRect,
 			value,
+			ultY, ultX,
+			siblings,
 			aEl, aUl,
 			el;
 		// console.log(event);
@@ -69,8 +71,6 @@
 				value.h -= value.y;
 				value.x = (oRect.width - value.w) >> 1;
 				value.y = (oRect.height - value.h) >> 1;
-				// push an extra height
-				// value.y += parseInt(Self.els.container.cssProp("--height"), 10);
 				// console.log(value);
 				// console.log(oRect);
 
@@ -82,6 +82,10 @@
 					nEl;
 				aEl = Self.els.overview.find(".active").removeClass("active selected"),
 				aUl = aEl.parent();
+				ultY = +aUl.cssProp("--tY") || 0;
+				ultX = +aUl.cssProp("--tX") || 0;
+
+				value = [];
 
 				if (aUl.parent().hasClass("container") && aUl.find("li").length === 1) {
 					if (["north", "south"].includes(dir)) aUl.removeClass("slides-h slides-v").addClass("slides-v");
@@ -95,22 +99,31 @@
 					switch (dir) {
 						case "north": break;
 						case "south": break;
-						case "east": nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`)); break;
-						case "west": nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`)); break;
+						case "east":
+							value.push({ "--tX": ultX - 1 });
+							nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`));
+							break;
+						case "west":
+							nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`));
+							break;
 					}
 				} else {
 					switch (dir) {
 						case "north": nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`)); break;
 						case "south": nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`)); break;
-						case "east": break;
+						case "east":
+							value.push({ "--tX": ultX - 1 });
+							nEl = aEl.addClass("stack").append(`<ul class="slides-h"><li class="new-${dir}"></li><li></li></ul>`).find(`li.new-${dir}`);
+							break;
 						case "west":
-							return console.log(123);
+							nEl = aEl.addClass("stack").append(`<ul class="slides-h"><li></li><li class="new-${dir}"></li></ul>`).find(`li.new-${dir}`);
 							break;
 					}
 				}
 				// wait until next tick
 				requestAnimationFrame(() => {
 					nEl.cssSequence("appear", "transitionend", el => {
+						value.map(data => nEl.parent().css(data));
 						el.removeClass(`new-${dir} appear`).trigger("click");
 					});
 				});
@@ -137,9 +150,9 @@
 				el.addClass("active");
 
 				aUl = el.parent();
-				let siblings = aUl.find("> li"),
-					ultY = +el.parent().cssProp("--tY"),
-					ultX = +el.parent().cssProp("--tX");
+				siblings = aUl.find("> li");
+				ultY = +el.parent().cssProp("--tY");
+				ultX = +el.parent().cssProp("--tX");
 				// overview rectangle
 				oRect = Self.els.overview[0].getBoundingClientRect();
 

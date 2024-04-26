@@ -149,11 +149,18 @@
 
 			> li {
 				&.new-east {
-					left: 31px;
+					position: absolute;
+					left: 0;
 					opacity: 0;
-					width: 0;
-					margin-right: 0;
+					// width: 0;
+					margin-left: 0;
+					// margin-right: 0;
 					transition: all 150ms ease-in-out;
+
+					&.appear {
+						left: -127px;
+						opacity: 1;
+					}
 				}
 
 				&.new-west {
@@ -164,7 +171,6 @@
 					transition: all 150ms ease-in-out;
 				}
 
-				&.new-east,
 				&.new-west {
 					&.appear {
 						left: 0;
