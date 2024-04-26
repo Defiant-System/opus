@@ -91,13 +91,11 @@
 			background-position-x: -15px;
 		}
 
-		> ul:nth-child(1) > li {
-			&:nth-child(1) { background-color: #f99; }
-			&:nth-child(2) { background-color: #9f9; }
-			&:nth-child(3) { background-color: #99f; }
-			&:nth-child(5) { background-color: #9ff; }
-			&:nth-child(6) { background-color: #f9f; }
-		}
+		> ul > li { background-color: #66c; }
+		> ul ul > li { background-color: #696; }
+		> ul ul ul > li { background-color: #f99; }
+		> ul ul ul ul > li { background-color: #399; }
+		> ul ul ul ul ul > li { background-color: #939; }
 	}
 
 	ul {
@@ -170,6 +168,27 @@
 
 				> ul {
 					margin: calc( var(--mT) * -1 ) calc( var(--mL) * -1 ) calc( var(--mB) * -1 ) calc( var(--mR) * -1 );
+				}
+			}
+
+			&.active {
+				box-shadow: 0 1px 3px rgba(#000,.25);
+
+				&:before {
+					content: "";
+					background: #a1ceff;
+					border-radius: 9px;
+					position: absolute;
+					top: -5px;
+					bottom: -5px;
+					right: -5px;
+					left: -25px;
+					z-index: -1;
+				}
+
+				&:after {
+					color: #fff;
+					text-shadow: 0 1px 0 rgba(#000,.15);
 				}
 			}
 		}

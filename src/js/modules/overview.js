@@ -134,10 +134,9 @@
 				if (!$(event.target).hasClass("overview")) return;
 				// stop default behaviour
 				event.preventDefault();
-				// clear add-tools
-				Self.els.toolAdd.removeAttr("data-options");
 
 				let doc = $(document),
+					active = Self.els.container.find(".active").removeClass("active"),
 					el = $(event.target).parents("?.overview").find(".container"),
 					[a, b, c, d, x, y] = el.css("transform").replace(/matrix\(|\)/g, "").split(",").map(i => +i),
 					click = {
@@ -146,8 +145,10 @@
 					};
 
 				// create drag object
-				Self.drag = { el, doc, click };
+				Self.drag = { el, doc, click, active };
 
+				// hide add-tools
+				Self.els.toolAdd.removeAttr("data-options");
 				// bind event
 				Self.drag.doc.on("mousemove mouseup", Self.doPan);
 				break;
@@ -158,6 +159,8 @@
 				Drag.el.css({ transform });
 				break;
 			case "mouseup":
+				// show add-tools
+				Drag.active.trigger("click");
 				// unbind event
 				Self.drag.doc.off("mousemove mouseup", Self.doPan);
 				break;
