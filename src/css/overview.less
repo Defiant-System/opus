@@ -152,13 +152,11 @@
 					position: absolute;
 					left: 0;
 					opacity: 0;
-					// width: 0;
 					margin-left: 0;
-					// margin-right: 0;
 					transition: all 150ms ease-in-out;
 
 					&.appear {
-						left: -127px;
+						left: calc( calc( var(--width) + var(--mL) ) * -1 );
 						opacity: 1;
 					}
 				}
@@ -193,11 +191,15 @@
 
 			> li {
 				&.new-north {
-					top: -31px;
+					position: absolute;
+					top: 0;
 					opacity: 0;
-					height: 0;
-					margin-bottom: 0;
 					transition: all 150ms ease-in-out;
+
+					&.appear {
+						top: calc( calc( var(--height) + var(--mT) ) * -1 );
+						opacity: 1;
+					}
 				}
 
 				&.new-south {
@@ -206,10 +208,7 @@
 					height: 0;
 					margin-bottom: 0;
 					transition: all 150ms ease-in-out;
-				}
-
-				&.new-north,
-				&.new-south {
+				
 					&.appear {
 						top: 0;
 						opacity: 1;

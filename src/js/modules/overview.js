@@ -96,8 +96,10 @@
 				Self.els.toolAdd.removeAttr("data-options");
 
 				if (aUl.hasClass("slides-h")) {
+					console.log(1, dir);
 					switch (dir) {
-						case "north": break;
+						case "north":
+							break;
 						case "south": break;
 						case "east":
 							value.push({ "--tX": ultX - 1 });
@@ -108,9 +110,15 @@
 							break;
 					}
 				} else {
+					console.log(2, dir);
 					switch (dir) {
-						case "north": nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`)); break;
-						case "south": nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`)); break;
+						case "north":
+							value.push({ "--tY": ultY - 1 });
+							nEl = aEl.before(aEl.clone(true).addClass(`new-${dir}`));
+							break;
+						case "south":
+							nEl = aEl.after(aEl.clone(true).addClass(`new-${dir}`));
+							break;
 						case "east":
 							value.push({ "--tX": ultX - 1 });
 							nEl = aEl.addClass("stack").append(`<ul class="slides-h"><li class="new-${dir}"></li><li></li></ul>`).find(`li.new-${dir}`);
