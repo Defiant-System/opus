@@ -115,6 +115,7 @@
 					});
 				});
 				break;
+			case "zoom-slide":
 			case "delete-slide":
 				console.log(event);
 				break;
@@ -182,7 +183,7 @@
 				Self.drag = { el, doc, click, selected };
 
 				// hide add-tools
-				Self.els.toolAdd.removeAttr("data-options");
+				Self.els.toolAdd.data({ options: "h" });
 				// bind event
 				Self.drag.doc.on("mousemove mouseup", Self.doPan);
 				break;
