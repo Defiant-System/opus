@@ -33,8 +33,9 @@
 		&[data-options*="n"] div.add-north,
 		&[data-options*="w"] div.add-west,
 		&[data-options*="s"] div.add-south,
-		&[data-options*="e"] div.add-east { display: block; }
-		&[data-options*="h"] { display: none; }
+		&[data-options*="e"] div.add-east,
+		&[data-options*="z"] i.icon-zoom,
+		&[data-options*="t"] i.icon-trashcan { display: block; }
 
 		> div {
 			// background: rgba(#00f,.1);
@@ -68,6 +69,7 @@
 
 		i[class*="icon-"],
 		i[class^="icon-"] {
+			display: none;
 			position: absolute;
 			right: -25px;
 			width: 21px;
@@ -171,6 +173,10 @@
 						margin-right: var(--mR);
 					}
 				}
+
+				&.disappear {
+
+				}
 			}
 		}
 
@@ -204,6 +210,14 @@
 						height: var( --height );
 						margin-bottom: var(--mB);
 					}
+				}
+
+				&.disappear {
+					top: -31px;
+					opacity: 0;
+					height: 0;
+					margin-bottom: 0;
+					transition: all 150ms ease-in-out;
 				}
 			}
 		}

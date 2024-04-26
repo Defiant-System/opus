@@ -12,7 +12,7 @@
 			Tab = Spawn ? Spawn.data.tabs._active : null,
 			oRect,
 			value,
-			ul,
+			aEl, aUl,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -79,9 +79,9 @@
 				break;
 			case "add-slide":
 				let [what, dir] = event.el.prop("className").split("-"),
-					aEl = Self.els.overview.find(".active").removeClass("active selected"),
-					aUl = aEl.parent(),
 					nEl;
+				aEl = Self.els.overview.find(".active").removeClass("active selected"),
+				aUl = aEl.parent();
 
 				if (aUl.parent().hasClass("container") && aUl.find("li").length === 1) {
 					if (["north", "south"].includes(dir)) aUl.removeClass("slides-h slides-v").addClass("slides-v");
@@ -116,8 +116,18 @@
 				});
 				break;
 			case "zoom-slide":
-			case "delete-slide":
 				console.log(event);
+				break;
+			case "delete-slide":
+				aEl = Self.els.overview.find(".active").removeClass("active selected"),
+				// aUl = aEl.parent();
+
+				// hide add-tools
+				Self.els.toolAdd.removeAttr("data-options");
+
+				aEl.cssSequence("disappear", "transitionend", el => {
+					el.remove();
+				});
 				break;
 			case "select-slide":
 				el = $(event.target).parents("?li").get(0);
@@ -126,32 +136,34 @@
 				event.el.find(".active, .selected").removeClass("active selected");
 				el.addClass("active");
 
-				ul = el.parent();
-				let siblings = ul.find("> li"),
+				aUl = el.parent();
+				let siblings = aUl.find("> li"),
 					ultY = +el.parent().cssProp("--tY"),
 					ultX = +el.parent().cssProp("--tX");
-
+				// overview rectangle
 				oRect = Self.els.overview[0].getBoundingClientRect();
 
 				let rect = el[0].getBoundingClientRect(),
 					top = rect.y - oRect.y,
 					left = rect.x - oRect.x,
 					options = [];
-
-				if (ul.hasClass("slides-h")) {
+				// contextual tool options
+				if (aUl.hasClass("slides-h")) {
 					options.push("n");
 					options.push("s");
-					if (el.index() === -ultX && !ul.parent().hasClass("container")) options = [];
+					if (el.index() === -ultX && !aUl.parent().hasClass("container")) options = [];
 					if (el.index() === 0) options.push("e");
 					if (el.index() === siblings.length-1) options.push("w");
 				}
-				if (ul.hasClass("slides-v")) {
+				if (aUl.hasClass("slides-v")) {
 					options.push("e");
 					options.push("w");
-					if (el.index() === -ultY && !ul.parent().hasClass("container")) options = [];
+					if (el.index() === -ultY && !aUl.parent().hasClass("container")) options = [];
 					if (el.index() === 0) options.push("n");
 					if (el.index() === siblings.length-1) options.push("s");
 				}
+				options.push("z"); // zoom
+				if (siblings.length > 1) options.push("t"); // trashcan
 				// normalize options
 				options = options.join("");
 				// apply to add tools
