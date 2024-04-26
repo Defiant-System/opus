@@ -85,11 +85,11 @@
 		border-radius: 9px;
 		transform: translate(0, 0); // default
 
-		> ul:nth-child(1) > li:nth-child(1) {
-			background-image: url(/app/ant/opus-spawn/cache/test.png);
-			background-size: 115% auto;
-			background-position-x: -15px;
-		}
+		// > ul:nth-child(1) > li:nth-child(1) {
+		// 	background-image: url(/app/ant/opus-spawn/cache/test.png);
+		// 	background-size: 115% auto;
+		// 	background-position-x: -15px;
+		// }
 
 		> ul > li { background-color: #66c; }
 		> ul ul > li { background-color: #696; }
@@ -116,9 +116,10 @@
 			transform: translateY( calc( calc( calc( var(--height) + var(--mT) ) + var(--mB) ) * var(--tY) ) );
 		}
 
-		&:hover:not(:has(li:hover)) >  li:after {
+		&:hover:not(:has(li:hover)) > li:after {
 			opacity: .75;
 		}
+
 
 		li {
 			position: relative;
@@ -144,7 +145,7 @@
 				opacity: 0;
 			}
 
-			&:not(.stack, .active):hover {
+			&:not(.stack, .active, .selected):hover {
 				&:before {
 					content: "";
 					background: rgba(#000,.05);
@@ -171,6 +172,7 @@
 				}
 			}
 
+			&.selected,
 			&.active {
 				box-shadow: 0 1px 3px rgba(#000,.25);
 

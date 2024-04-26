@@ -3,7 +3,7 @@ let Test = {
 	init(APP, Spawn) {
 
 
-		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 600);
+		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 1000);
 		return;
 		setTimeout(() => Spawn.find(`.overview li:nth(2)`).trigger("click"), 700);
 		return;

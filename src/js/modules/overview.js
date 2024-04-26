@@ -69,7 +69,7 @@
 				value.x = (oRect.width - value.w) >> 1;
 				value.y = (oRect.height - value.h) >> 1;
 				// push an extra height
-				value.y += parseInt(Self.els.container.cssProp("--height"), 10);
+				// value.y += parseInt(Self.els.container.cssProp("--height"), 10);
 				// console.log(value);
 				// console.log(oRect);
 
@@ -136,7 +136,7 @@
 				event.preventDefault();
 
 				let doc = $(document),
-					active = Self.els.container.find(".active").removeClass("active"),
+					selected = Self.els.container.find(".active, .selected").removeClass("active").addClass("selected"),
 					el = $(event.target).parents("?.overview").find(".container"),
 					[a, b, c, d, x, y] = el.css("transform").replace(/matrix\(|\)/g, "").split(",").map(i => +i),
 					click = {
@@ -145,7 +145,7 @@
 					};
 
 				// create drag object
-				Self.drag = { el, doc, click, active };
+				Self.drag = { el, doc, click, selected };
 
 				// hide add-tools
 				Self.els.toolAdd.removeAttr("data-options");
@@ -159,8 +159,6 @@
 				Drag.el.css({ transform });
 				break;
 			case "mouseup":
-				// show add-tools
-				Drag.active.trigger("click");
 				// unbind event
 				Self.drag.doc.off("mousemove mouseup", Self.doPan);
 				break;
