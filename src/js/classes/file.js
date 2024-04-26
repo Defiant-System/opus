@@ -40,9 +40,15 @@ class File {
 					center: true,
 					transition: "slide", //  none/fade/slide/convex/concave/zoom
 					slideNumber: "count",
-					goTo: [1],  // 4,1
+					goTo: [0],  // 4,1
 					spawn,
 				});
+
+				// let el = spawn.find(".slides");
+				// spawn.paint.toCache(el, "test.png")
+				// 	.then(res => {
+				// 		console.log(res);
+				// 	});
 				break;
 			case "blur-file":
 				break;

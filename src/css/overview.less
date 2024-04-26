@@ -78,40 +78,41 @@
 	}
 
 	> .container {
-		// background: rgba(#f00,.1);
+		// background: rgba(#f00,.15);
 		position: absolute;
 		top: 0;
 		left: 0;
-		// width: calc( calc( var(--width) + var(--mL) ) + var(--mR) );
-		// height: calc( calc( var(--height) + var(--mT) ) + var(--mB) );
 		border-radius: 9px;
-		// transform: translate(0, 0); // default
-		// transform: translate(70px, 210px);
-	}
+		transform: translate(0, 0); // default
 
-	ul {
-		li > ul {
-			white-space: normal;
-			margin: calc( var(--mT) * -1 ) 0 0 calc( var(--mR) * -1 );
-			transform: translateY( calc( calc( calc( var(--height) + var(--mT) ) + var(--mB) ) * var(--tY) ) );
+		// > ul:nth-child(1) > li:nth-child(1) { background-image: url(/app/ant/opus-spawn/cache/test.png); }
 
-			li > ul {
-				white-space: nowrap;
-				transform: translateX( calc( calc( calc( var(--width) + var(--mL) ) + var(--mR) ) * var(--tX) ) );
-			}
+		> ul:nth-child(1) > li {
+			&:nth-child(1) { background-color: #f99; }
+			&:nth-child(2) { background-color: #9f9; }
+			&:nth-child(3) { background-color: #99f; }
+			&:nth-child(5) { background-color: #9ff; }
+			&:nth-child(6) { background-color: #f9f; }
 		}
 	}
 
 	ul {
+		// background: rgba(#f00,.15);
 		position: relative;
 		font-size: 0;
-		white-space: nowrap;
 		counter-reset: slides-counter;
 
-		// &:hover > li.stack:after,
-		// &:hover > li:not(.stack):after {
-		// 	opacity: .75;
-		// }
+		&.slides-h {
+			width: fit-content;
+			white-space: nowrap;
+			transform: translateX( calc( calc( calc( var(--width) + var(--mL) ) + var(--mR) ) * var(--tX) ) );
+		}
+
+		&.slides-v {
+			width: calc( calc( var(--width) + var(--mL) ) + var(--mR) );
+			white-space: normal;
+			transform: translateY( calc( calc( calc( var(--height) + var(--mT) ) + var(--mB) ) * var(--tY) ) );
+		}
 
 		&:hover:not(:has(li:hover)) >  li:after {
 			opacity: .75;
@@ -123,7 +124,9 @@
 			width: var( --width );
 			height: var( --height );
 			margin: var(--mT) var(--mL) var(--mB) var(--mR);
-			background: #e0e0e0;
+			background: #d4d4d4 50% 50% no-repeat;
+			background-image: linear-gradient(180deg, #ffffff33, #00000011);
+			background-size: 100% auto;
 			border-radius: 6px;
 			vertical-align: bottom;
 			counter-increment: slides-counter;
@@ -142,7 +145,7 @@
 			&:not(.stack, .active):hover {
 				&:before {
 					content: "";
-					background: rgba(#000,.025);
+					background: rgba(#000,.05);
 					border-radius: 9px;
 					position: absolute;
 					top: -5px;
@@ -155,30 +158,14 @@
 
 			&.stack {
 				background: transparent;
+				--tX: 0;
 
 				&:after {
 					opacity: 0;
 				}
-			}
 
-			&.active {
-				box-shadow: 0 1px 3px rgba(#000,.25);
-
-				&:before {
-					content: "";
-					background: #489bf7;
-					border-radius: 9px;
-					position: absolute;
-					top: -5px;
-					bottom: -5px;
-					right: -5px;
-					left: -25px;
-					z-index: -1;
-				}
-
-				&:after {
-					color: #fff;
-					text-shadow: 0 1px 0 rgba(#000,.15);
+				> ul {
+					margin: calc( var(--mT) * -1 ) calc( var(--mL) * -1 ) calc( var(--mB) * -1 ) calc( var(--mR) * -1 );
 				}
 			}
 		}
