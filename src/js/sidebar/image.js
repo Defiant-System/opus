@@ -1,5 +1,5 @@
 
-// opus.spawn.format.image
+// opus.spawn.sidebar.image
 
 {
 	init(parent) {
@@ -17,9 +17,9 @@
 	},
 	dispatch(event) {
 		let APP = opus,
-			Self = APP.spawn.format.image,
+			Self = APP.spawn.sidebar.image,
 			Tools = APP.spawn.tools,
-			Els = APP.spawn.format.els,
+			Els = APP.spawn.sidebar.els,
 			Image = event.image || Tools.image.image,
 			color,
 			width,
@@ -342,7 +342,7 @@
 			case "set-image-arrange":
 				el = $(event.target);
 				value = el.data("name").split("-")[1];
-				APP.spawn.format.zIndexArrange(Image, value);
+				APP.spawn.sidebar.zIndexArrange(Image, value);
 				// update arrange buttons
 				Self.dispatch({ ...event, type: "update-image-arrange" });
 				break;

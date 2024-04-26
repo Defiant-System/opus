@@ -40,7 +40,7 @@ class Tabs {
 			bodyEl = this._fileTemplate.clone(),
 			history = new window.History,
 			overview = false,
-			format = false;
+			sidebar = false;
 
 		if (fItem) {
 			// add element to DOM + append file contents
@@ -57,7 +57,7 @@ class Tabs {
 			}
 
 			// save reference to tab
-			this._stack[tId] = { tId, tabEl, bodyEl, history, file, overview, format };
+			this._stack[tId] = { tId, tabEl, bodyEl, history, file, overview, sidebar };
 			// focus on file
 			this.focus(tId);
 		} else {
@@ -71,13 +71,13 @@ class Tabs {
 		let tId = ref.tId,
 			file = ref.file,
 			history = ref.history,
-			format = ref.format,
+			sidebar = ref.sidebar,
 			bodyEl = ref.bodyEl.clone(true).addClass("hidden"),
 			tabEl = this._spawn.tabs.add(file.base, tId, true);
 		// clone & append original bodyEl
 		bodyEl = this._content.append(bodyEl);
 		// save reference to this spawns stack
-		this._stack[tId] = { tId, tabEl, bodyEl, history, file, overview, format };
+		this._stack[tId] = { tId, tabEl, bodyEl, history, file, overview, sidebar };
 	}
 
 	removeDelayed() {
@@ -112,8 +112,8 @@ class Tabs {
 			this._parent.toolbar.dispatch({ type: "toggle-toolbars", spawn, value: true });
 			// toggle overview
 			// this._parent.overview.dispatch({ type: "toggle-overview", spawn, isOn: this._active.overview });
-			// toggle format
-			// this._parent.format.dispatch({ type: "toggle-format", spawn, isOn: this._active.format });
+			// toggle sidebar
+			// this._parent.sidebar.dispatch({ type: "toggle-sidebar", spawn, isOn: this._active.sidebar });
 			// notify file
 			this._active.file.dispatch({ type: "focus-file", spawn });
 		} else {

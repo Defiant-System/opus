@@ -1,5 +1,5 @@
 
-// opus.spawn.format.text
+// opus.spawn.sidebar.text
 
 {
 	init(parent) {
@@ -13,9 +13,9 @@
 	},
 	dispatch(event) {
 		let APP = opus,
-			Self = APP.spawn.format.text,
+			Self = APP.spawn.sidebar.text,
 			Tools = APP.spawn.tools,
-			Els = APP.spawn.format.els,
+			Els = APP.spawn.sidebar.els,
 			Text = event.text || Tools.text.text,
 			stops,
 			color,
@@ -50,7 +50,7 @@
 				if (event.el) {
 					let key = event.key || event.el.data("name"),
 						value = event.value;
-					Self.edit.format(key, value);
+					Self.edit.sidebar(key, value);
 				}
 				// update sidebar state
 				el = document.activeElement;
@@ -490,7 +490,7 @@
 			case "set-text-arrange":
 				el = $(event.target);
 				value = el.data("name").split("-")[1];
-				APP.spawn.format.zIndexArrange(Text, value);
+				APP.spawn.sidebar.zIndexArrange(Text, value);
 				// update arrange buttons
 				Self.dispatch({ ...event, type: "update-text-arrange" });
 				break;

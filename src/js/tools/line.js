@@ -61,7 +61,7 @@
 					Self.bezierMove({ type: "position-tool-anchors", d });
 				}
 				// update sidebar
-				APP.spawn.format.dispatch({ ...event, type: "show-line" });
+				APP.spawn.sidebar.dispatch({ ...event, type: "show-line" });
 				break;
 		}
 	},

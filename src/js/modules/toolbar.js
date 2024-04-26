@@ -29,14 +29,14 @@
 					toolShape: Spawn.find(`.toolbar-tool_[data-arg="shape"]`),
 					toolImage: Spawn.find(`.toolbar-tool_[data-arg="image"]`),
 					overview: Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`),
-					format: Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`),
+					sidebar: Spawn.find(`.toolbar-tool_[data-click="toggle-sidebar"]`),
 				};
 				break;
 			// custom events
 			case "toggle-overview":
 				return APP.spawn.overview.dispatch(event);
-			case "toggle-format":
-				return APP.spawn.format.dispatch(event);
+			case "toggle-sidebar":
+				return APP.spawn.sidebar.dispatch(event);
 			case "toggle-toolbars":
 				for (name in Self.els) {
 					Self.els[name][event.value ? "removeClass" : "addClass"]("tool-disabled_");

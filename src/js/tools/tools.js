@@ -165,9 +165,9 @@
 						setTimeout(() => {
 							// special UI for title & caption
 							name = el.prop("className").split(" ").find(n => n.startsWith("tbl-")).split("tbl-")[1];
-							APP.spawn.format.els.tbl.addClass(`show-${name}-tab`);
+							APP.spawn.sidebar.els.tbl.addClass(`show-${name}-tab`);
 							// auto switch to tab
-							APP.spawn.format.els.tbl.find(`.sidebar-head .${name}-tab`).trigger("click");
+							APP.spawn.sidebar.els.tbl.find(`.sidebar-head .${name}-tab`).trigger("click");
 						});
 						break;
 					case el.hasClass("body"):
@@ -203,7 +203,7 @@
 						// blur XL element, if any
 						Self.dispatch({ type: "blur-focused", spawn: Spawn });
 						// auto switch to first tab
-						APP.spawn.format.els.tbl.find(`.sidebar-head span`).get(0).trigger("click");
+						APP.spawn.sidebar.els.tbl.find(`.sidebar-head span`).get(0).trigger("click");
 						// proxy event to "selection resize"
 						return Self.table.resizeSelection(event);
 					case Self.types.includes(name):
@@ -225,7 +225,7 @@
 						// focus shape
 						Self[name].dispatch({ type: `focus-${name}`, spawn: Spawn, el });
 						// update sidebar
-						APP.spawn.format.dispatch({ type: `show-${name}`, spawn: Spawn });
+						APP.spawn.sidebar.dispatch({ type: `show-${name}`, spawn: Spawn });
 						// trigger "move" mousedown event
 						Self[name].move(event);
 						break;
@@ -241,7 +241,7 @@
 						// reference of active tool
 						Self.active = "file";
 						// update sidebar
-						APP.spawn.format.dispatch({ type: "show-file", spawn: Spawn, el });
+						APP.spawn.sidebar.dispatch({ type: "show-file", spawn: Spawn, el });
 						// blur XL element, if any
 						Self.dispatch({ type: "blur-focused", spawn: Spawn });
 				}

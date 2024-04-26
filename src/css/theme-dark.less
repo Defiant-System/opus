@@ -28,8 +28,7 @@
 			}
 		}
 		
-		sidebar.thumbs,
-		sidebar.format {
+		sidebar {
 			.sidebar-head {
 				border-bottom-color: rgba(#000,.35);
 				
@@ -50,48 +49,26 @@
 		}
 	}
 
-	sidebar.thumbs,
-	sidebar.format {
+	sidebar {
 		background: rgba(#fff,.025);
 		color: var( --sidebar-fg );
 		text-shadow: 0 1px 0 rgba(#000,.125);
 	
-		&.format {
-			&:before {
-				content: "";
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				width: 1px;
-				opacity: .35;
-				background: linear-gradient(0deg, transparent 0%, #fff 50%, transparent 100%);
-				mix-blend-mode: overlay;
-			}
-
-			&:after {
-				left: -1px;
-				border-color: rgba(#000,.15);
-			}
+		&:before {
+			content: "";
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			width: 1px;
+			opacity: .35;
+			background: linear-gradient(0deg, transparent 0%, #fff 50%, transparent 100%);
+			mix-blend-mode: overlay;
 		}
 
-		&.thumbs {
-			&:before {
-				content: "";
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				right: 0;
-				width: 1px;
-				opacity: .15;
-				background: linear-gradient(0deg, transparent 0%, #fff 50%, transparent 100%);
-				// mix-blend-mode: overlay;
-			}
-
-			&:after {
-				right: -1px;
-				border-color: rgba(#000,.15);
-			}
+		&:after {
+			left: -1px;
+			border-color: rgba(#000,.15);
 		}
 
 		> .container {

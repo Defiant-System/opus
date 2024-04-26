@@ -368,7 +368,7 @@
 					name = origin.hasClass("color-preset_") ? origin.data("change") : oParent.data("change"),
 					dragEvent = {
 						name,
-						handler: APP.spawn.format[section].dispatch,
+						handler: APP.spawn.sidebar[section].dispatch,
 						gradient: APP.spawn.tools[APP.spawn.tools.active].gradient,
 					},
 					apply = (Self, value) => {

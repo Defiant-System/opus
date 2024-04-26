@@ -166,7 +166,7 @@
 		}
 	},
 	blankView: @import "./blankView.js",
-	format: @import "../format/format.js",
+	sidebar: @import "../sidebar/sidebar.js",
 	overview: @import "./overview.js",
 	popups: @import "./popups.js",
 	toolbar: @import "./toolbar.js",

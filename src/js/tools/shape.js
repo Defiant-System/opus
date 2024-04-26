@@ -189,7 +189,7 @@
 					Self.els.gradientTool.addClass("hidden");
 				}
 				// update sidebar
-				APP.spawn.format.dispatch({ ...event, type: "show-shape" });
+				APP.spawn.sidebar.dispatch({ ...event, type: "show-shape" });
 				break;
 			case "update-gradient-rotation":
 				let Y1 = +Self.gradient.xNode.attr("y1"),
@@ -254,7 +254,7 @@
 				// create drag object
 				Self.drag = {
 					el: $([shape[0], Self.els.root[0]]),
-					sidebar: APP.spawn.format.shape,
+					sidebar: APP.spawn.sidebar.shape,
 					guides,
 					click: {
 						x: event.clientX - parseInt(shape.css("left"), 10),
@@ -327,7 +327,7 @@
 					click,
 					offset,
 					guides,
-					sidebar: APP.spawn.format.shape,
+					sidebar: APP.spawn.sidebar.shape,
 					_min: Math.min,
 				};
 				// cover layout
@@ -487,7 +487,7 @@
 				// prevent default behaviour
 				event.preventDefault();
 
-				let input = APP.spawn.format.els.el.find(".shape-gradient-angle input"),
+				let input = APP.spawn.sidebar.els.el.find(".shape-gradient-angle input"),
 					el = $(event.target.parentNode),
 					type = event.target.className.split(" ")[1],
 					[a, b] = el.css("transform").split("(")[1].split(")")[0].split(","),

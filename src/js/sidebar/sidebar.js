@@ -1,5 +1,5 @@
 
-// opus.spawn.format
+// opus.spawn.sidebar
 
 {
 	init() {
@@ -13,7 +13,7 @@
 	},
 	dispatch(event) {
 		let APP = opus,
-			Self = APP.spawn.format,
+			Self = APP.spawn.sidebar,
 			Spawn = event.spawn,
 			name,
 			value,
@@ -36,7 +36,7 @@
 				Self.els = {
 					doc: $(document),
 					layout: Spawn.find("layout"),
-					el: Spawn.find("sidebar.format"),
+					el: Spawn.find("sidebar"),
 					tbl: Spawn.find(".sidebar-table"),
 				};
 				// init all sub-objects
@@ -49,24 +49,24 @@
 				Self.els.el.on("mousedown", ".angle-ring", Self.angleRing);
 				break;
 			// custom events
-			case "toggle-format":
+			case "toggle-sidebar":
 				if (event.target) {
 					el = $(event.target);
 					value = el.hasClass("tool-active_");
 				} else {
-					el = Spawn.find(`.toolbar-tool_[data-click="toggle-format"]`);
+					el = Spawn.find(`.toolbar-tool_[data-click="toggle-sidebar"]`);
 					value = !event.isOn;
 					el[value ? "removeClass" : "addClass"]("tool-active_");
 				}
 
-				let formatWidth = Self.els.el.offset().width,
+				let sidebarWidth = Self.els.el.offset().width,
 					offset = Spawn.find(".files-wrapper").offset(),
-					width = offset.width + (value ? formatWidth : -formatWidth),
+					width = offset.width + (value ? sidebarWidth : -sidebarWidth),
 					height = offset.height;
 				Reveal.layout({ width, height });
 
 				// toggle app content
-				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-sidebar-format");
+				Spawn.find("layout")[value ? "removeClass" : "addClass"]("show-sidebar");
 
 				// return "state"
 				return !value;

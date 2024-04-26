@@ -15,6 +15,6 @@
 		<Tool symbol="icon-image" click="popup-view-options" arg="image" state="disabled"/>
 	</Group>
 	<Group width="30%">
-		<Tool symbol="icon-format" click="toggle-format" state="disabled"/>
+		<Tool symbol="icon-format" click="toggle-sidebar" state="disabled"/>
 	</Group>
 </ToolBar>

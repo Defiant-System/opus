@@ -1,5 +1,5 @@
 
-// opus.spawn.format.line
+// opus.spawn.sidebar.line
 
 {
 	init(parent) {
@@ -13,8 +13,8 @@
 	},
 	dispatch(event) {
 		let APP = opus,
-			Self = APP.spawn.format.line,
-			Els = APP.spawn.format.els,
+			Self = APP.spawn.sidebar.line,
+			Els = APP.spawn.sidebar.els,
 			Line = event.shape || APP.spawn.tools.line,
 			color,
 			value,
@@ -246,7 +246,7 @@
 			case "set-line-arrange":
 				el = $(event.target);
 				value = el.data("name").split("-")[1];
-				APP.spawn.format.zIndexArrange(Line.line, value);
+				APP.spawn.sidebar.zIndexArrange(Line.line, value);
 				// update arrange buttons
 				Self.dispatch({ ...event, type: "update-line-arrange" });
 				break;

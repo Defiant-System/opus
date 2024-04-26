@@ -5,7 +5,7 @@
 
 @import "popups";
 @import "overview";
-@import "sidebar-format";
+@import "sidebar";
 @import "op-elements";
 @import "player-helpers";
 @import "file-slides";
@@ -37,7 +37,7 @@ overflow: initial;
 		}
 	}
 
-	sidebar.format {
+	sidebar {
 		&:after {
 			border-color: @layout_outline;
 		}
@@ -124,12 +124,12 @@ layout {
 		}
 	}
 
-	&.show-sidebar-format {
+	&.show-sidebar {
 		content {
 			padding-right: 270px;
 		}
 
-		sidebar.format {
+		sidebar {
 			right: 0;
 
 			&:after { border-color: lighten(@layout_outline, 9%); }

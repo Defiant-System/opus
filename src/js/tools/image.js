@@ -103,7 +103,7 @@
 				// create drag object
 				Self.drag = {
 					el: $([image[0], Self.els.root[0]]),
-					sidebar: APP.spawn.format.image,
+					sidebar: APP.spawn.sidebar.image,
 					guides,
 					click,
 				};
@@ -174,7 +174,7 @@
 				// create drag object
 				Self.drag = {
 					el: $([image[0], Self.els.root[0]]),
-					sidebar: APP.spawn.format.image,
+					sidebar: APP.spawn.sidebar.image,
 					min,
 					type,
 					image,

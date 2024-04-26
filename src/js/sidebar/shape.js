@@ -1,5 +1,5 @@
 
-// opus.spawn.format.shape
+// opus.spawn.sidebar.shape
 
 {
 	init(parent) {
@@ -8,9 +8,9 @@
 	},
 	dispatch(event) {
 		let APP = opus,
-			Self = APP.spawn.format.shape,
+			Self = APP.spawn.sidebar.shape,
 			Tools = APP.spawn.tools,
-			Els = APP.spawn.format.els,
+			Els = APP.spawn.sidebar.els,
 			Shape = event.shape || Tools.shape,
 			name,
 			color,
@@ -370,7 +370,7 @@
 			case "set-shape-arrange":
 				el = $(event.target);
 				value = el.data("name").split("-")[1];
-				APP.spawn.format.zIndexArrange(Shape.shape, value);
+				APP.spawn.sidebar.zIndexArrange(Shape.shape, value);
 				// update arrange buttons
 				Self.dispatch({ ...event, type: "update-shape-arrange" });
 				break;

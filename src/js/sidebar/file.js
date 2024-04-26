@@ -1,5 +1,5 @@
 
-// opus.spawn.format.file
+// opus.spawn.sidebar.file
 
 {
 	init(parent) {
@@ -8,7 +8,7 @@
 	},
 	dispatch(event) {
 		let APP = opus,
-			Self = APP.spawn.format.file,
+			Self = APP.spawn.sidebar.file,
 			pEl,
 			el;
 		// console.log(event);
