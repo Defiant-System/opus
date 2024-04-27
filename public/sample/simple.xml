@@ -6,10 +6,10 @@
 		<meta name="center" value="true"/>
 		<meta name="transition" value="slide"/>
 		<meta name="slideNumber" value="count"/>
-		<meta name="goto" value="4,1"/>
+		<meta name="goto" value="0"/>
 	</head>
 	<body><![CDATA[
-	<div class="slides">
+	<div class="slides" data-slides-h>
 		<section>
 			<h1>RevealEditor</h1>
 			<p>
@@ -35,7 +35,7 @@
 			<p> Go ahead and click on the RevealEditor button on the top left corner and play around with the RevealEditor</p>
 		</section>
 
-		<section>
+		<section data-slides-v>
 			<section>
 				<p> If want to take code from the slide you are currently on, then you can simply press the COPY button. </p>
 				<p> For the COPY button to work properly, you must add the class 'js', 'html', or 'css' depending on the type of code being on the slide. </p>

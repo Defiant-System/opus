@@ -54,10 +54,10 @@
 				return !value;
 
 			case "draw-overview":
-				value = [];
-				File.bodyEl.find(`.slides > section`).map(section => {
-					console.log( section );
-				});
+				el = File.bodyEl.find(`.slides`);
+				value = Self.drawOverviewMap(el);
+				// populate DOM
+				Self.els.container.html(value.join(""));
 				break;
 
 			case "auto-center-overview":
@@ -213,6 +213,23 @@
 				Self.els.toolAdd.css({ top, left }).data({ options });
 				break;
 		}
+	},
+	drawOverviewMap(pEl) {
+		let sections = pEl.find("> section"),
+			slidesType = pEl.data("slides-h") === null ? "slides-v" : "slides-h",
+			list = [`<ul class="${slidesType}">`];
+		
+		sections.map(section => {
+			let el = $(section),
+				str = `<li></li>`;
+			if (el.find("> section").length) {
+				str = `<li class="stack">${this.drawOverviewMap(el).join("")}</li>`;
+			}
+			list.push(str);
+		});
+
+		list.push(`</ul>`);
+		return list;
 	},
 	doPan(event) {
 		let APP = opus,

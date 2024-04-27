@@ -29,12 +29,26 @@
 		}
 		
 		sidebar {
+			&:after {
+				left: -1px;
+				border-color: transparent;
+			}
+
 			.sidebar-head {
 				border-bottom-color: rgba(#000,.35);
 				
 				span {
 					&:not(:first-child) {
 						border-left-color: rgba(#000,.125);
+					}
+				}
+			}
+
+			.sidebar-body {
+				.options {
+					> span:active,
+					> span.active {
+						box-shadow: 0 0 0 1px rgba(#000,.15);
 					}
 				}
 			}
