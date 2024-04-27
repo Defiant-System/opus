@@ -152,7 +152,8 @@
 				break;
 			case "select-slide":
 				el = $(event.target).parents("?li").get(0);
-				if (!el.length) return;
+				if (!el.length || el.hasClass("stack")) return;
+				
 				// active indicator
 				event.el.find(".active, .selected").removeClass("active selected");
 				el.addClass("active");
@@ -164,7 +165,8 @@
 				// overview rectangle
 				oRect = Self.els.overview[0].getBoundingClientRect();
 
-				let rect = el[0].getBoundingClientRect(),
+				let aulParent = aUl.parent(),
+					rect = el[0].getBoundingClientRect(),
 					top = rect.y - oRect.y,
 					left = rect.x - oRect.x,
 					options = [];
@@ -172,14 +174,15 @@
 				if (aUl.hasClass("slides-h")) {
 					options.push("n");
 					options.push("s");
-					if (el.index() === -ultX && !aUl.parent().hasClass("container")) options = [];
+					if (el.index() === -ultX && !aulParent.hasClass("container")) options = [];
 					if (el.index() === 0) options.push("e");
+					if (aulParent.hasClass("stack") && aulParent.index() === aulParent.parent().find("> li").length-1) options.push("s");
 					if (el.index() === siblings.length-1) options.push("w");
 				}
 				if (aUl.hasClass("slides-v")) {
 					options.push("e");
 					options.push("w");
-					if (el.index() === -ultY && !aUl.parent().hasClass("container")) options = [];
+					if (el.index() === -ultY && !aulParent.hasClass("container")) options = [];
 					if (el.index() === 0) options.push("n");
 					if (el.index() === siblings.length-1) options.push("s");
 				}
