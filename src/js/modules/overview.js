@@ -140,14 +140,18 @@
 				console.log(event);
 				break;
 			case "delete-slide":
+				// reference to active element
 				aEl = Self.els.overview.find(".active").removeClass("active selected"),
-				// aUl = aEl.parent();
-
 				// hide add-tools
 				Self.els.toolAdd.removeAttr("data-options");
-
+				// trigger animation
 				aEl.cssSequence("disappear", "transitionend", el => {
+					let next = el.nextAll("li");
+					if (!next.length) next = el.prevAll("li");
+					// remove animated element
 					el.remove();
+					// make next element active
+					next.trigger("click");
 				});
 				break;
 			case "select-slide":
