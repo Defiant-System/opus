@@ -4,16 +4,19 @@ class File {
 	constructor(fsFile, data) {
 		// save reference to original FS file
 		this._file = fsFile || new karaqu.File({ kind: "opf" });
+		// parse file "head"
+		this._head = {};
 
 		let xDoc = this._file.data ? this._file.data.documentElement : null;
 
 		switch (this._file.kind) {
 			case "xml":
 				// parse file "head"
-				this._head = {};
 				xDoc.selectNodes(`//head/meta[@name][@value]`).map(xMeta => {
-					let value = xMeta.getAttribute("value");
+					let name = xMeta.getAttribute("name"),
+						value = xMeta.getAttribute("value");
 					if ("true false".split(" ").includes(value)) value = value === "true";
+					if (name === "goto") value = value.split(",").map(i => +i);
 					this._head[xMeta.getAttribute("name")] = value;
 				});
 				// parse file "body"
@@ -26,32 +29,22 @@ class File {
 
 	dispatch(event) {
 		let APP = opus,
-			spawn = event.spawn,
+			Spawn = event.spawn,
 			name,
 			value;
 		// console.log(event);
 		switch (event.type) {
 			case "focus-file":
-				// temp
-				Reveal.initialize({
-					controls: true,
-					progress: true,
-					history: true,
-					center: true,
-					transition: "slide", //  none/fade/slide/convex/concave/zoom
-					slideNumber: "count",
-					goTo: [0],  // 4,1
-					spawn,
-				});
+				// apply file options
+				Reveal.initialize({ ...this._head, spawn: Spawn });
 
-				// let el = spawn.find(".slides");
-				// spawn.paint.toCache(el, "test.png")
+				// let el = Spawn.find(".slides");
+				// Spawn.paint.toCache(el, "test.png")
 				// 	.then(res => {
 				// 		console.log(res);
 				// 	});
 				break;
-			case "blur-file":
-				break;
+			case "blur-file": break;
 			case "nav-left": Reveal.navigateLeft(); break;
 			case "nav-right": Reveal.navigateRight(); break;
 			case "nav-up": Reveal.navigateUp(); break;

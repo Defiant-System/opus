@@ -5,6 +5,8 @@
 		<meta name="history" value="true"/>
 		<meta name="center" value="true"/>
 		<meta name="transition" value="slide"/>
+		<meta name="slideNumber" value="count"/>
+		<meta name="goto" value="4,1"/>
 	</head>
 	<body><![CDATA[
 	<div class="slides">
@@ -41,7 +43,7 @@
 
 			<section>
 				<h2>Javascript</h2>
-				<pre><code class="hljs js">
+				<pre data-line-numbers="on"><code class="hljs js">
 function add( x, y ) {
     return x + y;
 }

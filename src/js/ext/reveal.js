@@ -55,6 +55,9 @@ let Reveal = (() => {
 
 			// Number of slides away from the current that are visible
 			viewDistance: 3,
+
+			// default first slide
+			goto: [0],
 		},
 
 		options = {},
@@ -135,7 +138,10 @@ let Reveal = (() => {
 		configure(options);
 
 		// code hightlight
-		Dom.wrapper.find("pre code").map(code => Hljs.highlightElement(code));
+		Dom.wrapper.find("pre code").map(code => {
+			Hljs.highlightElement(code);
+			Hljs.lineNumbers(code);
+		});
 	}
 
 	/**
@@ -155,7 +161,7 @@ let Reveal = (() => {
 		Dom.file[ options.progress ? "addClass" : "removeClass" ]("vertical-center");
 
 		// auto go to slide number
-		let initSlide = options.goTo || [0,0]; // <-- first slide
+		let initSlide = options.goto || [0,0]; // <-- first slide
 		slide(...initSlide);
 	}
 
@@ -675,7 +681,7 @@ let Reveal = (() => {
 		let fragments = availableFragments();
 
 		// Remove the 'enabled' class from all directions
-		Dom.controls.all.addClass("disabled_");
+		Dom.controls.all.removeClass("fragmented").addClass("disabled_");
 		// Add the 'enabled' class to the available routes
 		if (routes.left) Dom.controls.left.removeClass("disabled_");
 		if (routes.right) Dom.controls.right.removeClass("disabled_");

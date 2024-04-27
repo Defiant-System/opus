@@ -51,6 +51,11 @@
 				Self.dispatch({ type: "auto-center-overview" });
 				// return "state"
 				return !value;
+
+			case "draw-overview":
+				// console.log(111, event);
+				break;
+
 			case "auto-center-overview":
 				oRect = Self.els.overview[0].getBoundingClientRect();
 				value = {
