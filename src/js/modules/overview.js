@@ -10,6 +10,7 @@
 			Self = APP.spawn.overview,
 			Spawn = event.spawn,
 			Tab = Spawn ? Spawn.data.tabs._active : null,
+			File = Tab ? Tab.file : null,
 			oRect,
 			value,
 			ultY, ultX,
@@ -53,7 +54,10 @@
 				return !value;
 
 			case "draw-overview":
-				// console.log(111, event);
+				value = [];
+				File.bodyEl.find(`.slides > section`).map(section => {
+					console.log( section );
+				});
 				break;
 
 			case "auto-center-overview":
