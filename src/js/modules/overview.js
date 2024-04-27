@@ -150,6 +150,12 @@
 					if (!next.length) next = el.prevAll("li");
 					// remove animated element
 					el.remove();
+					// single in "stack", make next a child of parent list
+					let pNext = next.parent();
+					if (pNext.find("> li").length === 1 && !pNext.parent().hasClass("container")) {
+						console.log(pNext);
+						next = pNext.parent().replace(next);
+					}
 					// make next element active
 					next.trigger("click");
 				});
