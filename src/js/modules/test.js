@@ -2,6 +2,7 @@
 let Test = {
 	init(APP, Spawn) {
 
+		return;
 		setTimeout(() => APP.spawn.overview.dispatch({ type: "draw-overview", spawn: Spawn }), 300);
 		// return;
 		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 300);

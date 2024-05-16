@@ -58,6 +58,8 @@
 				value = Self.drawOverviewMap(el);
 				// populate DOM
 				Self.els.container.html(value.join(""));
+				// temp
+				setTimeout(() => Self.els.container.find("li").get(0).trigger("click"), 100);
 				break;
 
 			case "auto-center-overview":
