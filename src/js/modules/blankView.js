@@ -63,7 +63,7 @@
 				// load sample
 				APP.spawn.dispatch({
 					type: "load-samples",
-					samples: [el.data("url")],
+					samples: [el.find("span").html()],
 					spawn: Spawn,
 				});
 				break;

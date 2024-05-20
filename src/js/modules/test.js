@@ -3,6 +3,8 @@ let Test = {
 	init(APP, Spawn) {
 
 		return;
+		setTimeout(() => Spawn.find(`.blank-view .sample:nth(0)`).trigger("click"), 300);
+		return;
 		setTimeout(() => APP.spawn.overview.dispatch({ type: "draw-overview", spawn: Spawn }), 300);
 		// return;
 		setTimeout(() => Spawn.find(`.toolbar-tool_[data-click="toggle-overview"]`).trigger("click"), 300);

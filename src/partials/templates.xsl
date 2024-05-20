@@ -38,6 +38,7 @@
 	<xsl:for-each select="./Samples/*">
 		<div class="sample">
 			<xsl:attribute name="data-kind"><xsl:value-of select="@kind"/></xsl:attribute>
+			<xsl:if test="@type='empty'"><xsl:attribute name="class">sample disabled</xsl:attribute></xsl:if>
 			<span><xsl:value-of select="@name"/></span>
 		</div>
 	</xsl:for-each>

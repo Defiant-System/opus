@@ -119,7 +119,7 @@
 				margin-right: 0;
 			}
 
-			&:hover {
+			&:hover:not(.disabled) {
 				background-color: #489bf770;
 
 				&:before {
@@ -152,6 +152,15 @@
 				right: 3px;
 				bottom: 3px;
 				opacity: .3;
+			}
+
+			&.disabled {
+				cursor: default;
+				opacity: .5;
+
+				&:before {
+					opacity: .5;
+				}
 			}
 
 			span {
