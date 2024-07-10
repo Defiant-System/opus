@@ -31,8 +31,10 @@
 				Self.els.overview.on("mousedown", Self.doPan);
 				break;
 			case "spawn.blur":
-				// unbind event handler
-				Self.els.overview.off("mousedown", Self.doPan);
+				if (Self.els.overview) {
+					// unbind event handler
+					Self.els.overview.off("mousedown", Self.doPan);
+				}
 				// reset references
 				Self.els = {};
 				break;

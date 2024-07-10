@@ -11,28 +11,28 @@
 	<body><![CDATA[
 	<div class="slides" data-slides-h>
 		<section>
-			<h1>RevealEditor</h1>
+			<h1>Opus Editor</h1>
 			<p>
-				<small>Created by <a href="#">Luis Gonzalez-Yante</a> </small>
+				<small>Created by <a href="#">Hakan Bilgin</a> </small>
 			</p>
 			<p>
-				<small>Github: <a href="https://github.com/ctangel">ctangel</a> </small>
+				<small>Github: <a href="https://github.com/Defiant-System/opus">Opus</a> </small>
 			</p>
 		</section>
 
 		<section>
-			<p> RevealEditor is an text editor built for HTML presentation platform <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
+			<p> Opus Editor is an text editor built based on <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
 			<p class="fragment" data-fragment-index="3">Appears last</p>
 			<p class="fragment" data-fragment-index="1">Appears first</p>
 			<p class="fragment" data-fragment-index="2">Appears second</p>
 		</section>
 
 		<section>
-			<p>RevealEditor allows you to write and run Javascript, HTML, and CSS from within a presention and shows you the results without ever exiting fullscreen presentation mode.</p>
+			<p>Opus Editor allows you to write and run Javascript, HTML, and CSS from within a presention and shows you the results without ever exiting fullscreen presentation mode.</p>
 		</section>
 
 		<section>
-			<p> Go ahead and click on the RevealEditor button on the top left corner and play around with the RevealEditor</p>
+			<p>Go ahead and click on the Opus Editor button on the top left corner and play around with the Opus Editor</p>
 		</section>
 
 		<section data-slides-v>
