@@ -81,8 +81,10 @@ class Tabs {
 	}
 
 	removeDelayed() {
-		let el = this._active.tabEl;
-		this._spawn.tabs.wait(el);
+		if (this._active) {
+			let el = this._active.tabEl;
+			this._spawn.tabs.wait(el);
+		}
 	}
 
 	remove(tId) {

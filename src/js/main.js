@@ -17,7 +17,6 @@ const DefaultSettings = {
 	"guides-snap-sensitivity": 7,
 };
 
-
 const opus = {
 	init() {
 		// get settings or use default settings
